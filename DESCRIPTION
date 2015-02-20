@@ -1,0 +1,21 @@
+Package: ggenealogy
+Type: Package
+Title: Visualization tools for genealogical data
+Description: This package provides methods for searching through genealogical data and displaying the results. It is possible to draw the shortest path between genetic lines, and superimpose it onto the full lineage. Genealogy plots can be constricted by generation, and drawn in relation to additional variables. Production of color matrix plots can be constructed between a subset of nodes. Graph theory measures of the full lineage can be obtained. The various plotting algorithms can assist users in data exploration, as well as in preparing publication-suitable images. The package uses the Grammar of Graphics.
+Version: 0.1
+Author: Lindsay Rutter, Susan Vanderplas, Di Cook
+Maintainer: Lindsay Rutter <lrutter@iastate.edu>
+License: GPL
+Depends:
+    R (>= 3.0.2)
+Imports:
+    ggplot2 (>= 1.0.0),
+    igraph (>= 0.7.1),
+    plyr (>= 1.8.1),
+    reshape2 (>= 1.4)
+VignetteBuilder: knitr
+Suggests:
+    stringr (>= 0.6.2),
+    knitr,
+    roxygen2 (>= 3.0.0)
+Roxygen: list(wrap = TRUE)
