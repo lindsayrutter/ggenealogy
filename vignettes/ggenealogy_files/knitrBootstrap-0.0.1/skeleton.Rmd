@@ -1,9 +1,0 @@
----
-title: "Untitled"
-output:
-  knitrBootstrap::bootstrap_document:
-    toc: true
-    fig_caption: true
----
-
-## Analysis ##
