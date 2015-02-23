@@ -14,7 +14,7 @@ buildEdgeTotalDF(tree, ig, binVector = 1:12)
 
   \item{binVector}{the number of bins between 1 and
   length(binVector) (default is 12). For more information
-  on choosing binVector size, please visit the phyViz
+  on choosing binVector size, please visit the ggenealogy
   vignette.}
 }
 \description{
