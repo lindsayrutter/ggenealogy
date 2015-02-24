@@ -665,9 +665,9 @@ getDegree = function(v1, v2, ig, geneal){
 
 #' Returns the nodes for a full genealogy
 #'
-#' Returns a character list, where row contains names of the unique nodes in the full genealogy
+#' Returns a character list, where rows contains names of the unique nodes in the full genealogy
 #'   
-#' @param geneal the full genealogy  (in data frame format)
+#' @param geneal the full genealogy (in data frame format)
 #' @examples
 #' data(sbGeneal)
 #' getNodes(sbGeneal)

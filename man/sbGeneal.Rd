@@ -11,9 +11,9 @@ data(sbGeneal)
 \description{
 This data set contains soy bean genealogical information
 maintained by the United States Department of Agriculture
-to be used by plant breeders, genetecits,
-bioinformaticians, pathologists, ertomologists, and many
-other research workers.
+to be used by plant breeders, geneticists,
+bioinformaticians, pathologists,and many other research
+workers.
 }
 \details{
 Soybean genealogical data
