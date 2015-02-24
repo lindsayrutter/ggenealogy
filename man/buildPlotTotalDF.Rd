@@ -4,16 +4,16 @@
 \alias{buildPlotTotalDF}
 \title{Build all labels in the graph}
 \usage{
-buildPlotTotalDF(path, tree, ig, binVector = 1:12)
+buildPlotTotalDF(path, geneal, ig, binVector = 1:12)
 }
 \arguments{
   \item{path}{path as returned from getPath() or a vector
   of two variety names which exist in ig}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 
-  \item{ig}{the graph representation of the data tree (in
-  igraph format)}
+  \item{ig}{the graph representation of the data genealogy
+  (in igraph format)}
 
   \item{binVector}{vector of numbers between 1 and
   length(binVector), each repeated exactly once}

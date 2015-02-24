@@ -25,8 +25,9 @@
 \newcommand{\class}[1]{{\textit{#1}}}
 \newcommand{\R}{{\normalfont\textsf{R }}{}}
 
+\usepackage{Sweave}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\input{ggenealogy-concordance}
 
 % <<label=R options,echo=FALSE>>=
 % options(width = 60)
@@ -42,7 +43,7 @@
 
 \title{Vignette: Grammar of graphics of genealogy (ggenealogy package) in R}
 \author{Lindsay Rutter, Susan Vanderplas, Di Cook}
-\date{\pkg{ggenealogy} version \Sexpr{packageDescription("ggenealogy")[["Version"]]} , \Sexpr{Sys.Date()} }
+\date{\pkg{ggenealogy} version 0.1 , 2015-02-23 }
 \maketitle
 
 \tableofcontents
@@ -52,9 +53,6 @@
   package and can be accessed through the \R command \code{vignette("ggenealogy")}.}  \newpage
 \setlength{\parskip}{4pt} % Inter-paragraph spacing
 
-<<echo=FALSE>>=
-rm(list=ls())
-@ 
 
 \section{Summary}
 
@@ -82,16 +80,20 @@ simply type:
 \noindent
 Once the \texttt{ggenealogy} package is installed, it needs to be made
 accessible to the current \R session by the command:
-<<results = hide>>=
-library(ggenealogy)
-@
+\begin{Schunk}
+\begin{Sinput}
+> library(ggenealogy)
+\end{Sinput}
+\end{Schunk}
 
 For online help facilities or the details of a particular command
 (such as the function \texttt{ggenealogy}) you can type:
-<<eval=FALSE>>=
-help(package="ggenealogy")
-help(ggenealogy)
-@ 
+\begin{Schunk}
+\begin{Sinput}
+> help(package="ggenealogy")
+> help(ggenealogy)
+\end{Sinput}
+\end{Schunk}
 
 The first command gives a brief summary of the available commands in
 the package, the second give more detailed information about a
@@ -99,61 +101,87 @@ specific command. \R help files can also be used to illustrate how commands
 are executed, so they can be pasted into an \R session, or run as a whole with
 the following command:
 
-<<eval=FALSE>>=
-example(ggenealogy)
-@ 
+\begin{Schunk}
+\begin{Sinput}
+> example(ggenealogy)
+\end{Sinput}
+\end{Schunk}
 
 \subsection{Preprocessing Pipeline}
 
 In the **ggenealogy** package, there is an example dataset containing genealogical information on soybean varieties called **sbGeneal.rda**. It may be helpful to load that example file so that you can follow along with the commands and options introduced in this vignette. To ensure that you have uploaded the correct, raw **sbGeneal.rda** file, you can observe the first six lines of it, and also determine its class type:
 
-<<>>=
-data(sbGeneal)
-head(sbGeneal)
-class(sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> data(sbGeneal)
+> head(sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+          child year yield year.imputed    parent
+1         5601T 1981    NA         TRUE Hutcheson
+2         Adams 1948  2734        FALSE  Dunfield
+3          A.K. 1910    NA         TRUE      <NA>
+4 A.K. (Harrow) 1912  2665        FALSE      A.K.
+5        Altona 1968    NA        FALSE  Flambeau
+6         Amcor 1979  2981        FALSE  Amsoy 71
+\end{Soutput}
+\begin{Sinput}
+> class(sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] "data.frame"
+\end{Soutput}
+\end{Schunk}
 
 We see that the **sbGeneal* data file is a data frame structure with five variables per row. Each row contains a child node character label and parent node character label. Each row also contains a numeric value corresponding to the year the child node was introduced, an integer value of the protein yield of the child node, and a logical value whether or not the year of introduction of the child node was imputed.
 
 Now that the sbGeneal file has been loaded as a data frame, it must now be converted into a graph object using the **dfToIG()** function. The **dfToIG()** function requires a data frame as input, and that data frame should be structured such that each row represents an edge with a child and parent relationship. For more information, try using the help command on the function:
 
-<<>>=
-help(dfToIG)
-@
+\begin{Schunk}
+\begin{Sinput}
+> help(dfToIG)
+\end{Sinput}
+\end{Schunk}
 
 This allows you to view a more thorough description of the function arguments. For instance, we see that the function takes optional parameter arguments, such as *vertexinfo* (a list of columns of the data frame which provide information for the starting "child" vertex, or a separate data frame containing information for each vertex with the first column as the vertex name), *edgeweights* (a column that contains edge values, with a default value of unity), and *isDirected* (a boolean value that describes whether the graph is directed (true) or undirected (false); the default is false).
 
 In this example, we want to produce an undirected graph object that contains all edge weight values of 1, because our goal is to set an edge value of unity for every pair of vertices (individuals) that are related as parent and child. The **dfToIG()** function uses the software **igraph** to convert the data frame into a graph object. For clarity, we will assign the outputted graph object the name **ig** (for igraph object), and then examine its class type:
 
-<<>>=
-ig <- dfToIG(sbGeneal)
-class(ig)
-@
+\begin{Schunk}
+\begin{Sinput}
+> ig <- dfToIG(sbGeneal)
+> class(ig)
+\end{Sinput}
+\begin{Soutput}
+[1] "igraph"
+\end{Soutput}
+\end{Schunk}
 
 If successful, we can confirm that the **ig** object is of class type **igraph**.
 
 We can add the other data we have about each of the nodes in **ig** in several ways. As we saw earlier, each row of the sbGeneal dataset contains information about each child. To append that data to the **ig** object, we can use the same command as before, but specify the **vertexinfo** parameter as follows: 
 
-<<>>=
-ig <- dfToIG(sbGeneal, vertexinfo=c("year", "yield", "year.imputed"))
-@
+\begin{Schunk}
+\begin{Sinput}
+> ig <- dfToIG(sbGeneal, vertexinfo=c("year", "yield", "year.imputed"))
+\end{Sinput}
+\end{Schunk}
 
 If we have separate data sets with node information, we can use that instead. For the example dataset, we must first obtain the node information: 
 
-<<>>=
-library(plyr)
-nodes <- unique(sbGeneal[,1:4])
-
-# get a data frame of all parents whose parents are not known (i.e. parents who are not listed as children as well)
-extra.nodes <- unique(data.frame(child=sbGeneal$parent[!sbGeneal$parent%in%sbGeneal$child & !is.na(sbGeneal$parent)], stringsAsFactors=FALSE))
-
-# We may not have information for these extra nodes, but they still need to be included in the dataset
-nodes <- rbind.fill(nodes, extra.nodes)
-rm(extra.nodes)
-
-# We can now specify our vertex information using the data frame nodes: 
-ig <- dfToIG(sbGeneal, vertexinfo=nodes)
-@
+\begin{Schunk}
+\begin{Sinput}
+> library(plyr)
+> nodes <- unique(sbGeneal[,1:4])
+> # get a data frame of all parents whose parents are not known (i.e. parents who are not listed as children as well)
+> extra.nodes <- unique(data.frame(child=sbGeneal$parent[!sbGeneal$parent%in%sbGeneal$child & !is.na(sbGeneal$parent)], stringsAsFactors=FALSE))
+> # We may not have information for these extra nodes, but they still need to be included in the dataset
+> nodes <- rbind.fill(nodes, extra.nodes)
+> rm(extra.nodes)
+> # We can now specify our vertex information using the data frame nodes: 
+> ig <- dfToIG(sbGeneal, vertexinfo=nodes)
+\end{Sinput}
+\end{Schunk}
 
 The ig object is used in many of the other functions included with this package. 
 
@@ -167,47 +195,104 @@ The **ggenealogy** package offers several functions that you can use to obtain i
 
 First, the function **isParent()** can return a logical variable to indicate whether or not the second variety is a parent of the first variety.
 
-<<>>=
-isParent("Young","Essex",sbGeneal)
-isParent("Essex","Young",sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> isParent("Young","Essex",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] TRUE
+\end{Soutput}
+\begin{Sinput}
+> isParent("Essex","Young",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] FALSE
+\end{Soutput}
+\end{Schunk}
 
 We see that "Essex" is a parent of "Young".
 
 Similarly, the function **isChild()** can return a logical variable to indicate whether or not the first variety is a child of the second variety.
 
-<<>>=
-isChild("Young","Essex",sbGeneal)
-isChild("Essex","Young",sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> isChild("Young","Essex",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] TRUE
+\end{Soutput}
+\begin{Sinput}
+> isChild("Essex","Young",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] FALSE
+\end{Soutput}
+\end{Schunk}
 
 We see that, as expected, "Young" is a child of "Essex".
 
 It is also possible to derive the year of a given variety using the **getYear()** function:
 
-<<>>=
-getYear("Young",sbGeneal)
-getYear("Essex",sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getYear("Young",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] 1968
+\end{Soutput}
+\begin{Sinput}
+> getYear("Essex",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] 1962
+\end{Soutput}
+\end{Schunk}
 
 Fortunately, the returned year values are consistent, as the "Young" variety (1968) is a child to the "Essex" variety (1962) by an age difference of six years.
 
 In some cases, you may wish to obtain a complete list of all the parents of a given variety. This can be achieved using the **getParent()** function:
 
-<<>>=
-getParent("Young",sbGeneal)
-getParent("Tokyo",sbGeneal)
-getYear("Tokyo", sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getParent("Young",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] "Davis" "Essex"
+\end{Soutput}
+\begin{Sinput}
+> getParent("Tokyo",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+character(0)
+\end{Soutput}
+\begin{Sinput}
+> getYear("Tokyo", sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] 1907
+\end{Soutput}
+\end{Schunk}
 
 We learn from this that "Essex" is not the only parent of "Young"; it also has a parent "Davis". We also see that "Tokyo" does not have any documented parents in this dataset, and has an older year of introduction (1907) than other varieties we have examined thusfar.
 
 Likewise, in other cases, you may wish to obtain a complete list of all the children of a given variety. This can be achieved using the **getChild()** function:
 
-<<>>=
-getChild("Tokyo",sbGeneal)
-getChild("Ogden",sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getChild("Tokyo",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] "Ogden"    "Volstate"
+\end{Soutput}
+\begin{Sinput}
+> getChild("Ogden",sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+ [1] "C1069"          "C1079"          "D51-2427"       "D55-4090"      
+ [5] "D55-4159"       "D55-4168"       "Kent"           "N44-92"        
+ [9] "N45-745"        "N48-1101"       "Ogden x CNS"    "Ralsoy x Ogden"
+\end{Soutput}
+\end{Schunk}
 
 We find that even though the "Tokyo" variety is a grandparent of the dataset, it only has two children, "Ogden" and "Volstate". However, one of its children, "Ogden", produced twelve children.
 
@@ -215,34 +300,128 @@ If we want to obtain a list that contains more than just one generation past or 
 
 If we only look at one generation of ancestors of the "Young" variety, we should see the same information we did earlier when we used the **getParent()** function of the Young variety:
 
-<<>>=
-getAncestors("Young",sbGeneal,1)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getAncestors("Young",sbGeneal,1)
+\end{Sinput}
+\begin{Soutput}
+  label gen
+2 Davis   1
+1 Essex   1
+\end{Soutput}
+\end{Schunk}
 
 Indeed, we consistently see that the "Young" variety has only two ancestors within one generation, "Davis" and "Essex".
 
 However, if we view the first five generations of ancestors of the "Young"" variety, we can view four more generations of ancestors past simply the parents:
 
-<<>>=
-getAncestors("Young",sbGeneal,5)
-dim(getAncestors("Young",sbGeneal,5))
-@
+\begin{Schunk}
+\begin{Sinput}
+> getAncestors("Young",sbGeneal,5)
+\end{Sinput}
+\begin{Soutput}
+                     label gen
+27                   Davis   1
+26                   Essex   1
+25          Ralsoy x Ogden   2
+24 Roanoke x (Ogden x CNS)   2
+23                     Lee   2
+22                S55-7075   2
+21                   Ogden   3
+20                  Ralsoy   3
+19             Ogden x CNS   3
+17                     CNS   3
+18                 Roanoke   3
+16                   S 100   3
+15                N48-1248   3
+14                   Perry   3
+10                   Ogden   4
+13                PI 54610   4
+12                   Tokyo   4
+11                     CNS   4
+9                  Clemson   4
+6                  Roanoke   4
+8                   Illini   4
+7  N45-745 x (Ogden x CNS)   4
+4                 PI 54610   5
+3                    Tokyo   5
+1              Ogden x CNS   5
+5                  Clemson   5
+2                     A.K.   5
+\end{Soutput}
+\begin{Sinput}
+> dim(getAncestors("Young",sbGeneal,5))
+\end{Sinput}
+\begin{Soutput}
+[1] 27  2
+\end{Soutput}
+\end{Schunk}
 
 In the second line of code above, we determined the dimensions of the returned data frame, and see that there are 27 ancestors within the first five ancestral generations of the "Young" variety.
 
 Similarly, if we only look at the first generation of descendants of the "Ogden"" variety, we should see the same information as we did earlier when we used the **getChild()** function on the "Ogden" variety:
 
-<<>>=
-getDescendants("Ogden",sbGeneal,1)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getDescendants("Ogden",sbGeneal,1)
+\end{Sinput}
+\begin{Soutput}
+            label gen
+12          C1069   1
+11          C1079   1
+10       D51-2427   1
+9        D55-4090   1
+8        D55-4159   1
+7        D55-4168   1
+6            Kent   1
+5          N44-92   1
+4         N45-745   1
+3        N48-1101   1
+2     Ogden x CNS   1
+1  Ralsoy x Ogden   1
+\end{Soutput}
+\end{Schunk}
 
 Indeed, we see again that "Ogden" has 12 children. 
 
 However, if we want to view not only the children, but also the grandchildren, of the "Ogden" variety, then we can use this function, only now specifying two generations of descendants:
 
-<<>>=
-getDescendants("Ogden",sbGeneal,2)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getDescendants("Ogden",sbGeneal,2)
+\end{Sinput}
+\begin{Soutput}
+                     label gen
+28                   C1069   1
+27                   C1079   1
+26                D51-2427   1
+25                D55-4090   1
+24                D55-4159   1
+23                D55-4168   1
+22                    Kent   1
+21                  N44-92   1
+20                 N45-745   1
+19                N48-1101   1
+18             Ogden x CNS   1
+17          Ralsoy x Ogden   1
+16                Columbus   2
+15                  Cutler   2
+14                  C1266R   2
+13                  Semmes   2
+11                D60-7965   2
+12                D60-7965   2
+10                D59-9289   2
+9                   Beeson   2
+8                  Calland   2
+7                     Hood   2
+6                 N48-1867   2
+5                  D52-810   2
+4  N45-745 x (Ogden x CNS)   2
+3                  R54-168   2
+2  Roanoke x (Ogden x CNS)   2
+1                    Davis   2
+\end{Soutput}
+\end{Schunk}
 
 We see that variety "Ogden" has 16 grandchildren from its 12 children.
 
@@ -250,10 +429,20 @@ We see that variety "Ogden" has 16 grandchildren from its 12 children.
 
 Say you have a pair of vertices, and you wish to determine the degree of the shortest path between them, where edges represent parent-child relationships. You can accomplish that with the **getDegree()** function.
 
-<<>>=
-getDegree("Tokyo", "Ogden", ig, sbGeneal)
-getDegree("Tokyo", "Holladay", ig, sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getDegree("Tokyo", "Ogden", ig, sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] 1
+\end{Soutput}
+\begin{Sinput}
+> getDegree("Tokyo", "Holladay", ig, sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] 7
+\end{Soutput}
+\end{Schunk}
 
 As expected, the shortest path between the "Tokyo" and "Ogden" varieties has a value of one, as we already determined that they have a direct parent-child relationship. However, the shortest path between "Tokyo" and one of its descendants, "Holladay", has a much higher degree of seven.
 
@@ -263,27 +452,78 @@ Note that degree calculations in this case are not limited to one linear string 
 
 There are many parameters about the tree that you may wish to know that cannot easily be obtained through images and tables. The function **getBasicStatistics()** will return graph theoretical measurements of the whole tree. For instance, is the whole tree connected? If not, how many separated components does it contain? In addition to these parameters, the **getBasicStatistics()** function will also return the number of nodes, the number of edges, the average path length, the graph diameter, among others:
 
-<<>>=
-getBasicStatistics(ig)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getBasicStatistics(ig)
+\end{Sinput}
+\begin{Soutput}
+$isConnected
+[1] FALSE
+
+$numComponents
+[1] 11
+
+$avePathLength
+[1] 5.333746
+
+$graphDiameter
+[1] 13
+
+$numNodes
+[1] 230
+
+$numEdges
+[1] 340
+
+$logN
+[1] 5.438079
+\end{Soutput}
+\end{Schunk}
 
 In this case, we learn that our tree is actually not all connected by parent-child edges, and that instead, it is composed of 11 separate components. We see that the average path length of the tree is 5.333, that the graph diameter is 13, and that the logN value is 5.438. We also see that the number of nodes in the tree is 230, and the number of edges in the tree is 340.
 
 But can we view a list of these nodes and edges? To do so, we can call the **getNodes()** and **getEdges()** commands to obtain lists of all the unique nodes and edges in the tree. Here, we obtain a list of the 340 edges (with each row containing the names of the two connected vertices, and an edge weight, if existent). We will simply view the first six rows of the object, and determine the number of edges by counting the number of rows (340):
 
-<<>>=
-eList = getEdges(ig, sbGeneal)
-head(eList)
-dim(eList)
-@
+\begin{Schunk}
+\begin{Sinput}
+> eList = getEdges(ig, sbGeneal)
+> head(eList)
+\end{Sinput}
+\begin{Soutput}
+     child           parent     
+[1,] "5601T"         "Hutcheson"
+[2,] "Adams"         "Dunfield" 
+[3,] "A.K. (Harrow)" "A.K."     
+[4,] "Altona"        "Flambeau" 
+[5,] "Amcor"         "Amsoy 71" 
+[6,] "Amsoy"         "Adams"    
+\end{Soutput}
+\begin{Sinput}
+> dim(eList)
+\end{Sinput}
+\begin{Soutput}
+[1] 340   2
+\end{Soutput}
+\end{Schunk}
 
 We then obtain a list of the 230 nodes. Again, we only view the first six rows of the object, and determine the number of nodes by counting the number of rows (230).
 
-<<>>=
-nList = getNodes(sbGeneal)
-head(nList)
-length(nList)
-@
+\begin{Schunk}
+\begin{Sinput}
+> nList = getNodes(sbGeneal)
+> head(nList)
+\end{Sinput}
+\begin{Soutput}
+[1] "5601T"         "Adams"         "A.K."          "A.K. (Harrow)"
+[5] "Altona"        "Amcor"        
+\end{Soutput}
+\begin{Sinput}
+> length(nList)
+\end{Sinput}
+\begin{Soutput}
+[1] 230
+\end{Soutput}
+\end{Schunk}
 
 \section{Visualizing the full genealogical structure}
 
@@ -295,16 +535,16 @@ One visualization tool, **plotAncDes()**, allows the user to view the ancestors 
 
 As such, this plotting command does not provide visual information about specific years associated with each related variety (as is done in some of the visualization tools introduced later), but it does group all varieties from each generation group onto the same position of the horizontal axis. Here, we specify that we want to plot 3 ancestor generations and 5 descendant generations of the variety "Lee":
 
-<<label=plotAncDes1,include=FALSE>>=
-plotAncDes("Lee", sbGeneal, 3, 5)
-@
+\begin{Schunk}
+\begin{Sinput}
+> plotAncDes("Lee", sbGeneal, 3, 5)
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotAncDes1,fig=TRUE,echo=FALSE>>= 
-<<plotAncDes1>>
-@ 
+\includegraphics{ggenealogy-plotAncDes1}
 \end{center} 
 \caption{Ancestors and Descendants of tree.}
 \label{fig:plotAncDes1}
@@ -320,16 +560,16 @@ It should be noted that the **plotAncDes()** function, by default, highlights th
 
 For example, we will now change the color of the center variety label **vColor** to be highlighted in blue. Also, we will add a horizontal axis label called "Generation index", using the **ggplot2** syntax. Note that this time we do not specify the generational count for ancestors and descendants, and so the default value of three generations is applied for both cases. Remember, to determine such default values, as well as all possible function parameters, simply run the help command on the function of interest, as in help(plotAncDes).
 
-<<label=plotAncDes2, include=FALSE>>=
-plotAncDes("Tokyo", sbGeneal, vColor = "blue") + ggplot2::labs(x="Generation index",y="")
-@
+\begin{Schunk}
+\begin{Sinput}
+> plotAncDes("Tokyo", sbGeneal, vColor = "blue") + ggplot2::labs(x="Generation index",y="")
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotAncDes2,fig=TRUE,echo=FALSE>>= 
-<<plotAncDes2>>
-@ 
+\includegraphics{ggenealogy-plotAncDes2}
 \end{center} 
 \caption{Ancestors and Descendants of tree.}
 \label{fig:plotAncDes2}
@@ -345,45 +585,66 @@ The **ggenealogy** software allows users to select two varieties of interest, an
 
 The **getPath()** function determines the shortest path between the two inputted vertices, and takes into account whether or not the graph is directed with the parameter **isDirected**, which defaults to false. The **getPath()** function will check both directions and return the path if it exists:
 
-<<>>=
-getPath("Brim","Bedford", ig, sbGeneal, isDirected=FALSE)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getPath("Brim","Bedford", ig, sbGeneal, isDirected=FALSE)
+\end{Sinput}
+\begin{Soutput}
+$pathVertices
+[1] "Brim"    "Young"   "Essex"   "T80-69"  "J74-40"  "Forrest" "Bedford"
+
+$yearVertices
+[1] "1977" "1968" "1962" "1975" "1975" "1973" "1978"
+\end{Soutput}
+\end{Schunk}
 
 We see that there is a path between "Brim" and "Bedford" varieties, with five varieties separating them. We are not considering direction, however, because the **ig** object is undirected.
 
 However, to demonstrate the importance of direction, we will recompute the path where the direction matters. We first produce a directed igraph object **dirIG**, and then try to determine the path between the same two vertices, "Brim" and "Bedford".
 
-<<>>=
-dirIG = dfToIG(sbGeneal, vertexinfo=nodes, isDirected = TRUE)
-getPath("Brim", "Bedford", dirIG, sbGeneal, isDirected = TRUE)
-@
+\begin{Schunk}
+\begin{Sinput}
+> dirIG = dfToIG(sbGeneal, vertexinfo=nodes, isDirected = TRUE)
+> getPath("Brim", "Bedford", dirIG, sbGeneal, isDirected = TRUE)
+\end{Sinput}
+\begin{Soutput}
+list()
+\end{Soutput}
+\end{Schunk}
 
 Now that we are considering the direction, we are only considering paths where each edge represents a parent-child relationship in the same direction as the one before it. We now receive an empty return list with a warning that there is no path between those two vertices. We  next try to reverse the input order of the vertices, as shown below, but we will receive the same empty return list and warning:
 
-<<>>=
-getPath("Bedford", "Brim", dirIG, sbGeneal, isDirected=TRUE)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getPath("Bedford", "Brim", dirIG, sbGeneal, isDirected=TRUE)
+\end{Sinput}
+\begin{Soutput}
+list()
+\end{Soutput}
+\end{Schunk}
 
 We can derive from the empty list returned in the last two commands that the varieties "Brim" and "Bedford" are not connected by a linear sequence of parent-child relationships. Rather, the path between them branches at some point, involving siblings and/or cousins.
 
 Hence, unless you are working with a dataset that must be analyzed as a directed graph, it is best to use the **getPath()** function with the default third parameter indicating lack of direction, and to use an **igraph object** without direction, such as **ig**. We do just that, and save the path between these two varieties to a variable called **path**:
 
-<<>>=
-path = getPath("Bedford","Brim", ig, sbGeneal, isDirected=FALSE)
-@
+\begin{Schunk}
+\begin{Sinput}
+> path = getPath("Bedford","Brim", ig, sbGeneal, isDirected=FALSE)
+\end{Sinput}
+\end{Schunk}
 
 Now that we have a non-empty **path** object that consists of two lists (for variety names and years), we can plot the relationship between the two using the **plotPath()** function.
 
-<<label=plotPath1, include=FALSE>>=
-plotPath(path)
-@
+\begin{Schunk}
+\begin{Sinput}
+> plotPath(path)
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotPath1,fig=TRUE,echo=FALSE>>= 
-<<plotPath1>>
-@ 
+\includegraphics{ggenealogy-plotPath1}
 \end{center} 
 \caption{Ancestors and Descendants of tree.}
 \label{fig:plotPath1}
@@ -395,17 +656,17 @@ Although a call to the ggenealogy function **getYear()** indicates that "Bedford
 
 However, there are other cases of pairs of varieties that are connected by a linear, unidirectional combination of parent-child relationships, as we see below:
 
-<<label=plotPath2, include=FALSE>>=
-path = getPath("Narow", "Tokyo", ig, sbGeneal, isDirected=FALSE)
-plotPath(path)
-@
+\begin{Schunk}
+\begin{Sinput}
+> path = getPath("Narow", "Tokyo", ig, sbGeneal, isDirected=FALSE)
+> plotPath(path)
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotPath2,fig=TRUE,echo=FALSE>>= 
-<<plotPath2>>
-@ 
+\includegraphics{ggenealogy-plotPath2}
 \end{center} 
 \caption{Ancestors and Descendants of tree.}
 \label{fig:plotPath2}
@@ -413,22 +674,24 @@ plotPath(path)
 
 Here, we see that the variety "Tokyo" is an ancestor of "Narow" via four linear parent-child relationships. Because of this, we can still view the pathway, even when we use an **igraph** object **dirIG** that is directed, and set the boolean **isDirected** variable to true. Either ordering of the two varieties will produce the exact same result:
 
-<<>>=
-path = getPath("Narow", "Tokyo", dirIG, sbGeneal, isDirected=TRUE)
-plotPath(path)
-@
+\begin{Schunk}
+\begin{Sinput}
+> path = getPath("Narow", "Tokyo", dirIG, sbGeneal, isDirected=TRUE)
+> plotPath(path)
+\end{Sinput}
+\end{Schunk}
 
-<<label=plotPath3, include=FALSE>>=
-path = getPath("Tokyo", "Narow", dirIG, sbGeneal, isDirected=TRUE)
-plotPath(path)
-@
+\begin{Schunk}
+\begin{Sinput}
+> path = getPath("Tokyo", "Narow", dirIG, sbGeneal, isDirected=TRUE)
+> plotPath(path)
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotPath3,fig=TRUE,echo=FALSE>>= 
-<<plotPath3>>
-@ 
+\includegraphics{ggenealogy-plotPath3}
 \end{center} 
 \caption{Ancestors and Descendants of tree.}
 \label{fig:plotPath3}
@@ -440,16 +703,16 @@ Now that we can create and plot path objects, we may wish to know how those path
 
 There is a function available in the **ggenealogy** package, **plotPathOnAll()**, that allows users to quickly visualize their path of interest superimposed over all varieties and edges present in the whole data structure. Here we will produce a plot of the previously-determined shortest path between varieties Tokyo and Narow across the entire dataset:
 
-<<label=plotPathOnAll1,include=FALSE>>=
-plotPathOnAll(path, sbGeneal, ig, binVector = 1:3)
-@
+\begin{Schunk}
+\begin{Sinput}
+> plotPathOnAll(path, sbGeneal, ig, binVector = 1:3)
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotPathOnAll1,fig=TRUE,echo=FALSE>>= 
-<<plotPathOnAll1>>
-@ 
+\includegraphics{ggenealogy-plotPathOnAll1}
 \end{center} 
 \caption{Plotting the path between Tokyo and Narow across full genealogical structure, using a binVector size of 3.}
 \label{fig:plotPathOnAll1}
@@ -469,16 +732,16 @@ The plot presents useful information: We immediately gather that the path of int
 
 However, this plot has significant empty spaces between the noticeably distinct bins, whereas almost all text labels are overlapping, thereby decreasing their readability. To force some variety text labels into these spaces, the user may consider using a larger number of bins. Hence, we next examine a **binVector** size of six:
 
-<<label=plotPathOnAll2, include=FALSE>>=
-plotPathOnAll(path, sbGeneal, ig, binVector = 1:6)
-@
+\begin{Schunk}
+\begin{Sinput}
+> plotPathOnAll(path, sbGeneal, ig, binVector = 1:6)
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotPathOnAll2,fig=TRUE,echo=FALSE>>= 
-<<plotPathOnAll2>>
-@ 
+\includegraphics{ggenealogy-plotPathOnAll2}
 \end{center} 
 \caption{Plotting the path between Tokyo and Narow superimposed on the full genealogical structure, using a binVector size of six.}
 \label{fig:plotPathOnAll2}
@@ -492,18 +755,18 @@ It may also be of interest to generate matrices where the colors indicates a var
 
 Here we generate a distance matrix for a set of 8 varieties, defining the x-axis title and y-axis title as "Soybean label", and the legend label as "Degree". Syntax from the **ggplot2** package can be appended to tailor the output from the **plotDegMatrix()** function. In this case, we specify that pairs with small degrees are colored white, while pairs with large degrees are colored dark green:
 
-<<label=plotDegMatrix1, include=FALSE>>=
-varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-p = plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
-p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
-@
+\begin{Schunk}
+\begin{Sinput}
+> varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+> p = plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
+> p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotDegMatrix1,fig=TRUE,echo=FALSE>>= 
-<<plotDegMatrix1>>
-@ 
+\includegraphics{ggenealogy-plotDegMatrix1}
 \end{center} 
 \caption{Plotting the degree matrix between eight varieties of interest.}
 \label{fig:plotDegMatrix1}
@@ -511,25 +774,30 @@ p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
 
 We see that the degree of the shortest path between varieties "Bedford" and "Zane" seems to be the largest in the dataset, which should be around 10. We can verify this simply with:
 
-<<>>=
-getDegree("Bedford", "Zane", ig, sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> getDegree("Bedford", "Zane", ig, sbGeneal)
+\end{Sinput}
+\begin{Soutput}
+[1] 10
+\end{Soutput}
+\end{Schunk}
 
 Indeed, the degree of the shortest path between "Bedford" and "Zane" is 10. However, what the distance matrix additionally tells us is that a degree of 10 may be a comparatively large degree for this given soybean dataset, at least in that the degrees of the shortest paths for the other 27 pairwise combinations of varieties that we explored here are less than 10.
 
 In a similar function, **plotYearMatrix()**, the difference in years between all pairwise combinations of vertices can be constructed and viewed:
 
-<<label=plotYearMatrix1, include=FALSE>>=
-varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-plotYearMatrix(varieties,sbGeneal)
-@
+\begin{Schunk}
+\begin{Sinput}
+> varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+> plotYearMatrix(varieties,sbGeneal)
+\end{Sinput}
+\end{Schunk}
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotYearMatrix1,fig=TRUE,echo=FALSE>>= 
-<<plotYearMatrix1>>
-@ 
+\includegraphics{ggenealogy-plotYearMatrix1}
 \end{center} 
 \caption{Ancestors and Descendants of tree.}
 \label{fig:plotYearMatrix1}

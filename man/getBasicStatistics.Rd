@@ -7,8 +7,8 @@
 getBasicStatistics(ig)
 }
 \arguments{
-  \item{ig}{the graph representation of the data tree (in
-  igraph format)}
+  \item{ig}{the graph representation of the data genealogy
+  (in igraph format)}
 }
 \description{
 Returns basic statistics of the graph object (number of
@@ -17,8 +17,8 @@ connected, number of components, average path length, graph
 diameter, etc.)
 }
 \examples{
-data(sbTree)
-ig = treeToIG(sbTree)
+data(sbGeneal)
+ig = dfToIG(sbGeneal)
 getBasicStatistics(ig)
 }
 

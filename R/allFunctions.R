@@ -3,7 +3,7 @@ utils::globalVariables("id.offset")
 
 #' Returns the coordinate positions of all ancestors and descendants of a variety.
 #' 
-#' Calculates coordinates to plot each ancestors and descendant of a variety on a tree. The x and y values describe the coordinates of the label, while the xstart, ystart, xend, and yend values describe the edges of the label.
+#' Calculates coordinates to plot each ancestors and descendant of a variety in a lineage. The x and y values describe the coordinates of the label, while the xstart, ystart, xend, and yend values describe the edges of the label.
 #' 
 #' @param df the data frame of the ancestors and descendants of a variety (from function buildAncDesTotalDF)
 #' @seealso \code{\link{buildAncList}} for information on determining ancestors
@@ -67,7 +67,7 @@ buildAncDesCoordDF = function(df){
   for(i in unique(df$genside)[order(abs(unique(df$genside)))]){
     # j is the rows (varieties) in that generation
     j = which(df$genside==i)
-    # Center of the two trees 
+    # Center of the two lineages 
     if(i == 0){   
       df$x[j] = 0
       df$xstart[j] = -widths$len[widths$genside==i]/2
@@ -85,7 +85,7 @@ buildAncDesCoordDF = function(df){
         df$xstart[k] = df$xend[k]+widths$len[widths$genside==i]*sign(i)
         df$x[k] = (df$xend[k]+df$xstart[k])/2
       } 
-      # The positive side of tree ("reversed" branch)
+      # The positive side of lineage ("reversed" branch)
     } else if(i>1){
       for(k in j){
         par = df[which(df$id==df$par.id[k]),]
@@ -95,7 +95,7 @@ buildAncDesCoordDF = function(df){
         df$xstart[k] = df$xend[k]+widths$len[widths$genside==i]*sign(i)
         df$x[k] = (df$xend[k]+df$xstart[k])/2
       } 
-      # The negative side of tree
+      # The negative side of lineage
     } else {
       for(k in j){
         par = df[which(df$id==df$par.id[k]),]
@@ -120,15 +120,15 @@ buildAncDesCoordDF = function(df){
 #' @param v1 the label of the variety/vertex of interest (in character string format)
 #' @param mAnc the maximum number of generations of ancestors of v1 to be displayed (in numeric format)
 #' @param mDes the maximum number of generations of descendants of v1 to be displayed (in numeric format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy (in data frame format)
 #' @seealso \code{\link{buildAncList}} for information on determining ancestors
 #' @seealso \code{\link{buildDesList}} for information on determining descendants
 #' @export
 #' @examples
-#' data(sbTree)
+#' data(sbGeneal)
 #' v1="Essex"
-#' buildAncDesTotalDF(v1, sbTree)
-buildAncDesTotalDF = function(v1, tree, mAnc=3, mDes=3){
+#' buildAncDesTotalDF(v1, sbGeneal)
+buildAncDesTotalDF = function(v1, geneal, mAnc=3, mDes=3){
   
   gen <- type <- NULL
   vals = list()
@@ -140,9 +140,9 @@ buildAncDesTotalDF = function(v1, tree, mAnc=3, mDes=3){
     # This ldply statement is converting a list to a datatype. It takes the v1 variety and returns the
     # plot coordinates of all its parents and children.
     temp2 = plyr::ldply(vals$gen.vars, function(i){
-      if(i %in% tree$child | i %in% tree$parent){
+      if(i %in% geneal$child | i %in% geneal$parent){
         # This appends the plot coordinates of the data frame constructed for all ancesteors and descendents of the variety
-        temp = cbind(variety=i, buildAncDesCoordDF(rbind(nodeToDF(buildAncList(i, tree)), nodeToDF(buildDesList(i, tree)))))
+        temp = cbind(variety=i, buildAncDesCoordDF(rbind(nodeToDF(buildAncList(i, geneal)), nodeToDF(buildDesList(i, geneal)))))
         # This create an empty data frame in the event that there are no ancestors nor descendents
         temp$label2 = temp$label
       } 
@@ -190,23 +190,23 @@ buildAncDesTotalDF = function(v1, tree, mAnc=3, mDes=3){
 #' This function returns a nested list of the ancestors of the inputted variety.
 #' 
 #' @param v1 the label of the variety/vertex of interest (in character string format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param gen the generation (note: This should be left as default, as any other input will not affect results anyway)
 #' @seealso \code{\link{getParent}} for information on determining parents
 #' @export
 #' @examples
-#' data(sbTree)
-#' getParent("Essex", sbTree)
-#' buildAncList("Essex", sbTree)
-buildAncList = function(v1, tree, gen = 0){
+#' data(sbGeneal)
+#' getParent("Essex", sbGeneal)
+#' buildAncList("Essex", sbGeneal)
+buildAncList = function(v1, geneal, gen = 0){
   if(is.na(v1)) return()
   
-  temp = getParent(v1, tree)
+  temp = getParent(v1, geneal)
   if(length(temp)==0) return()
   
   res = lapply(temp[!is.na(temp)], function(i){
     # print(i)
-    temp2 = buildAncList(i, tree, gen=gen+1)
+    temp2 = buildAncList(i, geneal, gen=gen+1)
     if(length(temp2)<1) return(list(label=i, root=v1, root.gen=gen, gen=gen+1, type="ancestor"))
     return(c(label=i, root=v1, root.gen=gen, gen=gen+1, type="ancestor", temp2))
   })
@@ -223,23 +223,23 @@ buildAncList = function(v1, tree, gen = 0){
 #' This function returns a nested list of the descendants of the inputted variety.
 #' 
 #' @param v1 the label of the variety/vertex of interest (in character string format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param gen the generation (note: This should be left as default, as any other input will not affect results)
 #' @seealso \code{\link{getChild}} for information on determining children
 #' @export
 #' @examples
-#' data(sbTree)
-#' getParent("Essex", sbTree)
-#' buildDesList("Essex", sbTree, 3)
-buildDesList = function(v1, tree, gen=0){
+#' data(sbGeneal)
+#' getParent("Essex", sbGeneal)
+#' buildDesList("Essex", sbGeneal, 3)
+buildDesList = function(v1, geneal, gen=0){
   if(is.na(v1)) return()
   
-  temp = getChild(v1, tree)
+  temp = getChild(v1, geneal)
   if(length(temp)==0) return()
   
   res = lapply(temp[!is.na(temp)], function(i){
     # print(i)
-    temp2 = buildDesList(i, tree, gen=gen+1)
+    temp2 = buildDesList(i, geneal, gen=gen+1)
     if(length(temp2)<1) return(list(label=i, root=v1, root.gen=gen, gen=gen+1, type="descendant"))
     return(c(label=i, root=v1, root.gen=gen, gen=gen+1, type="descendant", temp2))
   })
@@ -251,16 +251,16 @@ buildDesList = function(v1, tree, gen=0){
   } 
 }
 
-#' Build the edges in the tree graph.
+#' Build the edges in the genealogy graph.
 #' 
 #' This function takes the graph object and creates a data frame object of the edges between all parent-child relationships in the graph.
 #' 
-#' @param tree the data tree (in data frame format)
-#' @param ig the graph representation of the data tree (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param binVector the number of bins between 1 and length(binVector) (default is 12). For more information on choosing binVector size, please visit the ggenealogy vignette.
-#' @seealso \code{\link{treeToIG}} for information on producing ig from tree
+#' @seealso \code{\link{dfToIG}} for information on producing ig from the genealogy
 #' @seealso \url{http://www.r-project.org} for iGraph information
-buildEdgeTotalDF = function(tree, ig, binVector=1:12){
+buildEdgeTotalDF = function(geneal, ig, binVector=1:12){
   
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -270,10 +270,10 @@ buildEdgeTotalDF = function(tree, ig, binVector=1:12){
     stop("binVector must contain all numbers 1:length(binVector)")
   }
   
-  tG <- buildSpreadTotalDF(tree, ig, binVector)
+  tG <- buildSpreadTotalDF(geneal, ig, binVector)
   eG <- igraph::get.data.frame(ig, "edges")
   
-  # edgeTotalDF used in function plotPathOnTree()
+  # edgeTotalDF used in function plotPathOnAll()
   numEdges = length(igraph::E(ig))
   x=as.numeric(rep("",numEdges))
   y=as.numeric(rep("",numEdges))
@@ -304,19 +304,19 @@ buildEdgeTotalDF = function(tree, ig, binVector=1:12){
   edgeTotalDF
 }
 
-#' Process the tree graph
+#' Process the genealogy graph
 #' 
 #' This function takes the spreadTotalDF object (from the buildSpreadTotalDF function) and the path object
 #' as inputs. From these objects, it creates a data frame object of the label, x, and y values of all nodes
-#' in the tree. However, the data frame object does not include the labels of the path varieties, as they
+#' in the ful genealogy. However, the data frame object does not include the labels of the path varieties, as they
 #' will be treated differently.
 #' @param path path as returned from getPath() or a vector of two variety names which exist in the ig object
-#' @param tree the data tree (in data frame format)
-#' @param ig the graph representation of the data tree (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param binVector vector of numbers between 1 and length(binVector), each repeated exactly once
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
-buildMinusPathDF = function(path, tree, ig, binVector=1:12){
+buildMinusPathDF = function(path, geneal, ig, binVector=1:12){
   
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -336,7 +336,7 @@ buildMinusPathDF = function(path, tree, ig, binVector=1:12){
     stop("path does not appear to be a result of the getPath() function")
   } 
   
-  tG <- buildSpreadTotalDF(tree, ig, binVector)
+  tG <- buildSpreadTotalDF(geneal, ig, binVector)
   eG <- igraph::get.data.frame(ig, "edges")
   
   label=tG$name
@@ -350,7 +350,7 @@ buildMinusPathDF = function(path, tree, ig, binVector=1:12){
   }
   plotMinusPathDF = data.frame(label,x,y)
   
-  # Return the data frame object of the total tree
+  # Return the data frame object of the full genealogy
   plotMinusPathDF
 }
 
@@ -416,13 +416,13 @@ buildPathDF = function(path){
 #' as inputs. From these objects, it creates a data frame object of the text label positions for the
 #' varieties in the path, as well as the edges only in the varieties in the path.
 #' @param path path as returned from getPath() or a vector of two variety names which exist in ig
-#' @param tree the data tree (in data frame format)
-#' @param ig the graph representation of the data tree (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param binVector vector of numbers between 1 and length(binVector), each repeated exactly once
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
-buildPlotTotalDF = function(path, tree, ig, binVector=1:12){
+buildPlotTotalDF = function(path, geneal, ig, binVector=1:12){
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
   }
@@ -442,7 +442,7 @@ buildPlotTotalDF = function(path, tree, ig, binVector=1:12){
     stop("binVector must contain all numbers 1:length(binVector)")
   }
   
-  tG <- buildSpreadTotalDF(tree, ig, binVector)
+  tG <- buildSpreadTotalDF(geneal, ig, binVector)
   
   label=path$pathVertices
   x=as.numeric(path$yearVertices)
@@ -468,12 +468,12 @@ buildPlotTotalDF = function(path, tree, ig, binVector=1:12){
 #' 
 #' Constructs a data frame object so that varieties are spread such that they do not overlap, even
 #' though the x-axis position will represent years.
-#' @param tree the data tree (in data frame format)
-#' @param ig the graph representation of the data tree (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param binVector vector of numbers between 1 and length(binVector), each repeated exactly once
 #' This vector will determine the order that increasing y index positions are repeatedly assigned to. For instance, if binVector = c(1,4,7,10,2,5,8,11,3,6,9,12), then y-axis position one will be assigned to a variety in the first bin of years, y-axis position two will be assigned to a variety in the fourth bin of years, ...., and y-axis position thirteen will be assigned again to a variety in the first bin of years. This vector can help minimize overlap of the labelling of varieties, without regard to how the layout affects the edges between varieties, as those edges will be colored faintly.
 #' @seealso \url{http://www.r-project.org} for iGraph information
-buildSpreadTotalDF = function(tree, ig, binVector=1:12){
+buildSpreadTotalDF = function(geneal, ig, binVector=1:12){
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object.")
   }
@@ -487,7 +487,7 @@ buildSpreadTotalDF = function(tree, ig, binVector=1:12){
   
   yearVector = c()
   for (i in 1:dim(totalDF)[1]){
-    currYear = getYear(totalDF[i,],tree)
+    currYear = getYear(totalDF[i,],geneal)
     yearVector = c(yearVector, currYear)
   }
   
@@ -514,17 +514,17 @@ buildSpreadTotalDF = function(tree, ig, binVector=1:12){
 #' This function returns a list of the ancestors of the inputted variety within and including a given number of generations
 #' 
 #' @param v1 the label of the variety/vertex of interest (in character string format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param gen the number of generations back to include as ancestors
 #' @export
 #' @examples
-#' data(sbTree)
-#' getParent("Essex", sbTree)
-#' getAncestors("Essex", sbTree, 1)
-#' getAncestors("Essex", sbTree, 5)
-getAncestors = function(v1, tree, gen=3){
+#' data(sbGeneal)
+#' getParent("Essex", sbGeneal)
+#' getAncestors("Essex", sbGeneal, 1)
+#' getAncestors("Essex", sbGeneal, 5)
+getAncestors = function(v1, geneal, gen=3){
   eval({id.offset<<-0}, envir=environment(getAncestors))
-  aDF = buildAncDesCoordDF(nodeToDF(buildAncList(v1, tree)))
+  aDF = buildAncDesCoordDF(nodeToDF(buildAncList(v1, geneal)))
   subDF = aDF[aDF$gen <= gen & aDF$gen != 0,]
   keep = c("label","gen")
   subDF = subDF[keep]
@@ -536,11 +536,11 @@ getAncestors = function(v1, tree, gen=3){
 #' 
 #' Returns basic statistics of the graph object (number of nodes, number of edges, whether or not the
 #' whole graph is connected, number of components, average path length, graph diameter, etc.)
-#' @param ig the graph representation of the data tree (in igraph format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
 #' @examples
 #' 
-#' data(sbTree)
-#' ig = treeToIG(sbTree)
+#' data(sbGeneal)
+#' ig = dfToIG(sbGeneal)
 #' getBasicStatistics(ig)
 #' @export
 getBasicStatistics = function(ig){
@@ -579,17 +579,17 @@ getBasicStatistics = function(ig){
 #' This function returns a list of the descendants of the inputted variety within and including a given number of generations
 #' 
 #' @param v1 the label of the variety/vertex of interest (in character string format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param gen the number of generations back to include as descendants
 #' @export
 #' @examples
-#' data(sbTree)
-#' getChild("Essex",sbTree)
-#' getDescendants("Essex", sbTree, 1)
-#' getDescendants("Essex", sbTree, 3)
-getDescendants = function(v1, tree, gen=3){
+#' data(sbGeneal)
+#' getChild("Essex",sbGeneal)
+#' getDescendants("Essex", sbGeneal, 1)
+#' getDescendants("Essex", sbGeneal, 3)
+getDescendants = function(v1, geneal, gen=3){
   eval({id.offset<<-0}, envir=environment(getDescendants))
-  dDF = buildAncDesCoordDF(nodeToDF(buildDesList(v1, tree)))
+  dDF = buildAncDesCoordDF(nodeToDF(buildDesList(v1, geneal)))
   subDF = dDF[dDF$gen <= gen & dDF$gen != 0,]
   keep = c("label","gen")
   subDF = subDF[keep]
@@ -597,21 +597,21 @@ getDescendants = function(v1, tree, gen=3){
   return(subDF[order(subDF$gen,subDF$label),]) 
 }
 
-#' Returns edges (vertex names and edge weights) for a tree
+#' Returns edges (vertex names and edge weights) for the full genealogy
 #'
-#' Returns a matrix, where each row contains information about an edge (two vertex names and edge weight, if present) of the tree.
+#' Returns a matrix, where each row contains information about an edge (two vertex names and edge weight, if present) of the full genealogy.
 #'   
-#' @param ig the graph representation of the data tree (in igraph format)
-#' @param tree the data tree (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' ig = treeToIG(sbTree)
-#' getEdges(ig, sbTree)
+#' data(sbGeneal)
+#' ig = dfToIG(sbGeneal)
+#' getEdges(ig, sbGeneal)
 #' @export
-getEdges = function(ig, tree){
+getEdges = function(ig, geneal){
   eList = igraph::get.edgelist(ig)
   for (i in 1:dim(eList)[1]){
-    if (!isChild(eList[i,1],eList[i,2], tree)){
+    if (!isChild(eList[i,1],eList[i,2], geneal)){
       p = eList[i,1]
       c = eList[i,2]
       eList[i,1] = c
@@ -627,15 +627,15 @@ getEdges = function(ig, tree){
 #' This function returns zero or more values that indicate the children of the inputted variety.
 #' 
 #' @param v1 the label of the variety/vertex of interest (in character string format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' getChild("Tokyo", sbTree)
-#' getChild("Essex", sbTree)
+#' data(sbGeneal)
+#' getChild("Tokyo", sbGeneal)
+#' getChild("Essex", sbGeneal)
 #' @export
-getChild = function(v1, tree){
+getChild = function(v1, geneal){
   parent <- NULL
-  sort(subset(tree, parent==v1)$child)
+  sort(subset(geneal, parent==v1)$child)
 }
 
 #' Determine the degree between two varieties
@@ -644,36 +644,36 @@ getChild = function(v1, tree){
 #' represents a parent-child relationship
 #' @param v1 the label of the first variety/vertex of interest (in character string format)
 #' @param v2 the label of the second variety/vertex of interest (in character string format)
-#' @param ig the graph representation of the data tree (in igraph format)
-#' @param tree the data tree (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' ig = treeToIG(sbTree)
-#' getDegree("Brim","Bedford",ig,sbTree)
+#' data(sbGeneal)
+#' ig = dfToIG(sbGeneal)
+#' getDegree("Brim","Bedford",ig,sbGeneal)
 #' @export
-getDegree = function(v1, v2, ig, tree){
-  if(is.null(tree)){
-    stop("Please input a tree data frame where the first two columns are nodes at least one other column is labeled `Year`")
+getDegree = function(v1, v2, ig, geneal){
+  if(is.null(geneal)){
+    stop("Please input a genealogy data frame where the first two columns are nodes at least one other column is labeled `Year`")
   }
   if(is.null(ig)){
-    stop("Please input an igraph object formatted by treeToIG()")
+    stop("Please input an igraph object formatted by dfToIG()")
   }
-  path <- getPath(v1=v1, v2=v2, ig=ig, tree = tree, isDirected=F)
+  path <- getPath(v1=v1, v2=v2, ig=ig, geneal = geneal, isDirected=F)
   # The degree between two vertices is equal to one less than the number of nodes in the shortest path
   return(length(path$pathVertices)-1)
 }
 
-#' Returns the nodes for a tree
+#' Returns the nodes for a full genealogy
 #'
-#' Returns a character list, where roww contains names of the unique nodes in a tree.
+#' Returns a character list, where row contains names of the unique nodes in the full genealogy
 #'   
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' getNodes(sbTree)
+#' data(sbGeneal)
+#' getNodes(sbGeneal)
 #' @export
-getNodes = function(tree){
-  nodes = unique(c(tree$child, tree$parent))
+getNodes = function(geneal){
+  nodes = unique(c(geneal$child, geneal$parent))
   nodes = nodes[!is.na(nodes)]
   return(nodes)
 }
@@ -684,15 +684,15 @@ getNodes = function(tree){
 #' This function returns up to two values that indicate the parents of the inputted variety.
 #' 
 #' @param v1 the label of the variety/vertex of interest (in character string format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' getParent("Tokyo", sbTree)
-#' getParent("Essex", sbTree)
+#' data(sbGeneal)
+#' getParent("Tokyo", sbGeneal)
+#' getParent("Essex", sbGeneal)
 #' @export
-getParent = function(v1, tree){
+getParent = function(v1, geneal){
   child <- NULL
-  sort(subset(tree, child==v1)$parent)
+  sort(subset(geneal, child==v1)$parent)
 }
 
 #' Determine the path between two varieties
@@ -704,17 +704,17 @@ getParent = function(v1, tree){
 #' and return the path if it exists.
 #' @param v1 the label of the first variety/vertex of interest (in character string format)
 #' @param v2 the label of the second variety/vertex of interest (in character string format)
-#' @param ig the graph representation of the data tree (in igraph format)
-#' @param tree the data tree (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param silent whether or not to print output (defaults to false) 
 #' @param isDirected whether or not the graph is directed (defaults to false)
 #' @examples
-#' data(sbTree)
-#' ig = treeToIG(sbTree)
-#' getPath("Brim","Bedford",ig,sbTree)
-#' getPath("Tokyo","Volstate",ig,sbTree)
+#' data(sbGeneal)
+#' ig = dfToIG(sbGeneal)
+#' getPath("Brim","Bedford",ig,sbGeneal)
+#' getPath("Tokyo","Volstate",ig,sbGeneal)
 #' @export
-getPath = function(v1, v2, ig, tree, silent=FALSE, isDirected=FALSE){
+getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
   if(!is.character(v1) & !is.character(v2)){
     stop("First two arguments must be strings")
   } else {
@@ -725,11 +725,11 @@ getPath = function(v1, v2, ig, tree, silent=FALSE, isDirected=FALSE){
       warning("v2 is not a graph vertex")
     }
   }
-  if(is.null(tree)){
-    stop("Please input a tree data frame where the first two columns are nodes at least one other column is labeled `Year`")
+  if(is.null(geneal)){
+    stop("Please input a genealogy data frame where the first two columns are nodes at least one other column is labeled `Year`")
   }
   if(is.null(ig)){
-    stop("Please input an igraph object formatted by treeToIG()")
+    stop("Please input an igraph object formatted by dfToIG()")
   }
   
   if(igraph::is.directed(ig) != isDirected){
@@ -742,7 +742,7 @@ getPath = function(v1, v2, ig, tree, silent=FALSE, isDirected=FALSE){
   retPath = list()
   yearVertices = character()
   pathVertices = character()
-  # If the tree is directed
+  # If the genealogy is directed
   if (igraph::is.directed(ig)){
     # We need to look at both forward and reverse cases of directions, because the user may not know
     # the potential direction of a path between the two vertices
@@ -752,7 +752,7 @@ getPath = function(v1, v2, ig, tree, silent=FALSE, isDirected=FALSE){
     if (length(pathVIndicesForward) != 0){
       for (i in 1:length(pathVIndicesForward)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesForward[i]))
-        yearVertices = c(yearVertices, getYear(pathVertices[i], tree))
+        yearVertices = c(yearVertices, getYear(pathVertices[i], geneal))
       }
       retPath = list(pathVertices = pathVertices, yearVertices = yearVertices)
     }
@@ -760,7 +760,7 @@ getPath = function(v1, v2, ig, tree, silent=FALSE, isDirected=FALSE){
     if (length(pathVIndicesReverse) != 0){
       for (i in 1:length(pathVIndicesReverse)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesReverse[i]))
-        yearVertices = c(yearVertices, getYear(pathVertices[i], tree))
+        yearVertices = c(yearVertices, getYear(pathVertices[i], geneal))
       }
       retPath = list(pathVertices = pathVertices, yearVertices = yearVertices)
     }
@@ -770,7 +770,7 @@ getPath = function(v1, v2, ig, tree, silent=FALSE, isDirected=FALSE){
     if (length(pathVIndices) != 0){
       for (i in 1:length(pathVIndices)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndices[i]))
-        yearVertices = c(yearVertices, getYear(pathVertices[i], tree))
+        yearVertices = c(yearVertices, getYear(pathVertices[i], geneal))
       }
       retPath = list(pathVertices = pathVertices, yearVertices = yearVertices)
     }
@@ -786,14 +786,14 @@ getPath = function(v1, v2, ig, tree, silent=FALSE, isDirected=FALSE){
 #' 
 #' Returns the documented year of the inputted variety
 #' @param v1 the label of the variety/vertex of interest (in character string format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' getYear("Essex",sbTree)
-#' getYear("Tokyo",sbTree)
+#' data(sbGeneal)
+#' getYear("Essex",sbGeneal)
+#' getYear("Tokyo",sbGeneal)
 #' @export
-getYear = function(v1, tree){
-  return(tree[which(tree[,1] == v1),]$year[1])
+getYear = function(v1, geneal){
+  return(geneal[which(geneal[,1] == v1),]$year[1])
 }
 
 #' Determine if a variety is a child of another
@@ -801,17 +801,17 @@ getYear = function(v1, tree){
 #' Returns a boolean variable for whether the first variety is a child of the second variety
 #' @param child possible child variety
 #' @param parent possible parent variety
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' isChild("Essex","Young",sbTree)
-#' isChild("Young","Essex",sbTree)
+#' data(sbGeneal)
+#' isChild("Essex","Young",sbGeneal)
+#' isChild("Young","Essex",sbGeneal)
 #' @export
-isChild = function(child, parent, tree){
-  for (i in 1:length(which(tree$parent==parent))){
-    # Only consider if the parent is indicated in the tree
-    if (sum(which(tree$parent==parent))!=0){
-      if (tree[which(tree$parent==parent),]$child[i] == child){
+isChild = function(child, parent, geneal){
+  for (i in 1:length(which(geneal$parent==parent))){
+    # Only consider if the parent is indicated in the genealogy
+    if (sum(which(geneal$parent==parent))!=0){
+      if (geneal[which(geneal$parent==parent),]$child[i] == child){
         return (TRUE)
       }      
     }
@@ -824,26 +824,26 @@ isChild = function(child, parent, tree){
 #' Returns a boolean variable for whether the second variety is a parent of the first variety
 #' @param child possible child variety
 #' @param parent possible parent variety
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @examples
-#' data(sbTree)
-#' isParent("Essex","Young",sbTree)
-#' isParent("Young","Essex",sbTree)
+#' data(sbGeneal)
+#' isParent("Essex","Young",sbGeneal)
+#' isParent("Young","Essex",sbGeneal)
 #' @export
-isParent = function(child, parent, tree){
-  return (tree[which(tree$child==child),]$parent[1] == parent
-          || tree[which(tree$child==child),]$parent[2] == parent)
+isParent = function(child, parent, geneal){
+  return (geneal[which(geneal$child==child),]$parent[1] == parent
+          || geneal[which(geneal$child==child),]$parent[2] == parent)
 }
 
 #' Returns the data frame representation of all ancestors and descendants of a variety
 #'
-#' Converts the list-style-tree to a data frame, where each variety has an id value
+#' Converts the list-style-genealogy to a data frame, where each variety has an id value
 #' and references its' parent's id value. ID value ranges correspond to generation.
-#' It is possible that with more complex trees the range of id values may need to
+#' It is possible that with more complex genealogical structures the range of id values may need to
 #' expand to reduce the probability of two varieties being assigned the same id value.
 #'
 #' @param tlist list of varieties
-#' @param branch of particular variety in tree
+#' @param branch of particular variety in the genealogy
 #' @param par.id the id of the parent
 #' @param id id offset
 nodeToDF = local({
@@ -888,18 +888,18 @@ nodeToDF = local({
 #' @param v1 the label of the variety/vertex of interest (in character string format)
 #' @param mAnc the maximum number of generations of ancestors of v1 to be displayed (in numeric format)
 #' @param mDes the maximum number of generations of descendants of v1 to be displayed (in numeric format)
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param vColor the color of the text of the main variety
 #' 
 #' @export
 #' @examples
-#' data(sbTree)
-#' plotAncDes("Essex", sbTree, 2, 3, "blue") + ggplot2::labs(x="Generation index",y="")
-#' plotAncDes("Tokyo", sbTree, vColor="red")
-plotAncDes = function(v1, tree, mAnc=3, mDes=3, vColor="#D35C79"){
+#' data(sbGeneal)
+#' plotAncDes("Essex", sbGeneal, 2, 3, "blue") + ggplot2::labs(x="Generation index",y="")
+#' plotAncDes("Tokyo", sbGeneal, vColor="red")
+plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
   color <- x <- y <- label2 <- size <- xstart <- ystart <- xend <- yend <- branchx <- branchy <- NULL
   # Plot the data frame, if it exists
-  gDF = buildAncDesTotalDF(v1, tree, mAnc, mDes)
+  gDF = buildAncDesTotalDF(v1, geneal, mAnc, mDes)
   gDF[gDF$root.gen==0&gDF$gen==0,]$color = vColor
   if(nrow(gDF)>0){
     plotGenImage = ggplot2::qplot(data=gDF, x=x, y=y, label=label2, geom="text", vjust=-.25, hjust=.5, 
@@ -933,27 +933,27 @@ plotAncDes = function(v1, tree, mAnc=3, mDes=3, vColor="#D35C79"){
 #' Returns the image object to show the heat map of degrees between the inputted set of vertices
 #' 
 #' @param varieties subset of varieties used to generate the heat map
-#' @param ig the graph representation of the data tree (in igraph format)
-#' @param tree the data tree (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param xLab string label on the x axis (default is "Variety")
 #' @param yLab string label on the y axis (default is "Variety")
 #' @param legendLab string label on the legend (default is "Degree")
 #' 
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @examples
-#' data(sbTree)
-#' ig = treeToIG(sbTree)
+#' data(sbGeneal)
+#' ig = dfToIG(sbGeneal)
 #' varieties=c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-#' p = plotDegMatrix(varieties, ig, sbTree, "Soybean label", "Soybean label", "Degree")
+#' p = plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
 #' p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
 #' 
 #' @export
-plotDegMatrix = function(varieties,ig,tree,xLab="Variety",yLab="Variety",legendLab="Degree"){
+plotDegMatrix = function(varieties,ig,geneal,xLab="Variety",yLab="Variety",legendLab="Degree"){
   Var1 <- Var2 <- value <- NULL
   matVar = matrix(, nrow = length(varieties), ncol = length(varieties))
   for (i in 1:length(varieties)){
     for (j in 1:length(varieties)){
-      matVar[i,j]=getDegree(varieties[i],varieties[j],ig,tree)
+      matVar[i,j]=getDegree(varieties[i],varieties[j],ig,geneal)
     }
   }
   
@@ -979,9 +979,9 @@ plotDegMatrix = function(varieties,ig,tree,xLab="Variety",yLab="Variety",legendL
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
 #' @examples
-#' data(sbTree)
-#' ig <- treeToIG(sbTree)
-#' p <- getPath("Brim","Bedford",ig,sbTree)
+#' data(sbGeneal)
+#' ig <- dfToIG(sbGeneal)
+#' p <- getPath("Brim","Bedford",ig,sbGeneal)
 #' plotPath(p)
 plotPath = function(path){
   x <- y <- label <- xstart <- ystart <- xend <- yend <- NULL
@@ -1026,9 +1026,9 @@ plotPath = function(path){
   plotPathImage
 }
 
-#' Build the image object of the whole tree with the path superimposed onto it
+#' Plot a path between two vertices over the full genealogy
 #' 
-#' This function requires a path and the ig object, and plots the entire tree 
+#' This function requires a path and the ig object, and plots the full genealogy 
 #' with the path highlighted.
 #' The image will correctly position the node labels with x-axis representing the node
 #' year, and y-axis representing the node path index. Light grey edges between two nodes
@@ -1037,20 +1037,20 @@ plotPath = function(path){
 #' nodes within the path are labelled in boldface, and connected with light-green
 #' boldfaced edges.
 #' @param path path as returned from getPath() or a vector of two variety names which exist in ig
-#' @param tree the data tree (in data frame format)
-#' @param ig the graph representation of the data tree (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param binVector vector of numbers between 1 and length(binVector), each repeated exactly once
 #' @examples
-#' data(sbTree)
-#' ig = treeToIG(sbTree)
-#' path = getPath("Brim","Bedford",ig,sbTree)
+#' data(sbGeneal)
+#' ig = dfToIG(sbGeneal)
+#' path = getPath("Brim","Bedford",ig,sbGeneal)
 #' binVector=sample(1:12, 12)
-#' plotTotalImage <- plotPathOnTree(path=path, tree=sbTree, ig=ig, binVector=sample(1:12, 12))
+#' plotTotalImage <- plotPathOnAll(path=path, geneal=sbGeneal, ig=ig, binVector=sample(1:12, 12))
 #' plotTotalImage
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
-plotPathOnTree = function(path, tree, ig, binVector=sample(1:12, 12)){
+plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12)){
   x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -1066,9 +1066,9 @@ plotPathOnTree = function(path, tree, ig, binVector=sample(1:12, 12)){
     stop("path does not appear to be a result of the getPath() function")
   } 
   
-  pMPDF <- buildMinusPathDF(path, tree, ig, binVector)
-  eTDF <- buildEdgeTotalDF(tree, ig, binVector)
-  pTDF <- buildPlotTotalDF(path, tree, ig, binVector)
+  pMPDF <- buildMinusPathDF(path, geneal, ig, binVector)
+  eTDF <- buildEdgeTotalDF(geneal, ig, binVector)
+  pTDF <- buildPlotTotalDF(path, geneal, ig, binVector)
   
   textFrame = data.frame(x = pMPDF$x, y = pMPDF$y, label = pMPDF$label)
   textFrame = transform(textFrame,
@@ -1101,23 +1101,23 @@ plotPathOnTree = function(path, tree, ig, binVector=sample(1:12, 12)){
 #' Returns the image object to show the heat map of years between the inputted set of vertices
 #' 
 #' @param varieties subset of varieties used to generate the heat map
-#' @param tree the data tree (in data frame format)
+#' @param geneal the full genealogy  (in data frame format)
 #' @param xLab string label on the x axis (default is "Variety")
 #' @param yLab string label on the y axis (default is "Variety")
 #' @param legendLab string label on the legend (default is "Degree")
 #' @examples
-#' data(sbTree)
+#' data(sbGeneal)
 #' varieties=c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-#' p = plotYearMatrix(varieties,sbTree,"Variety", "Variety", "Degree")
+#' p = plotYearMatrix(varieties,sbGeneal,"Variety", "Variety", "Degree")
 #' p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
 #' 
 #' @export
-plotYearMatrix = function(varieties, tree, xLab = "Variety", yLab = "Variety", legendLab = "Difference in years"){
+plotYearMatrix = function(varieties, geneal, xLab = "Variety", yLab = "Variety", legendLab = "Difference in years"){
   Var1 <- Var2 <- value <- NULL
   matVar = matrix(, nrow = length(varieties), ncol = length(varieties))
   for (i in 1:length(varieties)){
     for (j in 1:length(varieties)){
-      matVar[i,j]=abs(getYear(varieties[i],tree)-getYear(varieties[j],tree))
+      matVar[i,j]=abs(getYear(varieties[i],geneal)-getYear(varieties[j],geneal))
     }
   }
   
@@ -1133,34 +1133,34 @@ plotYearMatrix = function(varieties, tree, xLab = "Variety", yLab = "Variety", l
   heatMap
 }
 
-#' Process the tree graph
+#' Process the genealogy graph
 #' 
-#' Processes the tree into an igraph object with appropriate vertex information, graph type, and edge weights.
+#' Processes the genealogy into an igraph object with appropriate vertex information, graph type, and edge weights.
 #' 
-#' @param tree the data tree (in data frame format)
-#' @param vertexinfo (default NULL) either names of columns in the tree which should be added to the database as vertex information or a data frame with information for all vertices such that the first column contains vertex names.
+#' @param geneal the full genealogy  (in data frame format)
+#' @param vertexinfo (default NULL) either names of columns in the genealogy which should be added to the database as vertex information or a data frame with information for all vertices such that the first column contains vertex names.
 #' @param edgeweights (default 1) name of a column which contains edge weights
 #' @param isDirected (default FALSE) should the graph be a directed graph?
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @export
-treeToIG = function(tree, vertexinfo = NULL, edgeweights = 1, isDirected=FALSE){
+dfToIG = function(geneal, vertexinfo = NULL, edgeweights = 1, isDirected=FALSE){
   parent <- child <- NULL
-  if(!is.data.frame(tree)){
-    stop("The tree must be of type data frame")
+  if(!is.data.frame(geneal)){
+    stop("The input must be of type data frame")
   }
   
-  if(!("parent"%in%names(tree) & "child"%in%names(tree))){
-    stop("The tree must contain columns named 'parent' and 'child'")
+  if(!("parent"%in%names(geneal) & "child"%in%names(geneal))){
+    stop("The geneal must contain columns named 'parent' and 'child'")
   }
   
   if(is.null(vertexinfo)){
-    nodes <- unique(c(tree$child, tree$parent))
+    nodes <- unique(c(geneal$child, geneal$parent))
     nodes <- nodes[!is.na(nodes)]
   } else if(is.character(vertexinfo)){
-    nodes <- tree[,c("child", vertexinfo)]
+    nodes <- geneal[,c("child", vertexinfo)]
     # add in any parents who are not in the list of children, sans any vertex information
-    if(sum(!tree$parent%in%tree$child & !is.na(tree$parent))>0){
-      absentparents <- unique(tree$parent[!tree$parent%in%tree$child & !is.na(tree$parent)])
+    if(sum(!geneal$parent%in%geneal$child & !is.na(geneal$parent))>0){
+      absentparents <- unique(geneal$parent[!geneal$parent%in%geneal$child & !is.na(geneal$parent)])
       nodes <- plyr::rbind.fill(nodes, data.frame(child=absentparents, stringsAsFactors = FALSE))
     }
     nodes <- unique(nodes)
@@ -1170,7 +1170,7 @@ treeToIG = function(tree, vertexinfo = NULL, edgeweights = 1, isDirected=FALSE){
     stop("vertexinfo should be either NULL, a character vector, or a data frame")
   }
   
-  edges <- subset(tree, !is.na(parent) & !is.na(child))[,c("child", "parent")]
+  edges <- subset(geneal, !is.na(parent) & !is.na(child))[,c("child", "parent")]
   edges$weight <- edgeweights
   
   igraph::graph.data.frame(d=edges, directed=isDirected, vertices=nodes)

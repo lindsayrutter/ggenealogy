@@ -4,7 +4,7 @@
 \alias{getPath}
 \title{Determine the path between two varieties}
 \usage{
-getPath(v1, v2, ig, tree, silent = FALSE, isDirected = FALSE)
+getPath(v1, v2, ig, geneal, silent = FALSE, isDirected = FALSE)
 }
 \arguments{
   \item{v1}{the label of the first variety/vertex of
@@ -13,10 +13,10 @@ getPath(v1, v2, ig, tree, silent = FALSE, isDirected = FALSE)
   \item{v2}{the label of the second variety/vertex of
   interest (in character string format)}
 
-  \item{ig}{the graph representation of the data tree (in
-  igraph format)}
+  \item{ig}{the graph representation of the data genealogy
+  (in igraph format)}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 
   \item{silent}{whether or not to print output (defaults to
   false)}
@@ -34,9 +34,9 @@ graph, the direction matters. However, this function will
 check both directions and return the path if it exists.
 }
 \examples{
-data(sbTree)
-ig = treeToIG(sbTree)
-getPath("Brim","Bedford",ig,sbTree)
-getPath("Tokyo","Volstate",ig,sbTree)
+data(sbGeneal)
+ig = dfToIG(sbGeneal)
+getPath("Brim","Bedford",ig,sbGeneal)
+getPath("Tokyo","Volstate",ig,sbGeneal)
 }
 

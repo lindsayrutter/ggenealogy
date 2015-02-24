@@ -2,24 +2,24 @@
 % Please edit documentation in R/allFunctions.R
 \name{getEdges}
 \alias{getEdges}
-\title{Returns edges (vertex names and edge weights) for a tree}
+\title{Returns edges (vertex names and edge weights) for the full genealogy}
 \usage{
-getEdges(ig, tree)
+getEdges(ig, geneal)
 }
 \arguments{
-  \item{ig}{the graph representation of the data tree (in
-  igraph format)}
+  \item{ig}{the graph representation of the data genealogy
+  (in igraph format)}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 }
 \description{
 Returns a matrix, where each row contains information about
 an edge (two vertex names and edge weight, if present) of
-the tree.
+the full genealogy.
 }
 \examples{
-data(sbTree)
-ig = treeToIG(sbTree)
-getEdges(ig, sbTree)
+data(sbGeneal)
+ig = dfToIG(sbGeneal)
+getEdges(ig, sbGeneal)
 }
 

@@ -12,7 +12,7 @@ buildAncDesCoordDF(df)
 }
 \description{
 Calculates coordinates to plot each ancestors and
-descendant of a variety on a tree. The x and y values
+descendant of a variety in a lineage. The x and y values
 describe the coordinates of the label, while the xstart,
 ystart, xend, and yend values describe the edges of the
 label.

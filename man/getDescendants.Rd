@@ -4,13 +4,13 @@
 \alias{getDescendants}
 \title{Returns a list of the descendants of a particular variety (if they exist)}
 \usage{
-getDescendants(v1, tree, gen = 3)
+getDescendants(v1, geneal, gen = 3)
 }
 \arguments{
   \item{v1}{the label of the variety/vertex of interest (in
   character string format)}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 
   \item{gen}{the number of generations back to include as
   descendants}
@@ -21,9 +21,9 @@ inputted variety within and including a given number of
 generations
 }
 \examples{
-data(sbTree)
-getChild("Essex",sbTree)
-getDescendants("Essex", sbTree, 1)
-getDescendants("Essex", sbTree, 3)
+data(sbGeneal)
+getChild("Essex",sbGeneal)
+getDescendants("Essex", sbGeneal, 1)
+getDescendants("Essex", sbGeneal, 3)
 }
 

@@ -4,13 +4,13 @@
 \alias{plotAncDes}
 \title{Returns the image object to show the ancestors and descendants of a variety}
 \usage{
-plotAncDes(v1, tree, mAnc = 3, mDes = 3, vColor = "#D35C79")
+plotAncDes(v1, geneal, mAnc = 3, mDes = 3, vColor = "#D35C79")
 }
 \arguments{
   \item{v1}{the label of the variety/vertex of interest (in
   character string format)}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 
   \item{mAnc}{the maximum number of generations of
   ancestors of v1 to be displayed (in numeric format)}
@@ -26,8 +26,8 @@ descendants of a variety, with the variety highlighted, if
 desired
 }
 \examples{
-data(sbTree)
-plotAncDes("Essex", sbTree, 2, 3, "blue") + ggplot2::labs(x="Generation index",y="")
-plotAncDes("Tokyo", sbTree, vColor="red")
+data(sbGeneal)
+plotAncDes("Essex", sbGeneal, 2, 3, "blue") + ggplot2::labs(x="Generation index",y="")
+plotAncDes("Tokyo", sbGeneal, vColor="red")
 }
 

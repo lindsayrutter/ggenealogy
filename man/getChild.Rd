@@ -4,21 +4,21 @@
 \alias{getChild}
 \title{Returns the children of a particular variety (if they exist)}
 \usage{
-getChild(v1, tree)
+getChild(v1, geneal)
 }
 \arguments{
   \item{v1}{the label of the variety/vertex of interest (in
   character string format)}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 }
 \description{
 This function returns zero or more values that indicate the
 children of the inputted variety.
 }
 \examples{
-data(sbTree)
-getChild("Tokyo", sbTree)
-getChild("Essex", sbTree)
+data(sbGeneal)
+getChild("Tokyo", sbGeneal)
+getChild("Essex", sbGeneal)
 }
 

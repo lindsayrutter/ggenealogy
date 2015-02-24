@@ -4,13 +4,13 @@
 \alias{buildDesList}
 \title{Returns the descendants of a particular variety (if they exist).}
 \usage{
-buildDesList(v1, tree, gen = 0)
+buildDesList(v1, geneal, gen = 0)
 }
 \arguments{
   \item{v1}{the label of the variety/vertex of interest (in
   character string format)}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 
   \item{gen}{the generation (note: This should be left as
   default, as any other input will not affect results)}
@@ -20,9 +20,9 @@ This function returns a nested list of the descendants of
 the inputted variety.
 }
 \examples{
-data(sbTree)
-getParent("Essex", sbTree)
-buildDesList("Essex", sbTree, 3)
+data(sbGeneal)
+getParent("Essex", sbGeneal)
+buildDesList("Essex", sbGeneal, 3)
 }
 \seealso{
 \code{\link{getChild}} for information on determining

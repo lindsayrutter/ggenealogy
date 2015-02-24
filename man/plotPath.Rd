@@ -20,9 +20,9 @@ node label, as well as an underline and overline for each
 label.
 }
 \examples{
-data(sbTree)
-ig <- treeToIG(sbTree)
-p <- getPath("Brim","Bedford",ig,sbTree)
+data(sbGeneal)
+ig <- dfToIG(sbGeneal)
+p <- getPath("Brim","Bedford",ig,sbGeneal)
 plotPath(p)
 }
 \seealso{

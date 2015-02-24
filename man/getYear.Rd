@@ -4,20 +4,20 @@
 \alias{getYear}
 \title{Determine the year of a variety}
 \usage{
-getYear(v1, tree)
+getYear(v1, geneal)
 }
 \arguments{
   \item{v1}{the label of the variety/vertex of interest (in
   character string format)}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 }
 \description{
 Returns the documented year of the inputted variety
 }
 \examples{
-data(sbTree)
-getYear("Essex",sbTree)
-getYear("Tokyo",sbTree)
+data(sbGeneal)
+getYear("Essex",sbGeneal)
+getYear("Tokyo",sbGeneal)
 }
 

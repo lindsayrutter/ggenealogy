@@ -2,19 +2,19 @@
 % Please edit documentation in R/allFunctions.R
 \name{getNodes}
 \alias{getNodes}
-\title{Returns the nodes for a tree}
+\title{Returns the nodes for a full genealogy}
 \usage{
-getNodes(tree)
+getNodes(geneal)
 }
 \arguments{
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 }
 \description{
-Returns a character list, where roww contains names of the
-unique nodes in a tree.
+Returns a character list, where row contains names of the
+unique nodes in the full genealogy
 }
 \examples{
-data(sbTree)
-getNodes(sbTree)
+data(sbGeneal)
+getNodes(sbGeneal)
 }
 

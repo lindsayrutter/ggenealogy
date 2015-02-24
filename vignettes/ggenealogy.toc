@@ -1,0 +1,14 @@
+\contentsline {section}{Summary}{2}{section*.2}
+\contentsline {section}{Introduction}{2}{section*.3}
+\contentsline {subsection}{Installation}{2}{section*.4}
+\contentsline {subsection}{Preprocessing Pipeline}{2}{section*.5}
+\contentsline {section}{General (non-plotting) methods}{4}{section*.6}
+\contentsline {subsection}{Functions for Individual Vertices}{4}{section*.7}
+\contentsline {subsection}{Functions for Pairs of Vertices}{8}{section*.8}
+\contentsline {subsection}{Functions for the Whole Tree}{8}{section*.9}
+\contentsline {section}{Visualizing the full genealogical structure}{9}{section*.10}
+\contentsline {subsection}{Plotting the ancestors and descendants of a vertex}{10}{section*.11}
+\contentsline {subsection}{Plotting the path between two vertices}{13}{section*.14}
+\contentsline {subsection}{Plotting the pathway between two vertices superimposed on full genealogical structure}{14}{section*.18}
+\contentsline {subsection}{Plotting pairwise distance matrices between a set of vertices}{19}{section*.21}
+\contentsline {section}{Conclusions}{21}{section*.24}

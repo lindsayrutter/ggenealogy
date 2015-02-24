@@ -4,22 +4,22 @@
 \alias{isParent}
 \title{Determine if a variety is a parent of another}
 \usage{
-isParent(child, parent, tree)
+isParent(child, parent, geneal)
 }
 \arguments{
   \item{child}{possible child variety}
 
   \item{parent}{possible parent variety}
 
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 }
 \description{
 Returns a boolean variable for whether the second variety
 is a parent of the first variety
 }
 \examples{
-data(sbTree)
-isParent("Essex","Young",sbTree)
-isParent("Young","Essex",sbTree)
+data(sbGeneal)
+isParent("Essex","Young",sbGeneal)
+isParent("Young","Essex",sbGeneal)
 }
 

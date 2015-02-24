@@ -2,15 +2,15 @@
 % Please edit documentation in R/allFunctions.R
 \name{buildEdgeTotalDF}
 \alias{buildEdgeTotalDF}
-\title{Build the edges in the tree graph.}
+\title{Build the edges in the genealogy graph.}
 \usage{
-buildEdgeTotalDF(tree, ig, binVector = 1:12)
+buildEdgeTotalDF(geneal, ig, binVector = 1:12)
 }
 \arguments{
-  \item{tree}{the data tree (in data frame format)}
+  \item{geneal}{the full genealogy (in data frame format)}
 
-  \item{ig}{the graph representation of the data tree (in
-  igraph format)}
+  \item{ig}{the graph representation of the data genealogy
+  (in igraph format)}
 
   \item{binVector}{the number of bins between 1 and
   length(binVector) (default is 12). For more information
@@ -23,8 +23,8 @@ frame object of the edges between all parent-child
 relationships in the graph.
 }
 \seealso{
-\code{\link{treeToIG}} for information on producing ig from
-tree
+\code{\link{dfToIG}} for information on producing ig from
+the genealogy
 
 \url{http://www.r-project.org} for iGraph information
 }
