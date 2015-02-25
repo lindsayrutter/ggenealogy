@@ -10,7 +10,7 @@ getNodes(geneal)
   \item{geneal}{the full genealogy (in data frame format)}
 }
 \description{
-Returns a character list, where row contains names of the
+Returns a character list, where rows contains names of the
 unique nodes in the full genealogy
 }
 \examples{

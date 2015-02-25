@@ -1,97 +1,88 @@
 ### R code from vignette source 'ggenealogy.Rnw'
 
 ###################################################
-### code chunk number 1: ggenealogy.Rnw:55-56
+### code chunk number 1: ggenealogy.Rnw:52-53
 ###################################################
 rm(list=ls())
 
 
 ###################################################
-### code chunk number 2: ggenealogy.Rnw:91-92
+### code chunk number 2: ggenealogy.Rnw:74-75 (eval = FALSE)
+###################################################
+## install.packages("ggenealogy")
+
+
+###################################################
+### code chunk number 3: ggenealogy.Rnw:81-82
 ###################################################
 library(ggenealogy)
 
 
 ###################################################
-### code chunk number 3: ggenealogy.Rnw:97-99 (eval = FALSE)
+### code chunk number 4: ggenealogy.Rnw:87-88 (eval = FALSE)
 ###################################################
 ## help(package="ggenealogy")
-## help(ggenealogy)
 
 
 ###################################################
-### code chunk number 4: ggenealogy.Rnw:108-109 (eval = FALSE)
+### code chunk number 5: ggenealogy.Rnw:93-94 (eval = FALSE)
 ###################################################
-## example(ggenealogy)
+## help(getChild)
 
 
 ###################################################
-### code chunk number 5: ggenealogy.Rnw:116-119
+### code chunk number 6: ggenealogy.Rnw:99-102 (eval = FALSE)
+###################################################
+## data(sbGeneal)
+## getChild("Tokyo", sbGeneal)
+## getChild("Essex", sbGeneal)
+
+
+###################################################
+### code chunk number 7: ggenealogy.Rnw:109-113
 ###################################################
 data(sbGeneal)
 head(sbGeneal)
-class(sbGeneal)
+dim(sbGeneal)
+str(sbGeneal)
 
 
 ###################################################
-### code chunk number 6: ggenealogy.Rnw:126-127
+### code chunk number 8: ggenealogy.Rnw:120-121
 ###################################################
 help(dfToIG)
 
 
 ###################################################
-### code chunk number 7: ggenealogy.Rnw:134-136
+### code chunk number 9: ggenealogy.Rnw:128-130
 ###################################################
 ig <- dfToIG(sbGeneal)
 class(ig)
 
 
 ###################################################
-### code chunk number 8: ggenealogy.Rnw:143-144
-###################################################
-ig <- dfToIG(sbGeneal, vertexinfo=c("year", "yield", "year.imputed"))
-
-
-###################################################
-### code chunk number 9: ggenealogy.Rnw:149-161
-###################################################
-library(plyr)
-nodes <- unique(sbGeneal[,1:4])
-
-# get a data frame of all parents whose parents are not known (i.e. parents who are not listed as children as well)
-extra.nodes <- unique(data.frame(child=sbGeneal$parent[!sbGeneal$parent%in%sbGeneal$child & !is.na(sbGeneal$parent)], stringsAsFactors=FALSE))
-
-# We may not have information for these extra nodes, but they still need to be included in the dataset
-nodes <- rbind.fill(nodes, extra.nodes)
-rm(extra.nodes)
-
-# We can now specify our vertex information using the data frame nodes: 
-ig <- dfToIG(sbGeneal, vertexinfo=nodes)
-
-
-###################################################
-### code chunk number 10: ggenealogy.Rnw:176-178
+### code chunk number 10: ggenealogy.Rnw:143-145
 ###################################################
 isParent("Young","Essex",sbGeneal)
 isParent("Essex","Young",sbGeneal)
 
 
 ###################################################
-### code chunk number 11: ggenealogy.Rnw:185-187
+### code chunk number 11: ggenealogy.Rnw:150-152
 ###################################################
 isChild("Young","Essex",sbGeneal)
 isChild("Essex","Young",sbGeneal)
 
 
 ###################################################
-### code chunk number 12: ggenealogy.Rnw:194-196
+### code chunk number 12: ggenealogy.Rnw:157-159
 ###################################################
 getYear("Young",sbGeneal)
 getYear("Essex",sbGeneal)
 
 
 ###################################################
-### code chunk number 13: ggenealogy.Rnw:203-206
+### code chunk number 13: ggenealogy.Rnw:164-167
 ###################################################
 getParent("Young",sbGeneal)
 getParent("Tokyo",sbGeneal)
@@ -99,60 +90,60 @@ getYear("Tokyo", sbGeneal)
 
 
 ###################################################
-### code chunk number 14: ggenealogy.Rnw:213-215
+### code chunk number 14: ggenealogy.Rnw:172-174
 ###################################################
 getChild("Tokyo",sbGeneal)
 getChild("Ogden",sbGeneal)
 
 
 ###################################################
-### code chunk number 15: ggenealogy.Rnw:224-225
+### code chunk number 15: ggenealogy.Rnw:183-184
 ###################################################
 getAncestors("Young",sbGeneal,1)
 
 
 ###################################################
-### code chunk number 16: ggenealogy.Rnw:232-234
+### code chunk number 16: ggenealogy.Rnw:189-191
 ###################################################
 getAncestors("Young",sbGeneal,5)
-dim(getAncestors("Young",sbGeneal,5))
+nrow(getAncestors("Young",sbGeneal,5))
 
 
 ###################################################
-### code chunk number 17: ggenealogy.Rnw:241-242
+### code chunk number 17: ggenealogy.Rnw:198-199
 ###################################################
 getDescendants("Ogden",sbGeneal,1)
 
 
 ###################################################
-### code chunk number 18: ggenealogy.Rnw:249-250
+### code chunk number 18: ggenealogy.Rnw:204-205
 ###################################################
 getDescendants("Ogden",sbGeneal,2)
 
 
 ###################################################
-### code chunk number 19: ggenealogy.Rnw:259-261
+### code chunk number 19: ggenealogy.Rnw:214-216
 ###################################################
 getDegree("Tokyo", "Ogden", ig, sbGeneal)
 getDegree("Tokyo", "Holladay", ig, sbGeneal)
 
 
 ###################################################
-### code chunk number 20: ggenealogy.Rnw:272-273
+### code chunk number 20: ggenealogy.Rnw:227-228
 ###################################################
 getBasicStatistics(ig)
 
 
 ###################################################
-### code chunk number 21: ggenealogy.Rnw:280-283
+### code chunk number 21: ggenealogy.Rnw:235-238
 ###################################################
 eList = getEdges(ig, sbGeneal)
 head(eList)
-dim(eList)
+nrow(eList)
 
 
 ###################################################
-### code chunk number 22: ggenealogy.Rnw:288-291
+### code chunk number 22: ggenealogy.Rnw:243-246
 ###################################################
 nList = getNodes(sbGeneal)
 head(nList)
@@ -162,13 +153,13 @@ length(nList)
 ###################################################
 ### code chunk number 23: plotAncDes1
 ###################################################
-plotAncDes("Lee", sbGeneal, 3, 5)
+plotAncDes("Lee", sbGeneal,5,4)
 
 
 ###################################################
 ### code chunk number 24: plotAncDes1
 ###################################################
-plotAncDes("Lee", sbGeneal, 3, 5)
+plotAncDes("Lee", sbGeneal,5,4)
 
 
 ###################################################
@@ -184,99 +175,100 @@ plotAncDes("Tokyo", sbGeneal, vColor = "blue") + ggplot2::labs(x="Generation ind
 
 
 ###################################################
-### code chunk number 27: ggenealogy.Rnw:354-355
+### code chunk number 27: ggenealogy.Rnw:309-310
 ###################################################
 getPath("Brim","Bedford", ig, sbGeneal, isDirected=FALSE)
 
 
 ###################################################
-### code chunk number 28: ggenealogy.Rnw:362-364
+### code chunk number 28: ggenealogy.Rnw:315-317
 ###################################################
-dirIG = dfToIG(sbGeneal, vertexinfo=nodes, isDirected = TRUE)
+dirIG = dfToIG(sbGeneal, isDirected = TRUE)
 getPath("Brim", "Bedford", dirIG, sbGeneal, isDirected = TRUE)
 
 
 ###################################################
-### code chunk number 29: ggenealogy.Rnw:369-370
+### code chunk number 29: ggenealogy.Rnw:322-323
 ###################################################
 getPath("Bedford", "Brim", dirIG, sbGeneal, isDirected=TRUE)
 
 
 ###################################################
-### code chunk number 30: ggenealogy.Rnw:377-378
+### code chunk number 30: ggenealogy.Rnw:330-331
 ###################################################
-path = getPath("Bedford","Brim", ig, sbGeneal, isDirected=FALSE)
+pathBB = getPath("Bedford","Brim", ig, sbGeneal, isDirected=FALSE)
 
 
 ###################################################
 ### code chunk number 31: plotPath1
 ###################################################
-plotPath(path)
+plotPath(pathBB)
 
 
 ###################################################
 ### code chunk number 32: plotPath1
 ###################################################
-plotPath(path)
+plotPath(pathBB)
 
 
 ###################################################
 ### code chunk number 33: plotPath2
 ###################################################
-path = getPath("Narow", "Tokyo", ig, sbGeneal, isDirected=FALSE)
-plotPath(path)
+pathNT = getPath("Narow", "Tokyo", ig, sbGeneal, isDirected=FALSE)
+plotPath(pathNT)
 
 
 ###################################################
 ### code chunk number 34: plotPath2
 ###################################################
-path = getPath("Narow", "Tokyo", ig, sbGeneal, isDirected=FALSE)
-plotPath(path)
+pathNT = getPath("Narow", "Tokyo", ig, sbGeneal, isDirected=FALSE)
+plotPath(pathNT)
 
 
 ###################################################
-### code chunk number 35: ggenealogy.Rnw:422-424
+### code chunk number 35: ggenealogy.Rnw:377-379 (eval = FALSE)
 ###################################################
-path = getPath("Narow", "Tokyo", dirIG, sbGeneal, isDirected=TRUE)
-plotPath(path)
+## pathNT = getPath("Narow", "Tokyo", dirIG, sbGeneal, isDirected=TRUE)
+## plotPath(pathNT)
 
 
 ###################################################
-### code chunk number 36: plotPath3
+### code chunk number 36: ggenealogy.Rnw:382-384 (eval = FALSE)
 ###################################################
-path = getPath("Tokyo", "Narow", dirIG, sbGeneal, isDirected=TRUE)
-plotPath(path)
+## pathTN = getPath("Tokyo", "Narow", dirIG, sbGeneal, isDirected=TRUE)
+## plotPath(pathTN)
 
 
 ###################################################
-### code chunk number 37: plotPath3
+### code chunk number 37: plotPathOnAll1
 ###################################################
-path = getPath("Tokyo", "Narow", dirIG, sbGeneal, isDirected=TRUE)
-plotPath(path)
+plotPathOnAll(pathNT, sbGeneal, ig, binVector = 1:3)
 
 
 ###################################################
 ### code chunk number 38: plotPathOnAll1
 ###################################################
-plotPathOnAll(path, sbGeneal, ig, binVector = 1:3)
+plotPathOnAll(pathNT, sbGeneal, ig, binVector = 1:3)
 
 
 ###################################################
-### code chunk number 39: plotPathOnAll1
+### code chunk number 39: plotPathOnAll2
 ###################################################
-plotPathOnAll(path, sbGeneal, ig, binVector = 1:3)
+plotPathOnAll(pathNT, sbGeneal, ig, binVector = 1:6)
 
 
 ###################################################
 ### code chunk number 40: plotPathOnAll2
 ###################################################
-plotPathOnAll(path, sbGeneal, ig, binVector = 1:6)
+plotPathOnAll(pathNT, sbGeneal, ig, binVector = 1:6)
 
 
 ###################################################
-### code chunk number 41: plotPathOnAll2
+### code chunk number 41: plotDegMatrix1
 ###################################################
-plotPathOnAll(path, sbGeneal, ig, binVector = 1:6)
+varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+p = plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
+p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
 
 
 ###################################################
@@ -288,28 +280,20 @@ p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
 
 
 ###################################################
-### code chunk number 43: plotDegMatrix1
-###################################################
-varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-p = plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
-p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
-
-
-###################################################
-### code chunk number 44: ggenealogy.Rnw:520-521
+### code chunk number 43: ggenealogy.Rnw:471-472
 ###################################################
 getDegree("Bedford", "Zane", ig, sbGeneal)
 
 
 ###################################################
-### code chunk number 45: plotYearMatrix1
+### code chunk number 44: plotYearMatrix1
 ###################################################
 varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
 plotYearMatrix(varieties,sbGeneal)
 
 
 ###################################################
-### code chunk number 46: plotYearMatrix1
+### code chunk number 45: plotYearMatrix1
 ###################################################
 varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
 plotYearMatrix(varieties,sbGeneal)
