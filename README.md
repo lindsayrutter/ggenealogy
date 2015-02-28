@@ -12,7 +12,7 @@ This package provides methods for searching through genealogical data and displa
 
 Some of the currently-available methods include:
 
-  * Drawing interactive genealogy trees from database of known lineage.
+  * Drawing genealogy trees from database of known lineage.
   * Selecting generation number of ancestors and descendants to show around a given variety.
   * Showing shortest path between two given varieties, and superimpose over full lineage structure.
   * Obtaining graph theory measures of the full lineage structure.
@@ -25,7 +25,7 @@ Some of the currently-available methods include:
 
 **Resources::**
 
-Installation of the package will automatically download a vignette, with a more thorough explanation of the available methods, and example code.
+Installation of the package will automatically download a vignette, which contains a more thorough explanation of the available methods, and example code.
 
 **License:**
 
