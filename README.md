@@ -1,5 +1,7 @@
 # ggenealogy
 
+[![Build Status](https://travis-ci.org/lrutter/ggenealogy.png?branch=master)](https://travis-ci.org/lrutter/ggenealogy)
+
 **Motivation:**
 
 Genealogists wish to study the parent-child relationship between groups of organisms. Visual representations of genealogical relationships allow scientists to more effectively understand the historical changes that caused novel and desirable traits to arise in lineages. For example, in crops, desirable modifications could include an increase in protein yield or an increase in disease resistance. However, there are also times when lineages of detrimental traits can be viewed, such as to determine the origin of hazardous traits in rapidly-evolving viruses.
