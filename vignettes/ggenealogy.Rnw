@@ -366,7 +366,7 @@ plotPath(pathNT)
 <<plotPath2>>
 @
 \end{center}
-\caption{The shortest path between varieties ``Tokyo" and ``Narow" is strictly composed of a unidirectional sequence of parent-child relationships.}
+\caption{The shortest path between varieties ``Narow" and ``Tokyo" is strictly composed of a unidirectional sequence of parent-child relationships.}
 \label{fig:plotPath2}
 \end{figure}
 
