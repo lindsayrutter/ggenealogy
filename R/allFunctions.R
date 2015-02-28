@@ -1,6 +1,3 @@
-# Initialize global variables
-utils::globalVariables("id.offset")
-
 #' Returns the coordinate positions of all ancestors and descendants of a variety.
 #' 
 #' Calculates coordinates to plot each ancestors and descendant of a variety in a lineage. The x and y values describe the coordinates of the label, while the xstart, ystart, xend, and yend values describe the edges of the label.
@@ -9,7 +6,7 @@ utils::globalVariables("id.offset")
 #' @seealso \code{\link{buildAncList}} for information on determining ancestors
 #' @seealso \code{\link{buildDesList}} for information on determining descendants
 buildAncDesCoordDF = function(df){
-  eval({id.offset<<-0}, envir=environment(buildAncDesCoordDF))
+  id.offset <- NULL
   root.gen <- gen <- par.id <- label <- NULL 
   # This gets rid of redundancy and creates a "center"
   if(nrow(subset(df, root.gen==0 & gen==0))>1){
@@ -523,7 +520,7 @@ buildSpreadTotalDF = function(geneal, ig, binVector=1:12){
 #' getAncestors("Essex", sbGeneal, 1)
 #' getAncestors("Essex", sbGeneal, 5)
 getAncestors = function(v1, geneal, gen=3){
-  eval({id.offset<<-0}, envir=environment(getAncestors))
+  id.offset <- NULL
   aDF = buildAncDesCoordDF(nodeToDF(buildAncList(v1, geneal)))
   subDF = aDF[aDF$gen <= gen & aDF$gen != 0,]
   keep = c("label","gen")
@@ -588,7 +585,7 @@ getBasicStatistics = function(ig){
 #' getDescendants("Essex", sbGeneal, 1)
 #' getDescendants("Essex", sbGeneal, 3)
 getDescendants = function(v1, geneal, gen=3){
-  eval({id.offset<<-0}, envir=environment(getDescendants))
+  id.offset <- NULL
   dDF = buildAncDesCoordDF(nodeToDF(buildDesList(v1, geneal)))
   subDF = dDF[dDF$gen <= gen & dDF$gen != 0,]
   keep = c("label","gen")
@@ -847,7 +844,7 @@ isParent = function(child, parent, geneal){
 #' @param par.id the id of the parent
 #' @param id id offset
 nodeToDF = local({
-  id.offset <<- 0
+  id.offset <- 0
   function(tlist, branch=0, par.id = NA, id=1){
     listidx = which(sapply(tlist, mode)=="list")
     # This is a terminal node
@@ -873,7 +870,7 @@ nodeToDF = local({
       } else branchidx = c(-.5, .5)[temp$gen%%2+1]
       id.offset <<- id.offset+1
       # Creates a unique id
-      id = id.offset #changed to 100000
+      id = id.offset
       return(plyr::rbind.fill(cbind(temp, branch=branch, id=id, par.id=par.id),
                               plyr::ldply(1:length(listidx), function(i)
                                 nodeToDF(tlist[[listidx[i]]], branch=branchidx[i], par.id=id))))
