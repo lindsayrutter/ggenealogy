@@ -23,7 +23,7 @@ Some of the currently-available methods include:
 * The latest released version: `install.packages("ggenealogy")`
 * The latest development version: `install_github("lrutter/ggenealogy")`
 
-**Resources::**
+**Resources:**
 
 Installation of the package will automatically download a vignette, which contains a more thorough explanation of the available methods, and example code.
 
