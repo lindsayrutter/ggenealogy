@@ -1,0 +1,1 @@
+local({r <- getOption("repos"); r["CRAN"] <- "http://streaming.stat.iastate.edu/CRAN/";   options(repos = r)})
