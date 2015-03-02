@@ -1,8 +1,7 @@
 Package: ggenealogy
-Type: Package
-Title: Visualization tools for genealogical data
-Description: This package provides methods for searching through genealogical data and displaying the results. The available plotting algorithms can assist users in performing data exploration, as well as in generating publication-quality images. This package uses the Grammar of Graphics.
 Version: 0.1.0
+Title: Visualization Tools for Genealogical Data
+Description: Methods for searching through genealogical data and displaying the results. Plotting algorithms assist with data exploration and publication-quality image generation. Uses the Grammar of Graphics.
 Author: Lindsay Rutter, Susan Vanderplas, Di Cook
 Maintainer: Lindsay Rutter <lrutter@iastate.edu>
 License: GPL
