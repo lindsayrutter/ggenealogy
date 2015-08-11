@@ -18,3 +18,5 @@ Suggests:
     knitr,
     roxygen2 (>= 3.0.0)
 Roxygen: list(wrap = TRUE)
+URL: https://github.com/lrutter/ggenealogy
+BugReports: https://github.com/lrutter/ggenealogy/issues
