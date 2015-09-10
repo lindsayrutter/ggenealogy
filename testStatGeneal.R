@@ -1,4 +1,3 @@
-
 load("data/statGeneal.rda")
 getChild("Christian Robert",statGeneal)
 ig <- dfToIG(statGeneal)
@@ -21,3 +20,6 @@ plotPath(pathCC)
 plotPathOnAll(pathCC, statGeneal, ig, binVector = 1:3)
 
 plotPathOnAll(pathCC, statGeneal, ig, binVector = 1:6)
+
+plotPathOnAll(pathCC, statGeneal, ig, binVector = 1:100)
+
