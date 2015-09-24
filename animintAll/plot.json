@@ -1,0 +1,478 @@
+{
+ "geoms": {
+ "geom1_segment_plot": {
+ "geom": "segment",
+"classed": "geom1_segment_plot",
+"aes": {
+ "x": "x",
+"y": "y - 0.1",
+"xend": "xend",
+"yend": "yend + 0.1" 
+},
+"params": {
+ "lineend": "butt",
+"na.rm": false,
+"colour": "#D6D6D6" 
+},
+"subset_order": [],
+"types": {
+ "x": "numeric",
+"xend": "numeric",
+"y": "numeric",
+"yend": "numeric",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [],
+"nextgeom": "geom2_segment_plot" 
+},
+"geom2_segment_plot": {
+ "geom": "segment",
+"classed": "geom2_segment_plot",
+"aes": {
+ "x": "xstart",
+"y": "ystart",
+"xend": "xend",
+"yend": "yend" 
+},
+"params": {
+ "lineend": "butt",
+"na.rm": false,
+"colour": "#4EEE94",
+"size":      1 
+},
+"subset_order": [],
+"types": {
+ "x": "numeric",
+"xend": "numeric",
+"y": "numeric",
+"yend": "numeric",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [],
+"nextgeom": "geom3_text_plot" 
+},
+"geom3_text_plot": {
+ "geom": "text",
+"classed": "geom3_text_plot",
+"aes": {
+ "x": "x",
+"y": "y",
+"label": "d",
+"clickSelects": "d" 
+},
+"params": {
+ "parse": false,
+"size":     20 
+},
+"subset_order": [],
+"types": {
+ "x": "numeric",
+"y": "numeric",
+"label": "factor",
+"clickSelects": "factor",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [],
+"nextgeom": "geom4_text_plot" 
+},
+"geom4_text_plot": {
+ "geom": "text",
+"classed": "geom4_text_plot",
+"aes": {
+ "x": "x",
+"y": "y",
+"label": "label" 
+},
+"params": {
+ "parse": false,
+"size":    2.5,
+"fontface": "bold" 
+},
+"subset_order": [],
+"types": {
+ "x": "numeric",
+"y": "numeric",
+"label": "factor",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [] 
+},
+"geom5_segment_plot2": {
+ "geom": "segment",
+"classed": "geom5_segment_plot2",
+"aes": {
+ "x": "x",
+"y": "y - 0.1",
+"xend": "xend",
+"yend": "yend + 0.1" 
+},
+"params": {
+ "lineend": "butt",
+"na.rm": false,
+"colour": "#D6D6D6" 
+},
+"subset_order": [],
+"types": {
+ "x": "numeric",
+"xend": "numeric",
+"y": "numeric",
+"yend": "numeric",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [],
+"nextgeom": "geom6_segment_plot2" 
+},
+"geom6_segment_plot2": {
+ "geom": "segment",
+"classed": "geom6_segment_plot2",
+"aes": {
+ "x": "xstart",
+"y": "ystart",
+"xend": "xend",
+"yend": "yend" 
+},
+"params": {
+ "lineend": "butt",
+"na.rm": false,
+"colour": "#4EEE94",
+"size":      1 
+},
+"subset_order": [],
+"types": {
+ "x": "numeric",
+"xend": "numeric",
+"y": "numeric",
+"yend": "numeric",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [],
+"nextgeom": "geom7_text_plot2" 
+},
+"geom7_text_plot2": {
+ "geom": "text",
+"classed": "geom7_text_plot2",
+"aes": {
+ "x": "x",
+"y": "y",
+"label": "d",
+"showSelected": "label" 
+},
+"params": {
+ "parse": false,
+"size":     20 
+},
+"subset_order": [
+ "showSelected" 
+],
+"types": {
+ "x": "numeric",
+"y": "numeric",
+"label": "factor",
+"showSelected": "factor",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelected" 
+],
+"nextgeom": "geom8_text_plot2" 
+},
+"geom8_text_plot2": {
+ "geom": "text",
+"classed": "geom8_text_plot2",
+"aes": {
+ "x": "x",
+"y": "y",
+"label": "label" 
+},
+"params": {
+ "parse": false,
+"size":    2.5,
+"fontface": "bold" 
+},
+"subset_order": [],
+"types": {
+ "x": "numeric",
+"y": "numeric",
+"label": "factor",
+"PANEL": "integer" 
+},
+"PANEL": 1,
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [] 
+} 
+},
+"selectors": {
+ "d": {
+ "selected": ".",
+"type": "single",
+"levels": ".",
+"update": [
+ "geom3_text_plot" 
+] 
+},
+"label": {
+ "selected": "Melvin Springer",
+"type": "single",
+"levels": [ "Melvin Springer", "Robert Bechhofer", "George Resnikoff", "B. Rao", "Peter Zehna", "Jon Rao", "P. S. Swami", "Elizabeth Yen", "Roy Milton", null, "Boris Iglewicz", "Virgil Craiu", "Suharto Soedardjo", "Christos Tsokos", "Robert Fossum", "Charles Phillips", "Elliott Nebenzahl", "Jack Doyle", "James Reinmuth", "Alvin Rainosek", "Dallas Johnson", "Raj Chhikara", "Karen Fung", "William Nichols", "Alexander Papadopoulos", "Anthony Olsen", "Mikhail Nikouline/Nikulin", "Uttara Rasmussen", "James Gentle", "Fan-Nan Lin", "Yasuko Chikuse", "Ricardo Maronna", "Bo Ranneby", "Lynda White", "Ajitkumar Tamhane", "Raymond Williams", "Antoni Styszynski", "John Turner", "Harold Diamond, Jr.", "Czesław Stępniak", "Peter Sander", "David Spiegelhalter", "Asad Zaman", "S. Prasad", "Alvaro Muñoz", "David Tritchler", "Jessica Pollner", "Cyril Grivet", "Gordana Jelisavcic", "Milton Loyer", "Willem Heiser", "J. Ranganathan", "Vladimir Volkovich", "Michael Crager", "Christopher Jennison", "Adger Butler", "Imogene McCanless Grimes", "Neil Poulsen", "J. Brian Gray", "Andre Rogatko", "Fredrick Whaley", "Daniel Zelterman", "Kutyar Madhavrao", "Maciej Wilczyñski", "Georgia Roberts", "Robert Fountain", "Huang Hsu", "Shlomo Sawilowsky", "Haragopal Vajjha", "Chul Ahn", "Susan Sanchez", "Richard Meltzer", "Beatrice Baldwin", "Lawrence Moulton", "Peter van der Heijden", "Wendell Jones", "Michael Powers", "Lingo Hwang", "Glenn Heller", "David Sessions", "Larry Wasserman", "Christopher Williams", "Patrick DeFeo", "Marta Garcia Ben", "Ewart Shaw", "Michael Jubb", "Paulo Hollanda-Sales", "Adelbar Sampaio", "Penny Brasher", "Achilles Venetoulias", "Steven Ramsier", "Dipankar Bandyopadhyay", "Cornelis Van Montfort", "Bahjat Qaqish", "Hyung-Tae Hwang", "Jeffrey Albert", "Diana Whistler", "Marinus Van der Leeden", "Rita Engelhardt", "Vidyagouri Prayag", "Lewis Van Brackle, III", "Sara Wheeless", "Ronald Thompson", "Werner Müller", "Silvia Ferrari", "Martin Kidd", "Thomas Regan", "Dalisay Maligalig", "David Hanagal", "Ping Yan", "Yoon Kim", "Jonathan Wakefield", "Patricia English", "Joseph Sucher", "Chao Wang", "Nelson de Oliveira", "Bohumír Procházka", "Biao Zhang", "Shubha Dhavalikar", "Leonard Hearne", "Kenneth Frank", "Patrick Groenen", "Chris Rogers", "Emilia Sakurai", "C. Andy Tsao", "Dong-Ki Kim", "Janez Stare", "Rodney Wolff", "Yongseok Sohn", "Aparna Huzurbazar", "Hong Hu Liu", "James Hilden-Milton", "John Gavin", "Jeffrey Solka", "Shobha Prabhala", "David Anglin", "Ginger Goff", "Zhenming Shun", "Isabel Proença", "George Michailidis", "Hong (Laura) Lu", "Meekyong Park", "Charles Hall", "Don Faxon", "Shumei Wei", "Shantha Rao", "Patrick Bridge", "Joseph Pultz", "Alexandra Kapatou", "Lisa Chiacchierini", "Maria Kateri", "Daniel Sargent", "Ailton Vieira", "William Goggins III", "Yang Chen", "Frank Li", "Giovanni Petris", "Claudia Tebaldi", "Jeffrey Picka", "Johan Lyhagen", "Fan Yang Jonsson", "Miguel Angel Miguel Angel", "Christopher Meek", "Roger Bilisoly", "Thomas Lumley", "Yan Yan", "Domenico Marinucci", "Chih-Chien Yang", "Deborah Lin", "Stefan Mattsson", "Mey Wang", "Rafal Weron", "Alicja Jokiel-Rokita", "Amal Mellouk", "Valérie Chavez-Demoulin", "Min-Hui Wang", "Thomas Severin", "Jose Vidal-Sanz", "Hefang Lin", "Alan Safer", "Dnise Benton", "David Gorsich", "Juanita Lyons", "James Gullen", "Yoshihiko Nishiyama", "Epimaco, Jr. Cabanlit", "Yuzo Maruyama", "Sebastian Domhof", "Bettina Kulle", "Scott Compton", "Leonardo Fabbroni", "David Bashtannyk", "Binbing Yu", "Alexandra Schmidt", "Holmes Finch", "Katherine Hunt", "Bennett Otieno", "Alyaa Zahran", "Niko Kaciroti", "Ke-Jian Yan", "Peng Zhang", "Andrew Simpson", "Earnest Foster", "Rafal Kustra", "Kristen Ryding", "Ernst Glatzer", "M. Rahman", "Nicolas Chopin", "Meredith Tomlinson", "Stephen Ganocy", "Richard Charnigo", "Hizir Sofyan", "Na Li", "Said El Melhaoui", "Dazhe Wang", "Kusaya Plungpongpun", "Arnab Laha", "Sergio Juarez", "Winfried Theis", "Hisayuki Tsukuma", "Isabel Cañete", "Debbie Hahs", "Robert Block", "Yan Li", "Susana Eyheramendy", "Eric Bair", "David Clifford", "Cristiano Ferraz", "Sandra Freitag", "Na Lu", "Solomon Harrar", "Ming Yuan", "Chenlei Leng", "Milena Banjevic", "Damla Senturk", "Jiameng Zhang", "Ignacio López de Ullibarri Galparsoro", "Petra Buzkova", "Samir Iraqui", "Hawaida Rabie", "Niels Hansen", "Carsten Franz", "Francisco Cysneiros", "Ruediger Krause", "Bin He", "Guojun Wang", "Matthew Killeya", "Xiao Zhang", "Fabrice Larribe", "Nirmal Govind", "Yun Chon", "Sonia Minassian", "Gert Willems", "Ju Li", "Oumar Sy", "Abigail Matthews", "Adriano Polpo de Campos", "Jung Wook Park", "Xuena Wang", "Kyeong Eun Lee", "Deukwoo Kwon", "Ping-Shi Wu", "Brandon Higgs", "Yevgen Tymofyeyev", "Maha Rahrouh", "Simin Baratpour", "Robert Gramacy", "Liansheng Tang", "Cedric Heuchenne", "LeAnna Stork", "David Blei", "Lanju Zhang", "Alice Zheng", "Xiaozhe (Catherine) Wang", "Songmei Wu", "Liang Fang", "Changku Kang", "Christopher Vahl", "Nak-Kyeong Kim", "Ethan Anderes", "Haitao Zheng", "Marinela Capanu", "Pavlina Rumcheva", "Sergey Terima", "Shiju Zhang", "Younan Chen", "Gisela Tunes da Silva", "Olha Bodnar", "Niel Hens", "Anders Eriksson", "Célia Nunes", "Muhammad Akram", "Ralph Hoegn", "Adaikalavan Ramasamy", "J. Donovan", "Wei Ning", "Ulysses Diva", "Matthew Nunes", "Carlos Carvalho", "Richard Umstätter", "John Carew", "Benjamin Redelings", "Fan Lu", "Erica Moodie", "Changzheng Chen", "Hector Lemus", "Desale Habtzghi", "Lakshminarayan Rajaram", "Gokarna Aryal", "Natasa Rajicic", "Andrew Golightly", "Pamela Smith", "Dong Wang", "Susan Alber", "Boris Lorenc", "Daniel Schubert", "Lan Lan", "Xiao Ni", "Soyoung Ha", "James Gear", "Dário Ferreira", "Susanne Gschloessl", "Chong Wang", "Xiaojing Lu", "Juan Vivar", "Adelmo Bertolde", "Mark Culp", "Roland Deutsch", "J. Slaughter", "Christopher Brignell", "Kim Evans", "Kelly Handley", "Amir Payandeh", "Katarzyna Lasak", "Angela Hugeback", "Zhe Zhang", "Esther Salazar", "Valerie Hyde", "Abdul Aziz Hayat", "Anouar El Ghouch", "Roberto Casarin", "Taras Zabolotskyy", "Prithwijit De", "Minggen Lu", "Tracy Morris", "Nyssen Penaloza ", "Kenneth Shirley", "Yun Lu", "Patrícia Espinheira", "Scotland Leman", "Hao Song", "E. Ranganai", "Pavel Vaněček", "Laura Taylor", "Branko Miladinovic", "Ashton de Silva", "André Hüsler", "Jianying Zhang", "Aristide Achy-Brou", "Sijian Wang", "Rebecca Walls", "Emine Bayman", "Meng Wu", "Lei Shu", "Elizabeth Hohman", "Tristan Senga Kiessé", "Iván Carrillo-García", "Daniel Preve", "Hyokyoung (Grace) Hong", "Markus Kalisch", "Cheng Yong Tang", "Afonso Goncalves da Silva", "Wenying Huang", "Marcelo Ruiz", "David Tolusso", "Zhongxin Ni", "David Lewin", "Tony Jinguang Li", "Jie Peng", "Saraswata Chaudhuri", "Chung Chang", "Maria Süveges", "Liang Zhang", "Roberto San Martín", "Patricia Menéndez Galván", "James Goldstein", "Yuejiao Jiang", "Xingdong Feng", "Uwe Ziegenhagen", "Patrick Jahn", "Hoh Suk Noh", "Deniz Akdemir", "Holger Hoefling", "Tatiane Silva", "Elizabeth Krachey", "Paulo Ramos", "Hao Wang", "Ramon Garcia", "Elizabeth Johnson", "Silvia Liverani", "Erik Bloomquist", "María Fasano", "Paul Kidwell", "Linglong Kong", "Simon Lunagomez", "Ying Zhu", "Julian Wolfson", "Alex Webb", "Giovanni Motta", "Lei Qian", "K. Ahmadi", "Lu Wang", "Tova Fuller", "Dong Chen", "Michael Finegold", "Stephanie Kovalchik", "Athanasios Sachlas", "Thais Fonseca", "Adam Rothman", "Issam Elhattab", "Denise Ferrari", "Wenjing Yang", "Ziyue Liu", "Yihong Zhao", "Michael Lance", "Noomen Ben Ghorbal", "Yanyu Zhang", "Haeran Cho", "Katja Hanewald", "Ngoc Nguyen", "Roman Timofeev", "Alvaro Nosedal-Sanchez", "Saeid Amiri", "Xiaojing Wang", "Hao Luo", "Xiaoquan Wen", "Hanwen Huang", "Irina Irincheeva", "Mohan Pant", "Jiangdian Wang", "A.M. Santos", "Xiaolei Xun", "Rena Sun", "Ahmed Barakat", "Sujitta Suraphee", "Zheng Xu", "Huaihou Chen", "Yujuan Xie", "Alexander Volfovsky", "Chanmin Kim", "Tiago Vargas", "Abubakar Asaad", "Lejia Lou", "Naomi Brownstein", "Cheng Liu", "Poonsak Sirisom", "Elena Jirina Holl Ehrlich", "Hamdy Mahmound", "Sunyoung Shin", "Divinagracia Del Prado", "Joseph Ryan Lansagan", "Miranda Michelle", "Yifat Lavi", "Chana Lowenstein", "Gobind Mehta", "Hana Koutková", "António Ribeiro", "Joaquim Silva", "Peter Sprent", "Christian Robert", "Everett Welker", "Zuzana Prášková", "William Cumberland", "Boris Shulkin", "Pang Du", "Ajay Jasra", "Bani Mallick", "Curtis Storlie", "Dietrich von Rosen", "William Padgett", "Jiayang Sun", "Jun Yan", "David Madigan", "Inyoung Kim", "Albert Bowker", "Robert Weiss", "Charles Stein", "Anil Gore", "Karl Jöreskog", "Gunnar Kulldorff", "Robert Tibshirani", "Peter McCullagh", "Jean Opsomer", "George Milliken", "Dianne Finkelstein", "Jan de Leeuw", "Sucharita Ghosh", "John Chen", "Krzysztof Szajowski", "Ryszard Magiera", "Vijayan Nair", "Robert Keener", "Peter Hoff", "B. Kale", "Kung-Yee Liang", "Raymond Myers", "Edsel Pena", "Scott Zeger", "Gerard Leppink", "Edgar Brunner", "Franklin Graybill", "Herrmann (Hirschfeld) Hartley", "Anna Chernobai", "Huynh Huynh", "Brian Habing", "Edward Wegman", "Douglas Schaubel", "Jack Kalbfleisch", "Richard Anderson-Sprecher", "Matthew Stephens", "Guy Nason", "Basilio Pereira", "Dayanand Naik", "John Folks", "Wilfrid Dixon", "L. Mark Berliner", "Jiunn Hwang", "Pramod Pathak", "David Cox", "Wolfgang Härdle", "Lutz Dümbgen", "Robert Ling", "Gerald Lieberman", "Christine Anderson-Cook", "Jelloul Allal", "Marco Ferreira", "Khalid Rifi", "Yufeng Liu", "Peter Bloomfield", "Login Bolshev", "Jerald Lawless", "Sujit Ghosh", "Arjun Gupta", "Abram Zinger", "Mark Brown", "Paul Switzer", "Theodore Anderson, Jr.", "Adrian Smith", "Stanislaw Trybula", "Kalimuthu Krishnamoorthy", "Marc Genton", "Run-Ze Li", "Steve Horvath", "Grace Wahba", "R. Clifford Blair", "Donald Marcotte", "Gail Fahoome", "Frank Castronova", "Hans-Georg Müller", "Todd Headrick", "Jonathan Arnold", "Daniel Heitjan", "Anthony Davison", "Ricardo Cao Abad", "Patrick Heagerty", "Ashis SenGupta", "I. Savage", "Milton Sobel", "Michael Perlman", "H. Sanford Weisberg", "Carlos Pereira", "Robb Muirhead", "Richmond Oldford", "Dennis Pearl", "Marion Reynolds, Jr.", "Wei Zhu", "Marina Vannucci", "Donald Hoover", "Trivellore Raghunathan", "William Rosenberger", "Franciscus (Frank) Coolen", "Nasser Arghami", "Jafar Ahmadi", "Woo-Chul Kim", "Bruce Turnbull", "Herbert Lee", "William Schucany", "Ingrid Van Keilegom", "Chris Gennings", "Michael Jordan", "Christopher Holmes", "Katarina Košmelj", "Nancy Flournoy", "Michael Daniels", "Michael Sørensen", "Norbert Henze", "Erniel Barrios", "Peter Robinson", "Dylan Small", "Claus Weihs", "Andrei Volodin", "Rob Hyndman", "Hyune-ju Kim", "Anant Kshirsagar", "Dipak Dey", "Mike West", "John Pratt", "Renate Meyer", "Marc Suchard", "Gilberto Paula", "Gerhard Tutz", "Min Xie", "Bengt Muthen", "Donald Guthrie, Jr.", "Siva Sivaganesan", "Song Chen", "Anthony Bryk", "Michael Goldstein", "Martin Hamilton", "Robert Ogden", "Thomas Richardson", "Subhashis Ghoshal", "Jun Xie", "Burt Holland", "Yuanjia Wang", "Walter Boscardin, Jr.", "Somnath Datta", "Mary Meyer", "Michael Stein", "Brett Presnell", "Zakkula Govindarajulu", "Keying Ye", "Amy Herring", "William Browne", "Ian Dryden", "Nicholas Schork", "Éric Marchand", "Darren Wilkinson", "Russell Barton", "Carlos Velasco", "Sunil Mathur", "Marcello Pagano", "Marc Coram", "Janet Sinsheimer", "Daniel Nettleton", "Gheorghe Mihoc", "Dani Gamerman", "Victor Yohai", "Asit Basu", "Galit Shmueli", "Javier Cabrera", "Samprit Chatterjee", "Lars Lyberg", "Xu-Ming He", "Pranab Sen", "Antonio Pedroso de Lima", "Wolfgang Schmid", "John Skalski", "Mathias Drton", "Brenton Clarke", "Kingshuk Roy Choudhury", "Wilfried Grossmann", "Yoshihiko Konno", "Jayant Deshpande", "William Cleveland, II", "Roberto Padua", "Khursheed Alam", "Ricardo Fraiman", "Daniel Scharfstein", "Hongtu Zhu", "Joseph Ibrahim", "Ji Zhu", "Geert Molenberghs", "Marc Aerts", "Stuart Barber", "Takis Papaioannou", "Kathryn Chaloner", "Miguel Delgado", "Daowen Zhang", "Ying Zhang", "Mark Payton", "James Hodges", "Andrej Pázman", "Célestin Kokonendji", "Changbao Wu", "Anders Ågren", "Lars Forsberg", "Rolf Larsson", "Byeong Uk Park", "Gauss Cordeiro", "Mark Steel", "Marloes Maathuis", "Dana Quade", "Jun Liu", "Ostap Okhrin", "Jay Breidt", "Susanne Ditlevsen", "Graciela Boente", "Richard Cook", "Chen-Hsin Chen", "Justus Seely", "Ronald Butler", "Francisco Cribari-Neto", "João Mexia", "Michael Lavine", "Jana Jurečková", "Claudia Czado", "Jimmy de la Torre", "Ming Gu", "Tertius de Wet", "Richard Lomax", "Robert Johnson", "Robert Mee", "James Smith", "Joseph Gastwirth", "Tatsuya Kubokawa", "Ivan Mizera", "Sayan Mukherjee", "Stefan Van Aelst", "Peter Gilbert", "John Borkowski, Jr.", "Karen Kafadar", "Mihails Levins", "Christian Hafner", "Elizaveta Levina", "Witold Klonecki", "Peter Spirtes", "S. Pandit", "Paul Deheuvels", "Wensheng Guo", "Stratis Kounias", "Ron Kenett", "Vasant Huzurbazar", "Johanna Neslehova", "Avinash Dharmadhikari", "Jialiang Li", "Piotr Fryzlewicz", "Anthony O'Hagan", "Luis García-Escudero", "Alfonso Gordaliza" ],
+"update": [
+ "geom7_text_plot2" 
+] 
+} 
+},
+"plots": {
+ "plot": {
+ "strips": {
+ "top": [
+ "" 
+],
+"right": [
+ "" 
+],
+"n": {
+ "top":      0,
+"right":      0 
+} 
+},
+"layout": {
+ "PANEL": [ 1 ],
+"ROW": [ 1 ],
+"COL": [ 1 ],
+"SCALE_X": [ 1 ],
+"SCALE_Y": [ 1 ],
+"AXIS_X": [ true ],
+"AXIS_Y": [ true ],
+"coord_fixed": [ false ],
+"width_proportion": [      1 ],
+"height_proportion": [      1 ] 
+},
+"geoms": [
+ "geom1_segment_plot",
+"geom2_segment_plot",
+"geom3_text_plot",
+"geom4_text_plot" 
+],
+"panel_background": {
+ "fill": "#E5E5E5",
+"colour": "transparent",
+"size":    0.5,
+"linetype":      1 
+},
+"panel_border": [],
+"grid_major": {
+ "colour": "#FFFFFF",
+"size":    0.5,
+"linetype":      1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ 0.21925,
+0.48663,
+0.75401 
+],
+"y": [
+ 0.27749,
+0.5552,
+0.83291 
+] 
+} 
+},
+"grid_minor": {
+ "loc": {
+ "x": [
+ 0.085561,
+0.35294,
+0.62032,
+0.8877 
+],
+"y": [
+ 0.13863,
+0.41635,
+0.69406,
+0.97177 
+] 
+} 
+},
+"axis1": {
+ "x": [
+ 0.21925,
+0.48663,
+0.75401 
+],
+"xlab": [
+ "1960",
+"1980",
+"2000" 
+],
+"xrange": [ 1943.6, 2018.4 ],
+"xline": true,
+"xticks": true,
+"y": [
+ 0.27749,
+0.5552,
+0.83291 
+],
+"yrange": [ 0.0020017, 9.0041 ],
+"yline": true,
+"yticks": false 
+},
+"xtitle": "Year",
+"xanchor": "middle",
+"xangle":      0,
+"ytitle": "",
+"yanchor": "middle",
+"yangle":      0,
+"xlabs": [
+ "1960",
+"1980",
+"2000" 
+],
+"ylabs": [],
+"options": {
+ "width":    400,
+"height":    400 
+} 
+},
+"plot2": {
+ "strips": {
+ "top": [
+ "" 
+],
+"right": [
+ "" 
+],
+"n": {
+ "top":      0,
+"right":      0 
+} 
+},
+"layout": {
+ "PANEL": [ 1 ],
+"ROW": [ 1 ],
+"COL": [ 1 ],
+"SCALE_X": [ 1 ],
+"SCALE_Y": [ 1 ],
+"AXIS_X": [ true ],
+"AXIS_Y": [ true ],
+"coord_fixed": [ false ],
+"width_proportion": [      1 ],
+"height_proportion": [      1 ] 
+},
+"geoms": [
+ "geom5_segment_plot2",
+"geom6_segment_plot2",
+"geom7_text_plot2",
+"geom8_text_plot2" 
+],
+"panel_background": {
+ "fill": "#E5E5E5",
+"colour": "transparent",
+"size":    0.5,
+"linetype":      1 
+},
+"panel_border": [],
+"grid_major": {
+ "colour": "#FFFFFF",
+"size":    0.5,
+"linetype":      1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ 0.21925,
+0.48663,
+0.75401 
+],
+"y": [
+ 0.27655,
+0.55519,
+0.83382 
+] 
+} 
+},
+"grid_minor": {
+ "loc": {
+ "x": [
+ 0.085561,
+0.35294,
+0.62032,
+0.8877 
+],
+"y": [
+ 0.13723,
+0.41587,
+0.6945,
+0.97314 
+] 
+} 
+},
+"axis1": {
+ "x": [
+ 0.21925,
+0.48663,
+0.75401 
+],
+"xlab": [
+ "1960",
+"1980",
+"2000" 
+],
+"xrange": [ 1943.6, 2018.4 ],
+"xline": true,
+"xticks": true,
+"y": [
+ 0.27655,
+0.55519,
+0.83382 
+],
+"yrange": [ 0.018711,  8.991 ],
+"yline": true,
+"yticks": false 
+},
+"xtitle": "Year",
+"xanchor": "middle",
+"xangle":      0,
+"ytitle": "",
+"yanchor": "middle",
+"yangle":      0,
+"xlabs": [
+ "1960",
+"1980",
+"2000" 
+],
+"ylabs": [],
+"options": {
+ "width":    400,
+"height":    400 
+} 
+} 
+} 
+}
