@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="257px" height="298px" viewBox="0 0 257 298" version="1.1">
+  <metadata xmlns:gridsvg="http://www.stat.auckland.ac.nz/~paul/R/gridSVG/">
+    <gridsvg:generator name="gridSVG" version="1.4-3" time="2015-10-22 15:43:31"/>
+    <gridsvg:argument name="name" value="example2.svg"/>
+    <gridsvg:argument name="exportCoords" value="none"/>
+    <gridsvg:argument name="exportMappings" value="none"/>
+    <gridsvg:argument name="exportJS" value="none"/>
+    <gridsvg:argument name="res" value="72"/>
+    <gridsvg:argument name="prefix" value=""/>
+    <gridsvg:argument name="addClasses" value="FALSE"/>
+    <gridsvg:argument name="indent" value="TRUE"/>
+    <gridsvg:argument name="htmlWrapper" value="FALSE"/>
+    <gridsvg:argument name="usePaths" value="vpPaths"/>
+    <gridsvg:argument name="uniqueNames" value="TRUE"/>
+    <gridsvg:separator name="id.sep" value="."/>
+    <gridsvg:separator name="gPath.sep" value="::"/>
+    <gridsvg:separator name="vpPath.sep" value="::"/>
+  </metadata>
+  <g transform="translate(0, 298) scale(1, -1)">
+    <g id="gridSVG" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" stroke-dasharray="none" stroke-width="0.75" font-size="16" font-family="Helvetica, Arial, FreeSans, Liberation Sans, Nimbus Sans L, sans-serif" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-opacity="1" fill-opacity="1" font-weight="normal" font-style="normal">
+      <g id="GRID.rect.11.1">
+        <rect id="GRID.rect.11.1.1" x="51.4" y="89.4" width="51.4" height="59.6" fill="rgb(0,0,0)" fill-opacity="1"/>
+        <rect id="GRID.rect.11.1.2" x="154.2" y="89.4" width="51.4" height="59.6" fill="rgb(0,0,0)" fill-opacity="1"/>
+      </g>
+      <g id="GRID.rect.12.1">
+        <rect id="GRID.rect.12.1.1" x="96.38" y="111.75" width="64.25" height="74.5" fill="rgb(0,0,0)" fill-opacity="1"/>
+      </g>
+    </g>
+  </g>
+</svg>
