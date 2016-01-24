@@ -15,5 +15,3 @@ if(require(maptools, quiet = TRUE) & require(lattice, quiet = TRUE)
   xyplot(coords[,2] ~ coords[,1],
          panel = function(...){adeg.panel.edges(edges, coords, lty = 1:4, cex = 5)})
 }
-
-

@@ -23,13 +23,14 @@ customPanel2 <- function(x, y, ...) {
 }
 
 # The lattice package’s xyplot() function is used to draw the plot. We are using the customPanel function we defined earlier.
-xyplot(coord2 ~ coord1, panel = customPanel2, xlab = "Year graduated", ylab=NULL, scales=list(tck = c(1,0), y=list(at=NULL)))
+xyplot(coord2 ~ coord1, panel = function(customPanel2){adeg.panel.edges(edges, coords, lty = 1:4, cex = 5)}, xlab = "Year graduated", ylab=NULL, scales=list(tck = c(1,0), y=list(at=NULL)))
+
+#coords <- matrix(c(1955,3,1975,5,1993,3,2005,1), byrow = TRUE, ncol = 2)
+#edges <- matrix(c(1, 2, 3, 2, 4, 1, 3, 4), byrow = TRUE, ncol = 2)
 
 #edges <- matrix(c(1, 2, 3, 2, 4, 1, 3, 4), byrow = TRUE, ncol = 2)
 #coords <- matrix(c(0, 1, 1, 0, 0, -1, -1, 0), byrow = TRUE, ncol = 2)
-#xyplot(coords[,2] ~ coords[,1],
-#       panel = function(...){adeg.panel.edges(edges, coords, lty = 1:4, cex = 5)})
-
+#xyplot(coords[,2] ~ coords[,1],panel = function(...){adeg.panel.edges(edges, coords, lty = 1:4, cex = 5)})
 
 # We then draw 10 of grid’s textGrobs to show the name of each of the points. Each of the text labels are drawn at the bottom-left of the plot.
 for (i in 1:nrow(pMPDF)) {
@@ -44,4 +45,3 @@ for (i in 1:nrow(pMPDF)) {
 
 grid.script(filename = "aqm.js", inline = TRUE)
 grid.export("testAll.svg")
-

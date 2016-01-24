@@ -7,29 +7,34 @@ set.seed(955)
 dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3), yvar = 1:20 + rnorm(20,sd=3))
 
 g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_smooth() + geom_point(shape=19, aes(color = cond), size=5)
-g4
-g4.svg <- grid.export("plot1.svg",addClasses=TRUE)
 
-cat(saveXML(g4.svg$svg))
+# what does this line do?  It writes the SVG to the file "plot1.svg"?
+g4.svg <- grid.export("", addClasses=TRUE)
+
+# create a valid html file
+cat("<html><head><script src='http://d3js.org/d3.v3.min.js'></script></head><body>", file="myAwesomePlot.html")
+
+# I'm assuming this gets the svg content and can write it to a file
+cat(saveXML(g4.svg$svg), file="myAwesomePlot.html", append=TRUE)
 
 cat(
   '<script> ourdata=',
   rjson::toJSON(apply(g4$data,MARGIN=1,FUN=function(x)return(list(x)))),
-  '</script>'
+  '</script>', file="myAwesomePlot.html", append=TRUE
 )
 
 cat(
   '<script> dataToBind = ',
   'd3.entries(ourdata.map(function(d,i) {return d[0]}))',
   '</script>'
-)
+  , file="myAwesomePlot.html", append=TRUE)
 
 cat(
   '<script>\n',
   'scatterPoints = d3.select(".points").selectAll("use");\n',
   'scatterPoints.data(dataToBind)',
   '</script>\n'
-)
+  , file="myAwesomePlot.html", append=TRUE)
 
 cat('<script>\n',
     'scatterPoints  
@@ -74,4 +79,7 @@ cat('<script>\n',
     d3.select("#tooltip").remove();  
     });',
 '</script>'
-)
+, file="myAwesomePlot.html", append=TRUE)
+
+# close out file
+cat("</body></html>", file="myAwesomePlot.html", append=TRUE)

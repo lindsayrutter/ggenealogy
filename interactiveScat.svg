@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="345px" height="301px" viewBox="0 0 345 301" version="1.1">
+  <metadata xmlns:gridsvg="http://www.stat.auckland.ac.nz/~paul/R/gridSVG/">
+    <gridsvg:generator name="gridSVG" version="1.4-3" time="2015-10-27 21:24:45"/>
+    <gridsvg:argument name="name" value="interactiveScat.svg"/>
+    <gridsvg:argument name="exportCoords" value="none"/>
+    <gridsvg:argument name="exportMappings" value="none"/>
+    <gridsvg:argument name="exportJS" value="none"/>
+    <gridsvg:argument name="res" value="72"/>
+    <gridsvg:argument name="prefix" value=""/>
+    <gridsvg:argument name="addClasses" value="FALSE"/>
+    <gridsvg:argument name="indent" value="TRUE"/>
+    <gridsvg:argument name="htmlWrapper" value="FALSE"/>
+    <gridsvg:argument name="usePaths" value="vpPaths"/>
+    <gridsvg:argument name="uniqueNames" value="TRUE"/>
+    <gridsvg:separator name="id.sep" value="."/>
+    <gridsvg:separator name="gPath.sep" value="::"/>
+    <gridsvg:separator name="vpPath.sep" value="::"/>
+  </metadata>
+  <g transform="translate(0, 301) scale(1, -1)">
+    <g id="gridSVG" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" stroke-dasharray="none" stroke-width="0.75" font-size="16" font-family="Helvetica, Arial, FreeSans, Liberation Sans, Nimbus Sans L, sans-serif" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-opacity="1" fill-opacity="1" font-weight="normal" font-style="normal">
+      <defs>
+        <symbol id="gridSVG.pch20" viewBox="-5 -5 10 10" overflow="visible">
+          <circle cx="0" cy="0" r="2.5"/>
+        </symbol>
+      </defs>
+      <g id="plot_01.background.1">
+        <rect id="plot_01.background.1.1" x="0" y="0" width="345" height="301" fill="none" stroke="none" stroke-opacity="0" fill-opacity="0"/>
+      </g>
+      <g id="plot_01.toplevel.vp.1" font-size="12">
+        <g id="plot_01.toplevel.vp::plot_01.xlab.vp.1">
+          <g id="plot_01.xlab.1">
+            <g id="plot_01.xlab.1.1" transform="translate(175.33, 4.29)" stroke-width="0.1">
+              <g id="plot_01.xlab.1.1.scale" transform="scale(1, -1)">
+                <text x="0" y="0" id="plot_01.xlab.1.1.text" text-anchor="middle" opacity="1" stroke="rgb(0,0,0)" fill="rgb(0,0,0)" stroke-opacity="1" fill-opacity="1" font-size="12" font-weight="normal" font-style="normal">
+                  <tspan id="plot_01.xlab.1.1.tspan.1" dy="4.29" x="0">x variable</tspan>
+                </text>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="plot_01.toplevel.vp::plot_01.figure.vp.1"/>
+        <defs>
+          <clipPath id="plot_01.toplevel.vp::plot_01.panel.1.1.vp.1.clipPath">
+            <rect x="17.01" y="32.47" width="316.65" height="257.19" fill="none" stroke="none"/>
+          </clipPath>
+        </defs>
+        <g id="plot_01.toplevel.vp::plot_01.panel.1.1.vp.1" clip-path="url(#plot_01.toplevel.vp::plot_01.panel.1.1.vp.1.clipPath)"/>
+        <g id="plot_01.toplevel.vp::plot_01.strip.1.1.off.vp.1"/>
+        <g id="plot_01.toplevel.vp::plot_01.strip.left.1.1.off.vp.1"/>
+        <g id="plot_01.toplevel.vp::plot_01.panel.1.1.off.vp.1">
+          <g id="plot_01.ticks.bottom.panel.1.1.1">
+            <polyline id="plot_01.ticks.bottom.panel.1.1.1.1" points="87.84,32.47 87.84,26.8" stroke="rgb(0,0,0)" opacity="1" stroke-dasharray="none" stroke-width="0.75" stroke-opacity="1" fill="none"/>
+            <polyline id="plot_01.ticks.bottom.panel.1.1.1.2" points="165.48,32.47 165.48,26.8" stroke="rgb(0,0,0)" opacity="1" stroke-dasharray="none" stroke-width="0.75" stroke-opacity="1" fill="none"/>
+            <polyline id="plot_01.ticks.bottom.panel.1.1.1.3" points="243.11,32.47 243.11,26.8" stroke="rgb(0,0,0)" opacity="1" stroke-dasharray="none" stroke-width="0.75" stroke-opacity="1" fill="none"/>
+            <polyline id="plot_01.ticks.bottom.panel.1.1.1.4" points="320.74,32.47 320.74,26.8" stroke="rgb(0,0,0)" opacity="1" stroke-dasharray="none" stroke-width="0.75" stroke-opacity="1" fill="none"/>
+          </g>
+          <g id="plot_01.ticklabels.bottom.panel.1.1.1">
+            <g id="plot_01.ticklabels.bottom.panel.1.1.1.1" transform="translate(87.84, 21.13)" stroke-width="0.1">
+              <g id="plot_01.ticklabels.bottom.panel.1.1.1.1.scale" transform="scale(1, -1)">
+                <text x="0" y="0" id="plot_01.ticklabels.bottom.panel.1.1.1.1.text" text-anchor="middle" stroke="rgb(0,0,0)" opacity="1" fill="rgb(0,0,0)" stroke-opacity="1" fill-opacity="1" font-size="9.6" font-weight="normal" font-style="normal">
+                  <tspan id="plot_01.ticklabels.bottom.panel.1.1.1.1.tspan.1" dy="6.87" x="0">-2</tspan>
+                </text>
+              </g>
+            </g>
+            <g id="plot_01.ticklabels.bottom.panel.1.1.1.2" transform="translate(165.48, 21.13)" stroke-width="0.1">
+              <g id="plot_01.ticklabels.bottom.panel.1.1.1.2.scale" transform="scale(1, -1)">
+                <text x="0" y="0" id="plot_01.ticklabels.bottom.panel.1.1.1.2.text" text-anchor="middle" stroke="rgb(0,0,0)" opacity="1" fill="rgb(0,0,0)" stroke-opacity="1" fill-opacity="1" font-size="9.6" font-weight="normal" font-style="normal">
+                  <tspan id="plot_01.ticklabels.bottom.panel.1.1.1.2.tspan.1" dy="6.87" x="0">-1</tspan>
+                </text>
+              </g>
+            </g>
+            <g id="plot_01.ticklabels.bottom.panel.1.1.1.3" transform="translate(243.11, 21.13)" stroke-width="0.1">
+              <g id="plot_01.ticklabels.bottom.panel.1.1.1.3.scale" transform="scale(1, -1)">
+                <text x="0" y="0" id="plot_01.ticklabels.bottom.panel.1.1.1.3.text" text-anchor="middle" stroke="rgb(0,0,0)" opacity="1" fill="rgb(0,0,0)" stroke-opacity="1" fill-opacity="1" font-size="9.6" font-weight="normal" font-style="normal">
+                  <tspan id="plot_01.ticklabels.bottom.panel.1.1.1.3.tspan.1" dy="6.87" x="0">0</tspan>
+                </text>
+              </g>
+            </g>
+            <g id="plot_01.ticklabels.bottom.panel.1.1.1.4" transform="translate(320.74, 21.13)" stroke-width="0.1">
+              <g id="plot_01.ticklabels.bottom.panel.1.1.1.4.scale" transform="scale(1, -1)">
+                <text x="0" y="0" id="plot_01.ticklabels.bottom.panel.1.1.1.4.text" text-anchor="middle" stroke="rgb(0,0,0)" opacity="1" fill="rgb(0,0,0)" stroke-opacity="1" fill-opacity="1" font-size="9.6" font-weight="normal" font-style="normal">
+                  <tspan id="plot_01.ticklabels.bottom.panel.1.1.1.4.tspan.1" dy="6.87" x="0">1</tspan>
+                </text>
+              </g>
+            </g>
+          </g>
+        </g>
+        <defs>
+          <clipPath id="plot_01.toplevel.vp::plot_01.panel.1.1.vp.2.clipPath">
+            <rect x="17.01" y="32.47" width="316.65" height="257.19" fill="none" stroke="none"/>
+          </clipPath>
+        </defs>
+        <g id="plot_01.toplevel.vp::plot_01.panel.1.1.vp.2" clip-path="url(#plot_01.toplevel.vp::plot_01.panel.1.1.vp.2.clipPath)">
+          <g id="plot_01.points.panel.1.1.1">
+            <use id="plot_01.points.panel.1.1.1.1" xlink:href="#gridSVG.pch20" x="253.67" y="48.26" width="40" height="40" transform="translate(-20,-20)" stroke="rgb(0,0,0)" stroke-width="0.19" opacity="1" fill="rgb(0,0,0)" font-size="40" stroke-opacity="1" fill-opacity="1" font-weight="normal" font-style="normal"/>
+            <use id="plot_01.points.panel.1.1.1.2" xlink:href="#gridSVG.pch20" x="305.81" y="231.67" width="40" height="40" transform="translate(-20,-20)" stroke="rgb(0,0,0)" stroke-width="0.19" opacity="1" fill="rgb(0,0,0)" font-size="40" stroke-opacity="1" fill-opacity="1" font-weight="normal" font-style="normal"/>
+            <use id="plot_01.points.panel.1.1.1.3" xlink:href="#gridSVG.pch20" x="110.94" y="187.31" width="40" height="40" transform="translate(-20,-20)" stroke="rgb(0,0,0)" stroke-width="0.19" opacity="1" fill="rgb(0,0,0)" font-size="40" stroke-opacity="1" fill-opacity="1" font-weight="normal" font-style="normal"/>
+            <use id="plot_01.points.panel.1.1.1.4" xlink:href="#gridSVG.pch20" x="314.22" y="106.68" width="40" height="40" transform="translate(-20,-20)" stroke="rgb(0,0,0)" stroke-width="0.19" opacity="1" fill="rgb(0,0,0)" font-size="40" stroke-opacity="1" fill-opacity="1" font-weight="normal" font-style="normal"/>
+          </g>
+          <g id="plot_01.segments.panel.1.1.1">
+            <polyline id="plot_01.segments.panel.1.1.1.1" points="253.67,48.26 305.81,231.67" stroke-dasharray="none" stroke="rgb(0,0,0)" stroke-width="0.75" opacity="1" stroke-opacity="1" fill="none"/>
+            <polyline id="plot_01.segments.panel.1.1.1.2" points="110.94,187.31 305.81,231.67" stroke-dasharray="3,3" stroke="rgb(0,0,0)" stroke-width="0.75" opacity="1" stroke-opacity="1" fill="none"/>
+            <polyline id="plot_01.segments.panel.1.1.1.3" points="314.22,106.68 253.67,48.26" stroke-dasharray="0.75,2.25" stroke="rgb(0,0,0)" stroke-width="0.75" opacity="1" stroke-opacity="1" fill="none"/>
+            <polyline id="plot_01.segments.panel.1.1.1.4" points="110.94,187.31 314.22,106.68" stroke-dasharray="0.75,2.25,3,2.25" stroke="rgb(0,0,0)" stroke-width="0.75" opacity="1" stroke-opacity="1" fill="none"/>
+          </g>
+        </g>
+        <g id="plot_01.toplevel.vp::plot_01.panel.1.1.off.vp.2">
+          <g id="plot_01.border.panel.1.1.1">
+            <rect id="plot_01.border.panel.1.1.1.1" x="17.01" y="32.47" width="316.65" height="257.19" stroke="rgb(0,0,0)" stroke-dasharray="none" stroke-width="0.75" opacity="1" fill="none" stroke-opacity="1" fill-opacity="0"/>
+          </g>
+        </g>
+        <g id="plot_01.toplevel.vp::plot_01..1"/>
+      </g>
+      <g id="label.1.1" visibility="hidden">
+        <g id="label.1.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.1.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.1.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.1.1.1.tspan.1" dy="0" x="0">a</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.2.1" visibility="hidden">
+        <g id="label.2.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.2.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.2.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.2.1.1.tspan.1" dy="0" x="0">b</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.3.1" visibility="hidden">
+        <g id="label.3.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.3.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.3.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.3.1.1.tspan.1" dy="0" x="0">c</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.4.1" visibility="hidden">
+        <g id="label.4.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.4.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.4.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.4.1.1.tspan.1" dy="0" x="0">d</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.5.1" visibility="hidden">
+        <g id="label.5.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.5.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.5.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.5.1.1.tspan.1" dy="0" x="0">e</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.6.1" visibility="hidden">
+        <g id="label.6.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.6.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.6.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.6.1.1.tspan.1" dy="0" x="0">f</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.7.1" visibility="hidden">
+        <g id="label.7.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.7.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.7.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.7.1.1.tspan.1" dy="0" x="0">g</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.8.1" visibility="hidden">
+        <g id="label.8.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.8.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.8.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.8.1.1.tspan.1" dy="0" x="0">h</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.9.1" visibility="hidden">
+        <g id="label.9.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.9.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.9.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.9.1.1.tspan.1" dy="0" x="0">i</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g id="label.10.1" visibility="hidden">
+        <g id="label.10.1.1" transform="translate(34.5, 3.01)" stroke-width="0.1">
+          <g id="label.10.1.1.scale" transform="scale(1, -1)">
+            <text x="0" y="0" id="label.10.1.1.text" text-anchor="start" fill="rgb(0,0,0)" fill-opacity="1" font-weight="bold" font-style="italic">
+              <tspan id="label.10.1.1.tspan.1" dy="0" x="0">j</tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <script type="application/ecmascript" id="GRID.script.grob.1955"><![CDATA[
+// Author: Paul Murrell
+
+var highlight = function(i) {
+  var point = document.getElementById("point." + i);
+  var label = document.getElementById("label." + i);
+  point.setAttribute("r", point.getAttribute("r")*2);
+  label.setAttribute("visibility", "visible");
+};
+
+var dim = function(i) {
+  var point = document.getElementById("point." + i);
+  var label = document.getElementById("label." + i);
+  point.setAttribute("r", point.getAttribute("r")/2);
+  label.setAttribute("visibility", "hidden");
+};
+
+]]></script>
+    </g>
+  </g>
+</svg>

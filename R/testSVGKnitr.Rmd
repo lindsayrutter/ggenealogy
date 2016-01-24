@@ -1,29 +1,47 @@
+```{r echo = FALSE, message = FALSE, fig.keep = 'none'}
 library(gridSVG)
 library(ggplot2)
 library(XML)
 library(rjson)
 
+# create a plot with some fake data
+
 set.seed(955)
 dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3), yvar = 1:20 + rnorm(20,sd=3))
 
 g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_smooth() + geom_point(shape=19, aes(color = cond), size=5)
-g4
-g4.svg <- grid.export("plot1.svg",addClasses=TRUE)
 
+# you need to print the plot in order to capture it with grid.export
+g4
+# exporting the plot to a .svg file
+g4.svg <- grid.export("plot1.svg",addClasses=TRUE)
+```
+
+```{r, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+
+# load the d3.js script
+cat('<script src="http://d3js.org/d3.v3.min.js"></script>')
+
+# convert the svg file to an XML string and print it 
 cat(saveXML(g4.svg$svg))
 
+# looks like you convert the ggplot object data to JSON for use by d3.js
+# looks like the aesthetics are included here? I don't seem them defined 
+# anywhere else
 cat(
   '<script> ourdata=',
   rjson::toJSON(apply(g4$data,MARGIN=1,FUN=function(x)return(list(x)))),
   '</script>'
 )
 
+# d3.js data definition
 cat(
   '<script> dataToBind = ',
   'd3.entries(ourdata.map(function(d,i) {return d[0]}))',
   '</script>'
 )
 
+# d3.js scatter plot
 cat(
   '<script>\n',
   'scatterPoints = d3.select(".points").selectAll("use");\n',
@@ -31,6 +49,8 @@ cat(
   '</script>\n'
 )
 
+# d3.js code to support the hover tooltips (hover over a point on the plot)
+# this is apparently ALL for the tooltip
 cat('<script>\n',
     'scatterPoints  
     .on("mouseover", function(d) {      
@@ -75,3 +95,4 @@ cat('<script>\n',
     });',
 '</script>'
 )
+```

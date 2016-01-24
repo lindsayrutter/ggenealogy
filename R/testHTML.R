@@ -8,10 +8,17 @@ dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3)
 
 g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_smooth() + geom_point(shape=19, aes(color = cond), size=5)
 g4
+
+# What does this line do?  It writes the SVG to the file "plot1.svg"?
 g4.svg <- grid.export("plot1.svg",addClasses=TRUE)
 
-cat(saveXML(g4.svg$svg))
+# create a valid html file
+cat("<html><head></head><body>", file="./myAwesomePlot.html")
 
+# I'm assuming this gets the svg content and can write it to a file
+cat(g4.svg$svg, file="./myAwesomePlot.html")
+
+# Javascript
 cat(
   '<script> ourdata=',
   rjson::toJSON(apply(g4$data,MARGIN=1,FUN=function(x)return(list(x)))),
@@ -75,3 +82,7 @@ cat('<script>\n',
     });',
 '</script>'
 )
+
+# close out file
+cat("</body></html>", file="myAwesomePlot.html")
+
