@@ -7,41 +7,47 @@ library(rjson)
 # create a plot with some fake data
 
 set.seed(955)
-dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3), yvar = 1:20 + rnorm(20,sd=3))
+#dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3), yvar = 1:20 + rnorm(20,sd=3), label=c(paste0("label",c(1:20))))
 
-g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_smooth() + geom_point(shape=19, aes(color = cond), size=5)
+dat = pMPDF
+colnames(dat) = c("label","xvar","yvar")
+#print(pMPDF[1,])
 
-# you need to print the plot in order to capture it with grid.export
+#g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=19, aes(color = cond), size=5)
+g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=20, size=1)
+
+# you need to print the plot in order to capture it with grid.export (which produces an SVG version of the current grid page)
 g4
 # exporting the plot to a .svg file
-g4.svg <- grid.export("plot1.svg",addClasses=TRUE)
+g4.svg <- grid.export("tempPlot.svg", addClasses=TRUE)
 ```
 
 ```{r, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
 
-# load the d3.js script
+# load the d3.js script (link to the d3.js library) (d3 = Data-Driven Documents) JavaScript library to produce interactive data visualizations in web browsers.) (prints to testSVGKnitr.html file)
 cat('<script src="http://d3js.org/d3.v3.min.js"></script>')
 
-# convert the svg file to an XML string and print it 
+# convert the svg file to an XML string and print it (prints to testSVGKnitr.html file)
 cat(saveXML(g4.svg$svg))
 
-# looks like you convert the ggplot object data to JSON for use by d3.js
-# looks like the aesthetics are included here? I don't seem them defined 
-# anywhere else
+# rjson package converts JSON objects to R objects (and vice versa)
+# JSON = Javascript object notation
+# converts the ggplot object data to JSON to be used by d3.js
+# prints the JSON object and its aesthetics to testSVGKnitr.html file
 cat(
   '<script> ourdata=',
   rjson::toJSON(apply(g4$data,MARGIN=1,FUN=function(x)return(list(x)))),
   '</script>'
 )
 
-# d3.js data definition
+# d3.js code to define data
 cat(
   '<script> dataToBind = ',
   'd3.entries(ourdata.map(function(d,i) {return d[0]}))',
   '</script>'
 )
 
-# d3.js scatter plot
+# d3.js code for scatter plot
 cat(
   '<script>\n',
   'scatterPoints = d3.select(".points").selectAll("use");\n',
@@ -49,8 +55,7 @@ cat(
   '</script>\n'
 )
 
-# d3.js code to support the hover tooltips (hover over a point on the plot)
-# this is apparently ALL for the tooltip
+# d3.js code for hover tooltips (this is all for hovering mouse over point)
 cat('<script>\n',
     'scatterPoints  
     .on("mouseover", function(d) {      
@@ -88,7 +93,7 @@ cat('<script>\n',
     .attr("fill","gray")      
     .attr("fill-opacity",1)
     .attr("opacity",1)
-    .text("y:" + Math.round(d.value.yvar*100)/100);
+    .text(d.value.label);
     })              
     .on("mouseout", function(d) {       
     d3.select("#tooltip").remove();  
@@ -96,3 +101,8 @@ cat('<script>\n',
 '</script>'
 )
 ```
+
+
+%line 91
+.text("y:" + Math.round(d.value.yvar*100)/100);
+
