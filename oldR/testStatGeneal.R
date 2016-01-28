@@ -1,7 +1,7 @@
 load("data/statGeneal.rda")
 statGeneal = statGeneal[-which(is.na(statGeneal$year)),]
 statGeneal = statGeneal[!duplicated(statGeneal$child),]
-#myNode = statGeneal[,-which(names(statGeneal) %in% c("parent"))]
+myNode = statGeneal[,-which(names(statGeneal) %in% c("parent"))]
 
 rowRemove = c()
 for (i in 1:nrow(statGeneal)){
@@ -65,6 +65,9 @@ plotPathOnAllAn = function(path, geneal, ig, binVector=sample(1:12, 12)){
   
   # All node labels and their x, y position (label, x, y)
   pMPDF <- buildMinusPathDF(path, geneal, ig, binVector)
+  
+  pMPDF2 = pMPDF[-which(is.na(pMPDF$label)),]
+  
   # x, y, xend, yend of all edges
   eTDF <- buildEdgeTotalDF(geneal, ig, binVector)
   # label, xstart, ystart, xend, yend, x, y (of only path)
@@ -123,7 +126,7 @@ buildMinusPathDF = function(path, geneal, ig, binVector=1:12){
   label=tG$child
   x=tG$year
   y=tG$y
-  # If the label is part of the path, then we change the its value to NA
+  # If the label is part of the path, then we change its value to NA
   for (i in 1:length(label)){
     if (label[i]%in%path$pathVertices){
       label[i]=NA
