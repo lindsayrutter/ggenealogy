@@ -1,4 +1,5 @@
 load("data/statGeneal.rda")
+geneal = statGeneal
 statGeneal = statGeneal[-which(is.na(statGeneal$year)),]
 statGeneal = statGeneal[!duplicated(statGeneal$child),]
 myNode = statGeneal[,-which(names(statGeneal) %in% c("parent"))]

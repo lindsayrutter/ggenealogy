@@ -5,13 +5,29 @@ library(XML)
 library(rjson)
 
 # create a plot with some fake data
+set.seed(2)
 
-set.seed(955)
-dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3), yvar = 1:20 + rnorm(20,sd=3), label=c(paste0("label",c(1:20))))
-g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=19, aes(color = cond), size=5)
+# start and end nodes indices in each edges
+start=c(1, 1, 1, 5)
+end=c(18, 19, 20, 6)
 
-#load("../myDatSmall.RData")
-#g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=20, size=1)
+# fake data (scatterplot/network)
+#dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3), yvar = 1:20 + rnorm(20,sd=3), label=c(paste0("label",c(1:20))))
+#dat2 = cbind(dat[c(start, end), ], gr = 1:length(start))
+# without line
+#g4 = ggplot(dat, aes(x = xvar, y = yvar)) + geom_point(shape = 20, size = 5, aes(color=cond))
+# with line
+#g4 = ggplot(dat, aes(x = xvar, y = yvar)) + geom_point(shape = 20, size = 5, aes(color=cond)) + geom_line(aes(x = xvar, y = yvar, group = gr), data = dat2)
+
+# real data (scatterplot/network of statistics genealogy).
+load(system.file("myDatSmall.RData", package="ggenealogy"))
+dat$label = factor(dat$label)
+dat$cond=factor(rep(c("A","B"), each=50))
+dat2 = cbind(dat[c(start, end), ], gr = 1:length(start))
+# without line
+#g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=19, aes(color = cond), size=5)
+# with line
+g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=19, aes(color = cond), size=5) + geom_line(aes(x = xvar, y = yvar, group = gr), data = dat2)
 
 # you need to print the plot in order to capture it with grid.export (which produces an SVG version of the current grid page)
 g4
@@ -80,7 +96,7 @@ cat('<script>\n',
     .attr("fill","gray")
     .attr("fill-opacity",1)
     .attr("opacity",1)
-    .text("x:" + Math.round(d.value.xvar*100)/100);
+    .text("x: " + d.value.xvar);
     tooltip.append("text")
     .attr("transform","scale(1,-1)")
     .attr("x",5)
@@ -90,7 +106,7 @@ cat('<script>\n',
     .attr("fill","gray")      
     .attr("fill-opacity",1)
     .attr("opacity",1)
-    .text("y:" + Math.round(d.value.yvar*100)/100);
+    .text("label: " + d.value.label);
     })              
     .on("mouseout", function(d) {       
     d3.select("#tooltip").remove();  
@@ -98,8 +114,3 @@ cat('<script>\n',
 '</script>'
 )
 ```
-
-
-%line 91
-.text("y:" + Math.round(d.value.yvar*100)/100);
-

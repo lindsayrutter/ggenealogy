@@ -270,6 +270,17 @@ buildEdgeTotalDF = function(geneal, ig, binVector=1:12){
   tG <- buildSpreadTotalDF(geneal, ig, binVector)
   eG <- igraph::get.data.frame(ig, "edges")
   
+  geneal = geneal[-which(is.na(geneal$year)),]
+  geneal = geneal[!duplicated(geneal$child),]
+  rowRemove = c()
+  for (i in 1:nrow(geneal)){
+    if (!geneal[i,]$parent %in% geneal$child){
+      rowRemove = c(rowRemove, i)
+    }
+  }
+  myEdge = geneal[-(rowRemove), which(names(geneal) %in% c("child","parent"))]
+  
+  
   # edgeTotalDF used in function plotPathOnAll()
   numEdges = length(igraph::E(ig))
   x=as.numeric(rep("",numEdges))
@@ -479,7 +490,15 @@ buildSpreadTotalDF = function(geneal, ig, binVector=1:12){
     stop("binVector must contain all numbers 1:length(binVector)")
   }
   
-  totalDF = igraph::get.data.frame(ig, "vertices")
+  geneal = geneal[-which(is.na(geneal$year)),]
+  geneal = geneal[!duplicated(geneal$child),]
+  totalDF = geneal[,-which(names(geneal) %in% c("parent"))]
+  totalDF = totalDF[,which(names(totalDF) %in% c("child"))]
+  totalDF = as.data.frame(totalDF)
+  colnames(totalDF) = "name"
+  totalDF$name = as.character(totalDF$name)
+  
+  #totalIG = igraph::get.data.frame(ig, "vertices")
   #totalDF = totalDF[!is.na(totalDF$name),]
   
   yearVector = c()
