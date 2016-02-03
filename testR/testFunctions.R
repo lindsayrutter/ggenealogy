@@ -253,54 +253,31 @@ buildDesList = function(v1, geneal, gen=0){
 #' This function takes the graph object and creates a data frame object of the edges between all parent-child relationships in the graph.
 #' 
 #' @param geneal the full genealogy  (in data frame format)
-#' @param ig the graph representation of the data genealogy (in igraph format)
-#' @param binVector the number of bins between 1 and length(binVector) (default is 12). For more information on choosing binVector size, please visit the ggenealogy vignette.
+#' @param myEdge data frame of edges
+#' @param tG data frame of all unique nodes and information pertaining to them
 #' @seealso \code{\link{dfToIG}} for information on producing ig from the genealogy
 #' @seealso \url{http://www.r-project.org} for iGraph information
-buildEdgeTotalDF = function(geneal, ig, binVector=1:12){
-  
-  if(class(ig)!="igraph"){
-    stop("ig must be an igraph object")
-  }
-  
-  if(sum(1:length(binVector)%in%binVector)!=length(binVector)){
-    stop("binVector must contain all numbers 1:length(binVector)")
-  }
-  
-  tG <- buildSpreadTotalDF(geneal, ig, binVector)
-  eG <- igraph::get.data.frame(ig, "edges")
-  
-  geneal = geneal[-which(is.na(geneal$year)),]
-  geneal = geneal[!duplicated(geneal$child),]
-  rowRemove = c()
-  for (i in 1:nrow(geneal)){
-    if (!geneal[i,]$parent %in% geneal$child){
-      rowRemove = c(rowRemove, i)
-    }
-  }
-  myEdge = geneal[-(rowRemove), which(names(geneal) %in% c("child","parent"))]
-  
-  
+buildEdgeTotalDF = function(geneal, myEdge, tG){
   # edgeTotalDF used in function plotPathOnAll()
-  numEdges = length(igraph::E(ig))
+  numEdges = nrow(myEdge)
   x=as.numeric(rep("",numEdges))
   y=as.numeric(rep("",numEdges))
   xend=as.numeric(rep("",numEdges))
   yend=as.numeric(rep("",numEdges))
   # For each edge in the graph
   for (i in 1:numEdges){
-    xname = as.character(eG[i,]$from)
-    xendname = as.character(eG[i,]$to)
-    x_i = getYear(xname, tG)
-    xend_i = getYear(xendname, tG)
-    if(!xname%in%tG$name) {
-      stop(paste(xname, "cannot be found in ig vertices"))
+    xname = myEdge$child[i]
+    xendname = myEdge$parent[i]
+    x_i = getYear(xname, geneal)
+    xend_i = getYear(xendname, geneal)
+    if(!xname%in%geneal$child) {
+      stop(paste(xname, "cannot be found in parent-child relationships, or does not have all details needed"))
     }
-    if(!xendname%in%tG$name) {
-      stop(paste(xendname, "cannot be found in ig vertices"))
+    if(!xendname%in%geneal$child) {
+      stop(paste(xendname, "cannot be found in parent-child relationships, or does not have all details needed"))
     }
-    y_i = tG$y[which(tG$name==xname)]
-    yend_i = tG$y[which(tG$name==xendname)]
+    y_i = tG$y[which(tG$child==xname)]
+    yend_i = tG$y[which(tG$child==xendname)]
     x[i] = x_i
     xend[i] = xend_i
     y[i] = y_i
@@ -319,21 +296,13 @@ buildEdgeTotalDF = function(geneal, ig, binVector=1:12){
 #' in the ful genealogy. However, the data frame object does not include the labels of the path varieties, as they
 #' will be treated differently.
 #' @param path path as returned from getPath() or a vector of two variety names which exist in the ig object
-#' @param geneal the full genealogy  (in data frame format)
-#' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param binVector vector of numbers between 1 and length(binVector), each repeated exactly once
+#' @param myNode data frame of unique nodes and their information
+#' @param myEdge data frame of edges
+#' @param tG
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
-buildMinusPathDF = function(path, geneal, ig, binVector=1:12){
-  
-  if(class(ig)!="igraph"){
-    stop("ig must be an igraph object")
-  }
-  
-  if(sum(1:length(binVector)%in%binVector)!=length(binVector)){
-    stop("binVector must contain all numbers 1:length(binVector)")
-  }
-  
+buildMinusPathDF = function(path, binVector=1:12, tG){
   if(mode(path)=="character"){
     if(length(path)!=2){
       stop("path needs to contain two variety names")
@@ -344,19 +313,27 @@ buildMinusPathDF = function(path, geneal, ig, binVector=1:12){
     stop("path does not appear to be a result of the getPath() function")
   } 
   
-  tG <- buildSpreadTotalDF(geneal, ig, binVector)
-  eG <- igraph::get.data.frame(ig, "edges")
+  #eG <- myEdge
   
-  label=tG$name
+  label=tG$child
   x=tG$year
   y=tG$y
   # If the label is part of the path, then we change the its value to NA
-  for (i in 1:length(label)){
-    if (label[i]%in%path$pathVertices){
-      label[i]=NA
+  #for (i in 1:length(label)){
+  #  if (label[i]%in%path$pathVertices){
+  #    label[i]=NA
+  #  }
+  #}
+  plotMinusPathDF = data.frame(label,x,y)
+  
+  rowRemove = c()
+  for (i in 1:nrow(plotMinusPathDF)){
+    if (plotMinusPathDF[i,]$label %in% path$pathVertices){
+      rowRemove = c(rowRemove, i)
     }
   }
-  plotMinusPathDF = data.frame(label,x,y)
+  
+  plotMinusPathDF = plotMinusPathDF[-rowRemove,]
   
   # Return the data frame object of the full genealogy
   plotMinusPathDF
@@ -424,34 +401,11 @@ buildPathDF = function(path){
 #' as inputs. From these objects, it creates a data frame object of the text label positions for the
 #' varieties in the path, as well as the edges only in the varieties in the path.
 #' @param path path as returned from getPath() or a vector of two variety names which exist in ig
-#' @param geneal the full genealogy  (in data frame format)
-#' @param ig the graph representation of the data genealogy (in igraph format)
-#' @param binVector vector of numbers between 1 and length(binVector), each repeated exactly once
+#' @param tG
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
-buildPlotTotalDF = function(path, geneal, ig, binVector=1:12){
-  if(class(ig)!="igraph"){
-    stop("ig must be an igraph object")
-  }
-  
-  if(mode(path)=="character"){
-    if(length(path)!=2){
-      stop("path needs to contain two variety names")
-    }
-    varieties <- path
-    path <- getPath(varieties[1], varieties[2], ig)
-  } else if(sum(names(path)%in%c("pathVertices", "yearVertices"))!=2){
-    stop("path does not appear to be a result of the getPath() function")
-  } 
-  
-  
-  if(sum(1:length(binVector)%in%binVector)!=length(binVector)){
-    stop("binVector must contain all numbers 1:length(binVector)")
-  }
-  
-  tG <- buildSpreadTotalDF(geneal, ig, binVector)
-  
+buildPlotTotalDF = function(path, tG){
   label=path$pathVertices
   x=as.numeric(path$yearVertices)
   xstart=x
@@ -459,8 +413,8 @@ buildPlotTotalDF = function(path, geneal, ig, binVector=1:12){
   ystart=rep(0,length(label))
   yend=rep(0,length(label))
   for (i in 2:length(label)){
-    ystart[i-1] = tG$y[match(label[i-1], tG$name)]
-    yend[i-1] = tG$y[match(label[i], tG$name)]
+    ystart[i-1] = tG$y[match(label[i-1], tG$child)]
+    yend[i-1] = tG$y[match(label[i], tG$child)]
     xend[i-1] = xstart[i]
   }
   ystart[i] = yend[i-1]
@@ -476,53 +430,26 @@ buildPlotTotalDF = function(path, geneal, ig, binVector=1:12){
 #' 
 #' Constructs a data frame object so that varieties are spread such that they do not overlap, even
 #' though the x-axis position will represent years.
-#' @param geneal the full genealogy  (in data frame format)
-#' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param myNode data frame containing each unique node and its information
 #' @param binVector vector of numbers between 1 and length(binVector), each repeated exactly once
 #' This vector will determine the order that increasing y index positions are repeatedly assigned to. For instance, if binVector = c(1,4,7,10,2,5,8,11,3,6,9,12), then y-axis position one will be assigned to a variety in the first bin of years, y-axis position two will be assigned to a variety in the fourth bin of years, ...., and y-axis position thirteen will be assigned again to a variety in the first bin of years. This vector can help minimize overlap of the labelling of varieties, without regard to how the layout affects the edges between varieties, as those edges will be colored faintly.
 #' @seealso \url{http://www.r-project.org} for iGraph information
-buildSpreadTotalDF = function(geneal, ig, binVector=1:12){
-  if(class(ig)!="igraph"){
-    stop("ig must be an igraph object.")
-  }
-  
+buildSpreadTotalDF = function(myNode, binVector=1:12){
   if(sum(1:length(binVector)%in%binVector)!=length(binVector)){
     stop("binVector must contain all numbers 1:length(binVector)")
   }
   
-  geneal = geneal[-which(is.na(geneal$year)),]
-  geneal = geneal[!duplicated(geneal$child),]
-  totalDF = geneal[,-which(names(geneal) %in% c("parent"))]
-  totalDF = totalDF[,which(names(totalDF) %in% c("child"))]
-  totalDF = as.data.frame(totalDF)
-  colnames(totalDF) = "name"
-  totalDF$name = as.character(totalDF$name)
-  
-  #totalIG = igraph::get.data.frame(ig, "vertices")
-  #totalDF = totalDF[!is.na(totalDF$name),]
-  
-  yearVector = c()
-  for (i in 1:dim(totalDF)[1]){
-    currYear = getYear(totalDF[i,],geneal)
-    yearVector = c(yearVector, currYear)
-  }
-  
-  totalDF2 = cbind(totalDF, yearVector)
-  colnames(totalDF2)[2] = "year"
-  totalDF = totalDF2
-  
-  totalDF = totalDF[order(totalDF$year, decreasing=FALSE), ]
-  
-  numrows <- ceiling(nrow(totalDF)/length(binVector))
+  nodeDF = myNode[,which(names(myNode) %in% c("child","year"))]
+  nodeDF = nodeDF[order(nodeDF$year, decreasing=FALSE), ]
+  numrows <- ceiling(nrow(nodeDF)/length(binVector))
   
   idx <- matrix(1:(numrows*length(binVector)), ncol=length(binVector), nrow=numrows, byrow=TRUE)
   idx <- idx[, binVector]
-  idx <- as.numeric(t(idx))[1:nrow(totalDF)]
+  idx <- as.numeric(t(idx))[1:nrow(nodeDF)]
   
-  spreadTotalDF <- totalDF
-  spreadTotalDF$y <- jitter(rep(1:numrows, length.out=nrow(totalDF)), amount=.5)[idx]
-  
-  spreadTotalDF
+  spreadNodeDF <- nodeDF
+  spreadNodeDF$y <- jitter(rep(1:numrows, length.out=nrow(nodeDF)), amount=.5)[idx]
+  spreadNodeDF
 }
 
 #' Returns a list of the ancestors of a particular variety (if they exist)
@@ -1087,9 +1014,28 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
     stop("path does not appear to be a result of the getPath() function")
   } 
   
-  pMPDF <- buildMinusPathDF(path, geneal, ig, binVector)
-  eTDF <- buildEdgeTotalDF(geneal, ig, binVector)
-  pTDF <- buildPlotTotalDF(path, geneal, ig, binVector)
+  # geneal (412 5)
+  # geneal (392 5)
+  geneal = geneal[-which(is.na(geneal$year)),] #remove child without x var (if not doing inference)
+  # geneal (196 5)
+  myNode = geneal[!duplicated(geneal$child),]
+  # myNode (196 4)
+  myNode = myNode[,-which(names(myNode) %in% c("parent"))] #list unique nodes
+  
+  # Remove parents without x var (if not doing inference)
+  rowRemove = c()
+  for (i in 1:nrow(geneal)){
+    if (!geneal[i,]$parent %in% geneal$child){
+      rowRemove = c(rowRemove, i)
+    }
+  }
+  # myEdge (301 2)
+  myEdge = geneal[-(rowRemove), which(names(geneal) %in% c("child","parent"))]
+
+  tG <- buildSpreadTotalDF(myNode, binVector)
+  pMPDF <- buildMinusPathDF(path, binVector, tG)
+  eTDF <- buildEdgeTotalDF(geneal, myEdge, tG)
+  pTDF <- buildPlotTotalDF(path, tG)
   
   textFrame = data.frame(x = pMPDF$x, y = pMPDF$y, label = pMPDF$label)
   textFrame = transform(textFrame,
