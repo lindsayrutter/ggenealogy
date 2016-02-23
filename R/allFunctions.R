@@ -961,7 +961,7 @@ plotDegMatrix = function(varieties,ig,geneal,xLab="Variety",yLab="Variety",legen
     ggplot2::geom_raster() +
     ggplot2::scale_x_continuous(breaks=seq(1, length(varieties), 1), labels=varieties) +
     ggplot2::scale_y_continuous(breaks=seq(1, length(varieties), 1), labels=rev(varieties)) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) + ggplot2::coord_equal()
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 15), axis.text.y = ggplot2::element_text(size = 15), axis.title = ggplot2::element_text(size = 15), legend.title = ggplot2::element_text(size = 15), legend.text = ggplot2::element_text(size = 15)) + ggplot2::coord_equal()
   heatMap
 }
 
