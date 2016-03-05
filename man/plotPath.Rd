@@ -22,7 +22,7 @@ label.
 \examples{
 data(sbGeneal)
 ig <- dfToIG(sbGeneal)
-p <- getPath("Brim","Bedford",ig,sbGeneal)
+p <- getPath("Brim", "Bedford", ig, sbGeneal)
 plotPath(p)
 }
 \seealso{

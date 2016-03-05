@@ -6,11 +6,11 @@ library(rjson)
 
 # create a plot with some fake data
 
-#set.seed(955)
-#dat <- data.frame(cond = rep(c("A", "B"), each=10), xvar = 1:20 + rnorm(20,sd=3), yvar = 1:20 + rnorm(20,sd=3), label=c(paste0("label",c(1:20))))
+set.seed(955)
+#dat <- data.frame(cond = rep(c("A", "B"), each=50), xvar = rnorm(100,sd=3), yvar = rnorm(100,sd=3), label=c(paste0("label",c(1:100))))
 #g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=19, aes(color = cond), size=5)
 
-load("../myDatSmall.RData")
+load("myDatSmall.RData")
 dat$label = factor(dat$label)
 dat$cond=factor(rep(c("A","B"), each=50))
 g4 = ggplot(dat, aes(x=xvar, y=yvar)) + geom_point(shape=19, aes(color = cond), size=5)
@@ -100,6 +100,3 @@ cat('<script>\n',
 '</script>'
 )
 ```
-
-%.text("x:" + Math.round(d.value.xvar*100)/100);
-

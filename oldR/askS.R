@@ -40,5 +40,3 @@ for (i in 1:nrow(dat)) {
 
 grid.script(filename = "aqm.js", inline = TRUE)
 grid.export("interactiveScat.svg")
-
-

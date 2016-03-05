@@ -22,10 +22,160 @@ getDegree("Boris Shulkin", "R. Clifford Blair", ig, statGeneal)
 getBasicStatistics(ig)
 statGeneal[which(statGeneal$child=="Boris Shulkin"),]
 
+
 pathCC = getPath("Scott Zeger","Kay See Tan", ig, statGeneal, isDirected=FALSE)
 # Have not dealt with cases where year is NA
 # Possibly imputation?? (halfway between parent and child)
 plotPath(pathCC)
+
+# see statistics professors with most statistics children 
+allNameOrig = unique(c(statGeneal$child,statGeneal$parent))
+allName = allNameOrig
+lengthVec=c()
+for (i in 1:length(allName)){
+  lengthVec = c(lengthVec, length(getChild(allName[i], statGeneal)))
+}
+childDat = data.frame(Name = allName, NumChild = lengthVec)
+
+name1Vec = c()
+name2Vec = c()
+shortPathVec=c()
+for (i in 1:(length(allName)-1)){
+  for (j in (i+1):(length(allName))){
+    name1Vec = c(name1Vec, allName[i])
+    name2Vec = c(name2Vec, allName[j])
+    shortPathVec = c(shortPathVec, length(getPath(allName[i], allName[j], ig, statGeneal, isDirected=FALSE))$pathVertices)
+  }
+}
+
+allName=allNameOrig[-which(allName=="Mike West")]
+shortPathVec=c()
+vecName1 = c()
+for (i in 1:length(allName)){
+  vecName1 = c(vecName1, allName[i])
+  shortPathVec = c(shortPathVec, length(getPath("Mike West",allName[i], ig, statGeneal, isDirected=FALSE)$pathVertices))
+}
+
+plotAncDes("David Cox", statGeneal, mAnc = 6, mDes = 6, vCol = "blue")
+mypath=getPath("Peter Bloomfield", "Kay See Tan", ig, statGeneal, isDirected=FALSE)
+
+
+
+
+
+
+
+
+buildAncDesTotalDF = function(v1, geneal, mAnc=3, mDes=3){
+  
+  gen <- type <- NULL
+  vals = list()
+  # Set data frame that we will plot
+  gen.vars2 = v1
+  vals$gen.vars = gen.vars2
+  
+  if(length(v1)>0){
+    # This ldply statement is converting a list to a datatype. It takes the v1 variety and returns the
+    # plot coordinates of all its parents and children.
+    temp2 = plyr::ldply(vals$gen.vars, function(i){
+      if(i %in% geneal$child | i %in% geneal$parent){
+        # This appends the plot coordinates of the data frame constructed for all ancesteors and descendents of the variety
+        temp = cbind(variety=i, buildAncDesCoordDF(rbind(nodeToDF(buildAncList(i, geneal)), nodeToDF(buildDesList(i, geneal)))))
+        # This create an empty data frame in the event that there are no ancestors nor descendents
+        temp$label2 = temp$label
+      } 
+      # If there is no genetic information, label2 will say "No Information Found" 
+      else {
+        temp = data.frame(variety=i, label=i, root=NA, root.gen=0, gen=0, type=0, branch=0, x=0, y=0, xstart=0, ystart=0, xend=0, yend=0, branchx=0, branchy=0, id=0, par.id=0, size=2, label2=paste(i, "-", "No Information Found", sep=""))
+      }
+      # We can remove the columns "id" and "Pair.id" because we do not need them in the actual plot.
+      # They were only used to ensure the coordinates were all unique.
+      unique(temp[,-which(names(temp)%in%c("id", "par.id"))])
+    })
+    
+    # This creates a unique color for the variety label of interest
+    cols = hcl(h=seq(0, 300, by=50), c=80, l=55, fixup=TRUE)
+    temp2$color = "#000000"
+    
+    # The number 7 was selected as it is the average working memory maximum
+    if(length(gen.vars2)<=7){
+      var.list = which(temp2$label%in%gen.vars2)
+      temp2$color[var.list] = cols[as.numeric(factor(temp2$label[var.list]))]
+    }
+    
+    # This is stored separately in case this will be extended to be used for Shiny reactive programming.
+    genDF = temp2
+    
+    temp = merge(data.frame(variety=v1,NewName=vals$gen.vars), plyr::ddply(genDF, "label", plyr::summarise, gen=mean(gen*c(-1,1)[(type=="descendant")+1])), by.x=2, by.y=1)
+    vals$match = temp[order(temp$gen, temp$variety),]
+  } else {
+    genDF = data.frame()
+    vals$match = data.frame()
+  }
+  removeAnc = length(which(genDF$gen > mAnc & genDF$type == "ancestor"))
+  removeDes = length(which(genDF$gen > mDes & genDF$type == "descendant"))
+  if (removeAnc > 0){
+    genDF = genDF[-which(genDF$gen > mAnc & genDF$type == "ancestor"),]
+  }
+  if (removeDes > 0){
+    genDF = genDF[-which(genDF$gen > mDes & genDF$type == "descendant"),] 
+  }  
+  genDF
+}
+
+plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
+  color <- x <- y <- label2 <- size <- xstart <- ystart <- xend <- yend <- branchx <- branchy <- NULL
+  # Plot the data frame, if it exists
+  gDF = buildAncDesTotalDF(v1, geneal, mAnc, mDes)
+  gDF[gDF$root.gen==0&gDF$gen==0,]$color = vColor
+  if(nrow(gDF)>0){
+    plotGenImage = ggplot2::qplot(data=gDF, x=x, y=y, label=label2, geom="text", vjust=-.25, hjust=.5, 
+                                  size=size, colour=color) +
+      ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend),inherit.aes=F) + 
+      # Draw the underline of the variety
+      ggplot2::geom_segment(ggplot2::aes(x=xend, y=yend, xend=branchx, yend=branchy),inherit.aes=F) +
+      ggplot2::facet_wrap(~variety, scales="free", ncol=2) +
+      ggplot2::scale_size_continuous(range=c(3,3),guide="none") +
+      ggplot2::scale_colour_identity() +
+      ggplot2::theme_bw() +
+      ggplot2::theme(axis.text=ggplot2::element_blank(), 
+                     axis.ticks=ggplot2::element_blank()) + 
+      ggplot2::scale_x_continuous(expand = c(.1, 1.075)) + 
+      ggplot2::scale_y_continuous(expand = c(.1, 1.075)) + 
+      ggplot2::labs(x="",y="")
+  } else {
+    plotGenImage = ggplot2::ggplot() + 
+      ggplot2::geom_text(ggplot2::aes(x=0, y=0, label="Please select varieties\n\n Note: It may take a moment to process the v1")) +         
+      ggplot2::theme_bw() + 
+      ggplot2::theme(axis.text=ggplot2::element_blank(), 
+                     axis.ticks=ggplot2::element_blank(), 
+                     axis.title=ggplot2::element_blank()) +
+      ggplot2::labs(x="",y="")
+  }
+  plotGenImage
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Jan de Leeuw had path of 3
+# Mike West had path of 5
+# Dipak Dey had path of 3
 
 #plotPathOnAll(pathCC, statGeneal, ig, binVector = sample(1:12, 12))
 # Probably don't need to write out full name (just points/dots)

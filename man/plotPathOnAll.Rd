@@ -4,15 +4,25 @@
 \alias{plotPathOnAll}
 \title{Plot a path between two vertices over the full genealogy}
 \usage{
-plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12))
+plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
+  edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 2,
+  pathNodeSize = 2.5, pathNodeFont = "bold")
 }
 \arguments{
   \item{path}{path as returned from getPath() or a vector
   of two variety names which exist in ig} \item{geneal}
   {the full genealogy (in data frame format)} \item{ig}
-  {the graph representation of the data genealogy (in igraph
-  format)} \item{binVector}{vector of numbers between 1 and
-  length(binVector), each repeated exactly once}
+  {the graph representation of the data genealogy (in
+  igraph format)} \item{binVector}{vector of numbers between
+  1 and length(binVector), each repeated exactly once}
+  \item{edgeCol}{color of the non-path edges, default is
+  "gray84"} \item{pathEdgeCol}{color of the path edges,
+  default is "seagreen"} \item{nodeSize}{text size of the
+  non-path node labels, default is 2} \item{pathNodeSize}
+  {text size of the path node labels, default is 2.5}
+  \item{pathNodeFont}{font face of text of the path node
+  labels ("plain", "italic", "bold", "bold.italic"), default
+  is "bold"}
 }
 \description{
 This function requires a path and the ig object, and
