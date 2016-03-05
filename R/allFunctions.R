@@ -586,6 +586,9 @@ getBasicStatistics = function(ig){
 #' getDescendants("Essex", sbGeneal, 3)
 getDescendants = function(v1, geneal, gen=3){
   id.offset <- NULL
+  if (is.null(buildDesList(v1, geneal))){
+    return(data.frame())
+  }
   dDF = buildAncDesCoordDF(nodeToDF(buildDesList(v1, geneal)))
   subDF = dDF[dDF$gen <= gen & dDF$gen != 0,]
   keep = c("label","gen")
@@ -904,14 +907,16 @@ plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
       ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend),inherit.aes=F) + 
       # Draw the underline of the variety
       ggplot2::geom_segment(ggplot2::aes(x=xend, y=yend, xend=branchx, yend=branchy),inherit.aes=F) +
-      ggplot2::facet_wrap(~variety, scales="free", ncol=2) +
+      # ggplot2::facet_wrap(~variety, scales="free", ncol=2) +
       ggplot2::scale_size_continuous(range=c(3,3),guide="none") +
       ggplot2::scale_colour_identity() +
       ggplot2::theme_bw() +
-      ggplot2::theme(axis.text=ggplot2::element_blank(), 
+      ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                     panel.grid.minor = ggplot2::element_blank(),
+                     axis.text=ggplot2::element_blank(), 
                      axis.ticks=ggplot2::element_blank()) + 
-      ggplot2::scale_x_continuous(expand = c(.1, 1.075)) + 
-      ggplot2::scale_y_continuous(expand = c(.1, 1.075)) + 
+      # ggplot2::scale_x_continuous(expand = c(.1, 1.075)) + 
+      # ggplot2::scale_y_continuous(expand = c(.1, 1.075)) + 
       ggplot2::labs(x="",y="")
   } else {
     plotGenImage = ggplot2::ggplot() + 
