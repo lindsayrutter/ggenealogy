@@ -140,8 +140,8 @@ plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
       ggplot2::theme_bw() +
       ggplot2::theme(axis.text=ggplot2::element_blank(), 
                      axis.ticks=ggplot2::element_blank()) + 
-      ggplot2::scale_x_continuous(expand = c(.1, 1.075)) + 
-      ggplot2::scale_y_continuous(expand = c(.1, 1.075)) + 
+      #ggplot2::scale_x_continuous(expand = c(.1, 1.075)) + #limits = c(-5000, 5000)
+      #ggplot2::scale_y_continuous(expand = c(.1, 1.075)) + 
       ggplot2::labs(x="",y="")
   } else {
     plotGenImage = ggplot2::ggplot() + 
