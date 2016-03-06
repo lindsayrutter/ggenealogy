@@ -29,21 +29,60 @@ pathCC = getPath("Scott Zeger","Kay See Tan", ig, statGeneal, isDirected=FALSE)
 plotPath(pathCC)
 
 # see statistics professors with most statistics children 
-allNameOrig = unique(c(statGeneal$child,statGeneal$parent)) #2987
-allName = allNameOrig
+allIndvl = unique(c(statGeneal$child,statGeneal$parent)) #3613
 lengthVec=c()
-for (i in 1:length(allName)){
-  lengthVec = c(lengthVec, nrow(getDescendants(allName[i], statGeneal, gen = 8)))
+for (i in 1:length(allIndvl)){
+  lengthVec = c(lengthVec, nrow(getDescendants(allIndvl[i], statGeneal, gen = 8)))
 }
-childDat = data.frame(Name = allName, NumChild = lengthVec)
+childDat = data.frame(Name = allIndvl, NumChild = lengthVec)
 
 
+library(dplyr)
+#allIndvl = unique(c(statGeneal$child,statGeneal$parent)) #3613
+descDat <- data.frame(Name = unique(c(statGeneal$child, statGeneal$parent)))
+descDat <- transform(descDat, FUN = nrow(getDescendants(as.character(Name), statGeneal, gen = 8)))
+#getNumDesc = function(a){
+#}
+descDat <- apply(descDat[,'Name'], 1, function(x) testFunc[x(1)])
+descDat <- apply(descDat[,'Name'], 1, function(x) nrow(getDescendants(as.character(x), statGeneal, gen = 8)))
 
 
+testFunc <- function(a) nrow(getDescendants(as.character(a), statGeneal, gen = 8))
+lapply(as.character(descDat[,c('Name')]), function(x) testFunc(x[1]))
+res = lapply(as.character(descDat[,c('Name')]), function(x) testFunc(x[1]))
+
+#WORKS
+#res = lapply(descDat[,c('Name')], function(x) testFunc(x[1]))
+
+dat <- data.frame(x=c(1,2), y=c(3,4), z=c(5,6))
+testFunc <- function(a, b) a + b
+apply(dat[,c('x','z')], 1, function(x) testFunc(x[1],x[2]))
+
+descDat <- unique(c(statGeneal$child, statGeneal$parent))
+testFunc <- function(a) nrow(getDescendants(a, statGeneal, gen = 8))
+res=sapply(descDat, testFunc)
+table(res)
+which(res==159)
+
+library(stringi)
+stri_rand_lipsum(1)
+
+words <- data.frame(Word = )
 
 
+lengthVec=c()
+for (i in 1:length(allIndvl)){
+  lengthVec = c(lengthVec, nrow(getDescendants(allIndvl[i], statGeneal, gen = 8)))
+}
 
 
+descDat = data.frame(Name = allIndvl, NumChild = nrow(getDescendants(allIndvl[1:3613], statGeneal, gen = 8)))
+
+# dplyr arrange can be used to sort column length in DF male
+alea <- arrange(male,length)
+# sort descending maled <- arrange(male,desc(length))
+ruffeLW <- mutate(ruffeLW,logL=log(length),logW=log(weight))
+head(ruffeLW)
 
 name1Vec = c()
 name2Vec = c()
