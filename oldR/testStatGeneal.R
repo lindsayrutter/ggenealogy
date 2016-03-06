@@ -58,16 +58,14 @@ dat <- data.frame(x=c(1,2), y=c(3,4), z=c(5,6))
 testFunc <- function(a, b) a + b
 apply(dat[,c('x','z')], 1, function(x) testFunc(x[1],x[2]))
 
+data(statGeneal)
+
+library(dplyr)
 descDat <- unique(c(statGeneal$child, statGeneal$parent))
-testFunc <- function(a) nrow(getDescendants(a, statGeneal, gen = 8))
-res=sapply(descDat, testFunc)
-table(res)
-which(res==159)
-
-library(stringi)
-stri_rand_lipsum(1)
-
-words <- data.frame(Word = )
+testFunc <- function(variety) nrow(getDescendants(variety, statGeneal, gen = 8))
+numDesc <- sapply(descDat, testFunc)
+table(numDesc)
+which(numDesc==159)
 
 
 lengthVec=c()
