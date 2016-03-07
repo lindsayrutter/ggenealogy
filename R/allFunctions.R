@@ -715,6 +715,10 @@ getParent = function(v1, geneal){
 #' getPath("Tokyo","Volstate",ig,sbGeneal)
 #' @export
 getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
+  v1Year = getYear(v1, geneal)
+  v2Year = getYear(v2, geneal)
+  geneal = geneal[which(geneal$parent!=""),]
+  ig = dfToIG(geneal)
   if(!is.character(v1) & !is.character(v2)){
     stop("First two arguments must be strings")
   } else {
@@ -753,6 +757,12 @@ getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
       for (i in 1:length(pathVIndicesForward)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesForward[i]))
         yearVertices = c(yearVertices, getYear(pathVertices[i], geneal))
+        if (is.na(getYear(pathVertices[i], geneal)) && pathVertices[i] == v1){
+          yearVertices[i] = v1Year
+        }
+        if (is.na(getYear(pathVertices[i], geneal)) && pathVertices[i] == v2){
+          yearVertices[i] = v2Year
+        }
       }
       retPath = list(pathVertices = pathVertices, yearVertices = yearVertices)
     }
@@ -761,6 +771,12 @@ getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
       for (i in 1:length(pathVIndicesReverse)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesReverse[i]))
         yearVertices = c(yearVertices, getYear(pathVertices[i], geneal))
+        if (is.na(getYear(pathVertices[i], geneal)) && pathVertices[i] == v1){
+          yearVertices[i] = v1Year
+        }
+        if (is.na(getYear(pathVertices[i], geneal)) && pathVertices[i] == v2){
+          yearVertices[i] = v2Year
+        }   
       }
       retPath = list(pathVertices = pathVertices, yearVertices = yearVertices)
     }
@@ -771,6 +787,12 @@ getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
       for (i in 1:length(pathVIndices)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndices[i]))
         yearVertices = c(yearVertices, getYear(pathVertices[i], geneal))
+        if (is.na(getYear(pathVertices[i], geneal)) && pathVertices[i] == v1){
+          yearVertices[i] = v1Year
+        }
+        if (is.na(getYear(pathVertices[i], geneal)) && pathVertices[i] == v2){
+          yearVertices[i] = v2Year
+        }
       }
       retPath = list(pathVertices = pathVertices, yearVertices = yearVertices)
     }
