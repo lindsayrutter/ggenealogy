@@ -7,19 +7,16 @@
 dfToIG(geneal, vertexinfo = NULL, edgeweights = 1, isDirected = FALSE)
 }
 \arguments{
-  \item{geneal}{the full genealogy (in data frame format)}
-  \item{vertexinfo}{(default NULL) either names of columns
-  in the genealogy which should be added to the database as
-  vertex information or a data frame with information for all
-  vertices such that the first column contains vertex names.}
-  \item{edgeweights}{(default 1) name of a column which
-  contains edge weights} \item{isDirected}{(default FALSE)
-  should the graph be a directed graph?}
+\item{geneal}{the full genealogy  (in data frame format)}
+
+\item{vertexinfo}{(default NULL) either names of columns in the genealogy which should be added to the database as vertex information or a data frame with information for all vertices such that the first column contains vertex names.}
+
+\item{edgeweights}{(default 1) name of a column which contains edge weights}
+
+\item{isDirected}{(default FALSE) should the graph be a directed graph?}
 }
 \description{
-Processes the genealogy into an igraph object with
-appropriate vertex information, graph type, and edge
-weights.
+Processes the genealogy into an igraph object with appropriate vertex information, graph type, and edge weights.
 }
 \seealso{
 \url{http://www.r-project.org} for iGraph information

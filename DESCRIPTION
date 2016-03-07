@@ -17,4 +17,3 @@ Suggests:
     stringr (>= 0.6.2),
     knitr,
     roxygen2 (>= 3.0.0)
-Roxygen: list(wrap = TRUE)

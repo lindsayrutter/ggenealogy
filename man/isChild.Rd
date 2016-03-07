@@ -7,13 +7,14 @@
 isChild(child, parent, geneal)
 }
 \arguments{
-  \item{child}{possible child variety} \item{parent}{possible
-  parent variety} \item{geneal}{the full genealogy (in data
-  frame format)}
+\item{child}{possible child variety}
+
+\item{parent}{possible parent variety}
+
+\item{geneal}{the full genealogy  (in data frame format)}
 }
 \description{
-Returns a boolean variable for whether the first variety is
-a child of the second variety
+Returns a boolean variable for whether the first variety is a child of the second variety
 }
 \examples{
 data(sbGeneal)

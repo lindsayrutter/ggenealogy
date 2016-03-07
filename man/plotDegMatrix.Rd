@@ -8,17 +8,20 @@ plotDegMatrix(varieties, ig, geneal, xLab = "Variety", yLab = "Variety",
   legendLab = "Degree")
 }
 \arguments{
-  \item{varieties}{subset of varieties used to generate
-  the heat map} \item{ig}{the graph representation of the
-  data genealogy (in igraph format)} \item{geneal}{the full
-  genealogy (in data frame format)} \item{xLab}{string label
-  on the x axis (default is "Variety")} \item{yLab}{string
-  label on the y axis (default is "Variety")} \item{legendLab}
-  {string label on the legend (default is "Degree")}
+\item{varieties}{subset of varieties used to generate the heat map}
+
+\item{ig}{the graph representation of the data genealogy (in igraph format)}
+
+\item{geneal}{the full genealogy  (in data frame format)}
+
+\item{xLab}{string label on the x axis (default is "Variety")}
+
+\item{yLab}{string label on the y axis (default is "Variety")}
+
+\item{legendLab}{string label on the legend (default is "Degree")}
 }
 \description{
-Returns the image object to show the heat map of degrees
-between the inputted set of vertices
+Returns the image object to show the heat map of degrees between the inputted set of vertices
 }
 \examples{
 data(sbGeneal)

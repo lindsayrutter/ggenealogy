@@ -7,13 +7,12 @@
 getChild(v1, geneal)
 }
 \arguments{
-  \item{v1}{the label of the variety/vertex of interest (in
-  character string format)} \item{geneal}{the full genealogy
-  (in data frame format)}
+\item{v1}{the label of the variety/vertex of interest (in character string format)}
+
+\item{geneal}{the full genealogy  (in data frame format)}
 }
 \description{
-This function returns zero or more values that indicate the
-children of the inputted variety.
+This function returns zero or more values that indicate the children of the inputted variety.
 }
 \examples{
 data(sbGeneal)

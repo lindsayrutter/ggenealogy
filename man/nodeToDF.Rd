@@ -7,17 +7,18 @@
 nodeToDF(tlist, branch = 0, par.id = NA, id = 1)
 }
 \arguments{
-  \item{tlist}{list of varieties} \item{branch}{of particular
-  variety in the genealogy} \item{par.id}{the id of the
-  parent} \item{id}{id offset}
+\item{tlist}{list of varieties}
+
+\item{branch}{of particular variety in the genealogy}
+
+\item{par.id}{the id of the parent}
+
+\item{id}{id offset}
 }
 \description{
-Converts the list-style-genealogy to a data frame, where
-each variety has an id value and references its' parent's
-id value. ID value ranges correspond to generation. It is
-possible that with more complex genealogical structures
-the range of id values may need to expand to reduce the
-probability of two varieties being assigned the same id
-value.
+Converts the list-style-genealogy to a data frame, where each variety has an id value
+and references its' parent's id value. ID value ranges correspond to generation.
+It is possible that with more complex genealogical structures the range of id values may need to
+expand to reduce the probability of two varieties being assigned the same id value.
 }
 

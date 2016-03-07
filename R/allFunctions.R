@@ -1028,13 +1028,13 @@ plotPath = function(path){
     # label; three line segments (geom_segment) to create node label underline, node
     # label overline, and edges between nodes; and text (geom_text) to write the node label.
     plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = x, y = y)) + 
-      ggplot2::geom_rect(data = textFrame, ggplot2::aes(xmin = x - strwidth(label, "inches")*1.2,
-                                                        xmax = x + strwidth(label, "inches")*1.2, 
+      ggplot2::geom_rect(data = textFrame, ggplot2::aes(xmin = x - strwidth(label, "inches")*3,
+                                                        xmax = x + strwidth(label, "inches")*3, 
                                                         ymin = y-.1, ymax = y+.1), fill = "grey80") +
-      ggplot2::geom_segment(ggplot2::aes(x=x - strwidth(label, "inches")*1.2, y=y-.1,
-                                         xend =  x + strwidth(label, "inches")*1.2, yend = y-.1)) +
-      ggplot2::geom_segment(ggplot2::aes(x=x - strwidth(label, "inches")*1.2, y=y+.1,
-                                         xend =  x + strwidth(label, "inches")*1.2, yend = y+.1)) +
+      ggplot2::geom_segment(ggplot2::aes(x=x - strwidth(label, "inches")*3, y=y-.1,
+                                         xend =  x + strwidth(label, "inches")*3, yend = y-.1)) +
+      ggplot2::geom_segment(ggplot2::aes(x=x - strwidth(label, "inches")*3, y=y+.1,
+                                         xend =  x + strwidth(label, "inches")*3, yend = y+.1)) +
       ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
       ggplot2::geom_text(data = textFrame,ggplot2::aes(x = x, y = y, label = label), size = 4) + 
       ggplot2::xlab("Year") +     

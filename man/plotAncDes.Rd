@@ -7,18 +7,18 @@
 plotAncDes(v1, geneal, mAnc = 3, mDes = 3, vColor = "#D35C79")
 }
 \arguments{
-  \item{v1}{the label of the variety/vertex of interest (in
-  character string format)} \item{geneal}{the full genealogy
-  (in data frame format)} \item{mAnc}{the maximum number of
-  generations of ancestors of v1 to be displayed (in numeric
-  format)} \item{mDes}{the maximum number of generations
-  of descendants of v1 to be displayed (in numeric format)}
-  \item{vColor}{the color of the text of the main variety}
+\item{v1}{the label of the variety/vertex of interest (in character string format)}
+
+\item{geneal}{the full genealogy  (in data frame format)}
+
+\item{mAnc}{the maximum number of generations of ancestors of v1 to be displayed (in numeric format)}
+
+\item{mDes}{the maximum number of generations of descendants of v1 to be displayed (in numeric format)}
+
+\item{vColor}{the color of the text of the main variety}
 }
 \description{
-Returns the image object to show the ancestors and
-descendants of a variety, with the variety highlighted, if
-desired
+Returns the image object to show the ancestors and descendants of a variety, with the variety highlighted, if desired
 }
 \examples{
 data(sbGeneal)

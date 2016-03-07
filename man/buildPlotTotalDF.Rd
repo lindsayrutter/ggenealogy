@@ -7,23 +7,24 @@
 buildPlotTotalDF(path, geneal, ig, binVector = 1:12)
 }
 \arguments{
-  \item{path}{path as returned from getPath() or a vector
-  of two variety names which exist in ig} \item{geneal}
-  {the full genealogy (in data frame format)} \item{ig}
-  {the graph representation of the data genealogy (in igraph
-  format)} \item{binVector}{vector of numbers between 1 and
-  length(binVector), each repeated exactly once}
+\item{path}{path as returned from getPath() or a vector of two variety names which exist in ig}
+
+\item{geneal}{the full genealogy  (in data frame format)}
+
+\item{ig}{the graph representation of the data genealogy (in igraph format)}
+
+\item{binVector}{vector of numbers between 1 and length(binVector), each repeated exactly once}
 }
 \description{
-This function takes the spreadTotalDF object (from the
-buildSpreadTotalDF function) and the path object as inputs.
-From these objects, it creates a data frame object of the
-text label positions for the varieties in the path, as well
-as the edges only in the varieties in the path.
+This function takes the spreadTotalDF object (from the buildSpreadTotalDF function) and the path object
+as inputs. From these objects, it creates a data frame object of the text label positions for the
+varieties in the path, as well as the edges only in the varieties in the path.
 }
 \seealso{
 \url{http://www.r-project.org} for iGraph information
+
 \url{http://www.r-project.org} for iGraph information
+
 \code{\link{getPath}} for information on input path building
 }
 

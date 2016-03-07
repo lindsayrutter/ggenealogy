@@ -7,18 +7,16 @@
 buildAncDesTotalDF(v1, geneal, mAnc = 3, mDes = 3)
 }
 \arguments{
-  \item{v1}{the label of the variety/vertex of interest (in
-  character string format)} \item{geneal}{the full genealogy
-  (in data frame format)} \item{mAnc}{the maximum number of
-  generations of ancestors of v1 to be displayed (in numeric
-  format)} \item{mDes}{the maximum number of generations of
-  descendants of v1 to be displayed (in numeric format)}
+\item{v1}{the label of the variety/vertex of interest (in character string format)}
+
+\item{geneal}{the full genealogy (in data frame format)}
+
+\item{mAnc}{the maximum number of generations of ancestors of v1 to be displayed (in numeric format)}
+
+\item{mDes}{the maximum number of generations of descendants of v1 to be displayed (in numeric format)}
 }
 \description{
-Returns the data frame that includes labels and plot
-coordinates of all ancestors and descendants of a variety.
-Users can specify the maximum number of ancestors and
-descendants to display.
+Returns the data frame that includes labels and plot coordinates of all ancestors and descendants of a variety. Users can specify the maximum number of ancestors and descendants to display.
 }
 \examples{
 data(sbGeneal)
@@ -26,8 +24,8 @@ v1="Essex"
 buildAncDesTotalDF(v1, sbGeneal)
 }
 \seealso{
-\code{\link{buildAncList}} for information on determining
-ancestors \code{\link{buildDesList}} for information on
-determining descendants
+\code{\link{buildAncList}} for information on determining ancestors
+
+\code{\link{buildDesList}} for information on determining descendants
 }
 

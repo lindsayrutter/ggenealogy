@@ -7,14 +7,12 @@
 getEdges(ig, geneal)
 }
 \arguments{
-  \item{ig}{the graph representation of the data genealogy (in
-  igraph format)} \item{geneal}{the full genealogy (in data
-  frame format)}
+\item{ig}{the graph representation of the data genealogy (in igraph format)}
+
+\item{geneal}{the full genealogy  (in data frame format)}
 }
 \description{
-Returns a matrix, where each row contains information about
-an edge (two vertex names and edge weight, if present) of
-the full genealogy.
+Returns a matrix, where each row contains information about an edge (two vertex names and edge weight, if present) of the full genealogy.
 }
 \examples{
 data(sbGeneal)
