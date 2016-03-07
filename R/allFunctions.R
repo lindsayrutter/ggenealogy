@@ -899,6 +899,7 @@ nodeToDF = local({
 plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
   color <- x <- y <- label2 <- size <- xstart <- ystart <- xend <- yend <- branchx <- branchy <- NULL
   # Plot the data frame, if it exists
+  geneal = geneal[which(geneal$parent!=""),]
   gDF = buildAncDesTotalDF(v1, geneal, mAnc, mDes)
   gDF[gDF$root.gen==0&gDF$gen==0,]$color = vColor
   if(nrow(gDF)>0){
