@@ -1080,7 +1080,7 @@ plotPath = function(path){
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
-plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold"){
+plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE){
   x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
