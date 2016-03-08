@@ -21,7 +21,7 @@ represents a parent-child relationship
 }
 \examples{
 data(sbGeneal)
-ig = dfToIG(sbGeneal)
-getDegree("Brim","Bedford",ig,sbGeneal)
+ig <- dfToIG(sbGeneal)
+getDegree("Brim", "Bedford", ig, sbGeneal)
 }
 

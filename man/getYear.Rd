@@ -16,7 +16,7 @@ Returns the documented year of the inputted variety
 }
 \examples{
 data(sbGeneal)
-getYear("Essex",sbGeneal)
-getYear("Tokyo",sbGeneal)
+getYear("Essex", sbGeneal)
+getYear("Tokyo", sbGeneal)
 }
 

@@ -312,18 +312,18 @@ getPath("Brim","Bedford", ig, sbGeneal, isDirected=FALSE)
 
 We see that there is a path between ``Brim" and ``Bedford" varieties, with \Sexpr{getDegree("Brim","Bedford",ig,sbGeneal)-1} varieties separating them. We are not considering direction, however, because the \texttt{ig} object is undirected. However, to demonstrate the importance of direction, we will recompute the path where the direction matters. We first produce a directed \texttt{igraph} object \texttt{dirIG}, and then try to determine the path between the same two vertices, ``Brim" and ``Bedford".
 
-<<>>=
+<<eval=FALSE>>=
 dirIG = dfToIG(sbGeneal, isDirected = TRUE)
 getPath("Brim", "Bedford", dirIG, sbGeneal, isDirected = TRUE)
 @
 
-Now that we are considering the direction, we are only considering paths where each edge represents a parent-child relationship in the same direction as the one before it. We now receive an empty return list with a warning that there is no path between those two vertices. We  next try to reverse the input order of the vertices, as shown below, but we will receive the same empty return list and warning:
+Now that we are considering the direction, we are only considering paths where each edge represents a parent-child relationship in the same direction as the one before it. We now would receive an error warning that we cannot compute a directed path on an undirected graph. We next try to reverse the input order of the vertices, as shown below, but we will receive the same error message:
 
-<<>>=
+<<eval=FALSE>>=
 getPath("Bedford", "Brim", dirIG, sbGeneal, isDirected=TRUE)
 @
 
-We can derive from the empty list returned in the last two commands that the varieties ``Brim" and ``Bedford" are not connected by a linear sequence of parent-child relationships. Rather, the path between them branches at some point, involving siblings and/or cousins.
+We can derive from the errors returned in the last two commands that the varieties ``Brim" and ``Bedford" are not connected by a linear sequence of parent-child relationships. Rather, the path between them branches at some point, involving siblings and/or cousins.
 
 Hence, unless you are working with a dataset that must be analyzed as a directed graph, it is best to use the \texttt{getPath()} function with the default third parameter indicating lack of direction, and to use an \texttt{igraph} object without direction, such as our original \texttt{ig} object. We do just that, and save the path between these two varieties to a variable called \texttt{path}:
 

@@ -15,7 +15,7 @@ whole graph is connected, number of components, average path length, graph diame
 }
 \examples{
 data(sbGeneal)
-ig = dfToIG(sbGeneal)
+ig <- dfToIG(sbGeneal)
 getBasicStatistics(ig)
 }
 

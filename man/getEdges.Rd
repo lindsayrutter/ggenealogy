@@ -16,7 +16,7 @@ Returns a matrix, where each row contains information about an edge (two vertex 
 }
 \examples{
 data(sbGeneal)
-ig = dfToIG(sbGeneal)
+ig <- dfToIG(sbGeneal)
 getEdges(ig, sbGeneal)
 }
 

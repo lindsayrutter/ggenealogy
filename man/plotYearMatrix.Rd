@@ -23,8 +23,8 @@ Returns the image object to show the heat map of years between the inputted set 
 }
 \examples{
 data(sbGeneal)
-varieties=c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-p = plotYearMatrix(varieties,sbGeneal,"Variety", "Variety", "Degree")
-p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
+varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+p <- plotYearMatrix(varieties, sbGeneal, "Variety", "Variety", "Degree")
+p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
 }
 

@@ -22,7 +22,7 @@ Returns the image object to show the ancestors and descendants of a variety, wit
 }
 \examples{
 data(sbGeneal)
-plotAncDes("Essex", sbGeneal, 2, 3, "blue") + ggplot2::labs(x="Generation index",y="")
-plotAncDes("Tokyo", sbGeneal, vColor="red")
+plotAncDes("Tokyo", sbGeneal, vColor = "red")
+plotAncDes("Essex", sbGeneal, 2, 3, "blue") + ggplot2::labs(x = "Generation index", y = "")
 }
 

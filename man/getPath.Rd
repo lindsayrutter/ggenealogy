@@ -28,8 +28,8 @@ and return the path if it exists.
 }
 \examples{
 data(sbGeneal)
-ig = dfToIG(sbGeneal)
-getPath("Brim","Bedford",ig,sbGeneal)
-getPath("Tokyo","Volstate",ig,sbGeneal)
+ig <- dfToIG(sbGeneal)
+getPath("Brim", "Bedford", ig, sbGeneal)
+getPath("Tokyo", "Volstate", ig, sbGeneal)
 }
 

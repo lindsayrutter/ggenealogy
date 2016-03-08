@@ -18,7 +18,7 @@ Returns a boolean variable for whether the first variety is a child of the secon
 }
 \examples{
 data(sbGeneal)
-isChild("Essex","Young",sbGeneal)
-isChild("Young","Essex",sbGeneal)
+isChild("Essex", "Young", sbGeneal)
+isChild("Young", "Essex", sbGeneal)
 }
 

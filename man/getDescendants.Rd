@@ -18,7 +18,7 @@ This function returns a list of the descendants of the inputted variety within a
 }
 \examples{
 data(sbGeneal)
-getChild("Essex",sbGeneal)
+getChild("Essex", sbGeneal)
 getDescendants("Essex", sbGeneal, 1)
 getDescendants("Essex", sbGeneal, 3)
 }

@@ -20,7 +20,7 @@ Returns the data frame that includes labels and plot coordinates of all ancestor
 }
 \examples{
 data(sbGeneal)
-v1="Essex"
+v1 <- "Essex"
 buildAncDesTotalDF(v1, sbGeneal)
 }
 \seealso{

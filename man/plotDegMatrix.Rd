@@ -25,10 +25,10 @@ Returns the image object to show the heat map of degrees between the inputted se
 }
 \examples{
 data(sbGeneal)
-ig = dfToIG(sbGeneal)
-varieties=c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-p = plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
-p + ggplot2::scale_fill_continuous(low="white", high="darkgreen")
+ig <- dfToIG(sbGeneal)
+varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+p <- plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
+p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
 }
 \seealso{
 \url{http://www.r-project.org} for iGraph information

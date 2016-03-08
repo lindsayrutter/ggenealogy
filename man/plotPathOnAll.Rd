@@ -5,8 +5,8 @@
 \title{Plot a path between two vertices over the full genealogy}
 \usage{
 plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
-  edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 2,
-  pathNodeSize = 2.5, pathNodeFont = "bold")
+  edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3,
+  pathNodeSize = 3, pathNodeFont = "bold")
 }
 \arguments{
 \item{path}{path as returned from getPath() or a vector of two variety names which exist in ig}
@@ -21,9 +21,9 @@ plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
 
 \item{pathEdgeCol}{color of the path edges, default is "seagreen"}
 
-\item{nodeSize}{text size of the non-path node labels, default is 2}
+\item{nodeSize}{text size of the non-path node labels, default is 3}
 
-\item{pathNodeSize}{text size of the path node labels, default is 2.5}
+\item{pathNodeSize}{text size of the path node labels, default is 3}
 
 \item{pathNodeFont}{font face of text of the path node labels ("plain", "italic", "bold", "bold.italic"), default is "bold"}
 }
@@ -39,10 +39,10 @@ boldfaced edges.
 }
 \examples{
 data(sbGeneal)
-ig = dfToIG(sbGeneal)
-path = getPath("Brim","Bedford",ig,sbGeneal)
-binVector=sample(1:12, 12)
-plotTotalImage <- plotPathOnAll(path=path, geneal=sbGeneal, ig=ig, binVector=sample(1:12, 12))
+ig <- dfToIG(sbGeneal)
+path <- getPath("Brim", "Bedford", ig, sbGeneal)
+binVector <- sample(1:12, 12)
+plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, binVector= sample(1:12, 12))
 plotTotalImage
 }
 \seealso{

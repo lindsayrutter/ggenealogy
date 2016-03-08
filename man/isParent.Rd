@@ -18,7 +18,7 @@ Returns a boolean variable for whether the second variety is a parent of the fir
 }
 \examples{
 data(sbGeneal)
-isParent("Essex","Young",sbGeneal)
-isParent("Young","Essex",sbGeneal)
+isParent("Essex", "Young", sbGeneal)
+isParent("Young", "Essex", sbGeneal)
 }
 
