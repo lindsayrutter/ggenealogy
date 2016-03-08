@@ -1069,6 +1069,7 @@ plotPath = function(path){
 #' @param nodeSize text size of the non-path node labels, default is 3
 #' @param pathNodeSize text size of the path node labels, default is 3
 #' @param pathNodeFont font face of text of the path node labels ("plain", "italic", "bold", "bold.italic"), default is "bold"
+#' @param nodeLabel If non-path nodes should be in text, default is TRUE. If FALSE, then non-path nodes will be represented as dots, which could conserve space and reduce text overlap in large datasets.
 #' @examples
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
@@ -1117,7 +1118,7 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
   plotTotalImage = ggplot2::ggplot(data = pMPDF, ggplot2::aes(x = x, y = y)) +
     ggplot2::geom_segment(data = eTDF, ggplot2::aes(x=x, y=y-.1, xend=xend, yend=yend+.1), colour = edgeCol) +
     ggplot2::geom_segment(data = pTDF, ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend), colour = pathEdgeCol, size = 1) +
-    if (nodeLabel == "text"){
+    if (nodeLabel){
       ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize)
     }else{
       #ggplot2::ggplot(data = textFrame, ggplot2::aes(x = x, y = y)) + ggplot2::geom_point(shape=18, size = nodeSize)
