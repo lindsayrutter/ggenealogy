@@ -71,7 +71,7 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
     if (nodeLabel){
       ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
     }else{
-      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = "."), size = nodeSize, colour = nodeCol)
+      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol) # changed from label = "." to label = label
     }
   plotTotalImage = plotTotalImage + ggplot2::geom_text(data = pTDF,ggplot2::aes(x = x, y = y, label = label), size = pathNodeSize, fontface=pathNodeFont) +
     ggplot2::xlab("Year") +
@@ -91,6 +91,12 @@ data(statGeneal)
 statIG <- dfToIG(statGeneal)
 pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal, isDirected = FALSE)
   
-myPlot = plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = 4, pathNodeSize = 4, nodeLabel=FALSE, nodeCol = "dimgray") + ggplot2::theme(axis.text = ggplot2::element_text(size = 12), axis.title = ggplot2::element_text(size = 12)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+myPlot = plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5, pathNodeSize = 3, nodeLabel=FALSE, nodeCol = "dimgray") + ggplot2::theme(axis.text = ggplot2::element_text(size = 12), axis.title = ggplot2::element_text(size = 12)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
 
-ggplotly(myPlot, tooltip = c("x")) # highlights dots and x=year
+ggplotly(myPlot, tooltip = c("label"))
+
+# I believe it highlights not only the desired geom_text(), but also the geom_segment() as well. I tested this by coloring the edges pink, and see that they all have NA values since the geom_segment() does not have labels. Hence, I need to find a way so that ggplotly only provides interaction for the specified geom.
+
+myPlot = plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5, pathNodeSize = 2.5, nodeLabel=FALSE, nodeCol = "dimgray", edgeCol = "pink") + ggplot2::theme(axis.text = ggplot2::element_text(size = 12), axis.title = ggplot2::element_text(size = 12)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+
+ggplotly(myPlot, tooltip = c("label"))
