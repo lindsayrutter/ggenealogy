@@ -1019,7 +1019,7 @@ plotPath = function(path){
     # The textFrame object will be used to create a grey rectangle around each node label
     textFrame = data.frame(x = pPDF$x, y = pPDF$y, label = pPDF$label)
     textFrame = transform(textFrame,
-                          w = strwidth(pPDF$label, 'inches') + 0.25,
+                          w = strwidth(pPDF$label, 'inches') + 0.75,
                           h = strheight(pPDF$label, 'inches') + 0.25
     )
     
