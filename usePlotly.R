@@ -1,4 +1,4 @@
-
+library(plotly)
 ########## New plotPath() function in ggenealogy using geom_label() instead of geom_rect()
 
 plotPath = function(path){
