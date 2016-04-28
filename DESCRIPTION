@@ -3,7 +3,8 @@ Version: 0.1.0
 Title: Visualization Tools for Genealogical Data
 Description: Methods for searching through genealogical data and displaying
     the results. Plotting algorithms assist with data exploration and publication-
-    quality image generation. Uses the Grammar of Graphics.
+    quality image generation. Includes interactive genealogy visualization tools.
+    Uses the Grammar of Graphics.
 Author: Lindsay Rutter, Susan Vanderplas, Di Cook
 Maintainer: Lindsay Rutter <lrutter@iastate.edu>
 License: GPL
@@ -14,6 +15,7 @@ Imports:
     igraph (>= 0.7.1),
     plyr (>= 1.8.1),
     reshape2 (>= 1.4)
+    plotly (>= 3.4.13)
 VignetteBuilder: knitr
 Suggests:
     stringr (>= 0.6.2),
