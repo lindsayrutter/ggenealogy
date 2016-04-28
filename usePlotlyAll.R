@@ -84,32 +84,6 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
   plotTotalImage
 }
 
-
-plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE, nodeCol = "black"){
-  x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
-
-  pMPDF <- buildMinusPathDF(path, geneal, ig, binVector)
-  eTDF <- buildEdgeTotalDF(geneal, ig, binVector)
-  pTDF <- buildPlotTotalDF(path, geneal, ig, binVector)
-  
-  eTDF <- na.omit(eTDF) #remove any row that has at least one NA
-  
-  textFrame = data.frame(x = pMPDF$x, y = pMPDF$y, label = pMPDF$label)
-  textFrame = transform(textFrame,
-                        w = strwidth(pMPDF$label, 'inches') + 0.25,
-                        h = strheight(pMPDF$label, 'inches') + 0.25
-  )
-  
-  textFrame <- na.omit(textFrame) #remove any row that has at least one NA
-  
-  plotTotalImage = ggplot2::ggplot(data = pMPDF, ggplot2::aes(x = x, y = y)) +
-    ggplot2::geom_segment(data = eTDF, ggplot2::aes(x=x, y=y-.1, xend=xend, yend=yend+.1), colour = edgeCol) +
-    ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
-  # Return the plotTotalImage
-  plotTotalImage
-}
-
-
 ############## MWE posted to https://github.com/ropensci/plotly/issues ##############
 
 data(statGeneal)
@@ -120,11 +94,7 @@ pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal, isDirected =
 
 myPlot = plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5, pathNodeSize = 2.5, nodeLabel=FALSE, nodeCol = "dimgray", edgeCol = "pink") + ggplot2::theme(axis.text = ggplot2::element_text(size = 12), axis.title = ggplot2::element_text(size = 12)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
 
-ggplotly(myPlot, tooltip = c("label"))
-
-########################################## OLD ########################################## 
-myPlot = plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5, pathNodeSize = 3, nodeLabel=FALSE, nodeCol = "dimgray") + ggplot2::theme(axis.text = ggplot2::element_text(size = 12), axis.title = ggplot2::element_text(size = 12)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
-
-ggplotly(myPlot, tooltip = c("label"))
-
-
+l <- plotly_build(ggplotly(myPlot, tooltip = "label"))
+l$data[[1]]$hoverinfo <- "none"
+l$data[[2]]$hoverinfo <- "none"
+l
