@@ -14,7 +14,7 @@ Imports:
     ggplot2 (>= 1.0.0),
     igraph (>= 0.7.1),
     plyr (>= 1.8.1),
-    reshape2 (>= 1.4)
+    reshape2 (>= 1.4),
     plotly (>= 3.4.13)
 VignetteBuilder: knitr
 Suggests:

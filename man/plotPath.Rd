@@ -4,10 +4,12 @@
 \alias{plotPath}
 \title{Construct the graphic object of the path}
 \usage{
-plotPath(path)
+plotPath(path, fontFace = 1)
 }
 \arguments{
 \item{path}{object created from function getPath}
+
+\item{fontFace}{fontface for the two nodes of interest (1=plain, 2=bold, 3=italic, 4=bold-italic), DEFAULT is 1}
 }
 \description{
 This function takes the path as input and outputs an ggplot2 object. The
@@ -21,6 +23,7 @@ data(sbGeneal)
 ig <- dfToIG(sbGeneal)
 p <- getPath("Brim", "Bedford", ig, sbGeneal)
 plotPath(p)
+plotPath(p, fontFace = 4)
 }
 \seealso{
 \code{\link{getPath}} for information on input path building

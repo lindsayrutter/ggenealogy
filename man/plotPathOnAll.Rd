@@ -7,7 +7,7 @@
 plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
   edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3,
   pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE,
-  nodeCol = "black")
+  nodeCol = "black", animate = FALSE)
 }
 \arguments{
 \item{path}{path as returned from getPath() or a vector of two variety names which exist in ig}
@@ -31,6 +31,8 @@ plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
 \item{nodeLabel}{If non-path nodes should be in text, default is TRUE. If FALSE, then non-path nodes will be represented as dots, which could conserve space and reduce text overlap in large datasets.}
 
 \item{nodeCol}{color of the non-path node labels, default is black}
+
+\item{animate}{If the plot will have interactive capabilities, default is FALSE}
 }
 \description{
 This function requires a path and the ig object, and plots the full genealogy 
