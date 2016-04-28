@@ -1,7 +1,7 @@
 library(plotly)
 ########## New plotPath() function in ggenealogy using geom_label() instead of geom_rect()
 
-plotPath = function(path){
+plotPath = function(path, boldNode = TRUE){
   x <- y <- label <- xstart <- ystart <- xend <- yend <- NULL
   if(sum(names(path)%in%c("pathVertices", "yearVertices"))!=2){
     stop("path does not appear to be a result of the getPath() function")
@@ -13,7 +13,7 @@ plotPath = function(path){
 
   if (length(dim(pPDF))>1){ # check to make sure pPDF is a data frame
   
-    plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = x, y = y, label=label)) +
+    plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = xstart, y = y, label=label)) +
     ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
     ggplot2::geom_label(fill = "grey80", size = 3) +
     ggplot2::xlab("Year") +

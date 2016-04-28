@@ -1000,6 +1000,7 @@ plotDegMatrix = function(varieties,ig,geneal,xLab="Variety",yLab="Variety",legen
 #' parent-child relationships between those nodes. For visual appeal, there is a grey
 #' box that outlines the node label, as well as an underline and overline for each label.
 #' @param path object created from function getPath
+#' @param fontFace fontface for the two nodes of interest (1=plain, 2=bold, 3=italic, 4=bold-italic), DEFAULT is 1 
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
 #' @examples
@@ -1007,36 +1008,28 @@ plotDegMatrix = function(varieties,ig,geneal,xLab="Variety",yLab="Variety",legen
 #' ig <- dfToIG(sbGeneal)
 #' p <- getPath("Brim", "Bedford", ig, sbGeneal)
 #' plotPath(p)
-plotPath = function(path){
+#' plotPath(p, fontFace = 4)
+plotPath = function(path, fontFace = 1){
   x <- y <- label <- xstart <- ystart <- xend <- yend <- NULL
   if(sum(names(path)%in%c("pathVertices", "yearVertices"))!=2){
     stop("path does not appear to be a result of the getPath() function")
   }
   
   pPDF <- buildPathDF(path)
+  pPDF$fontface = rep(1,each=length(path$pathVertices))
+  pPDF[pPDF$label==path$pathVertices[1],]$fontface = fontFace
+  pPDF[pPDF$label==path$pathVertices[length(path$pathVertices)],]$fontface = fontFace
+  
+  colnames(pPDF)[which(colnames(pPDF)=="x")] = "Year"
+  #ggplot2::ggplot(data = pPDF,ggplot2::aes(x = x, y = y, label = label)) + geom_label()
   
   if (length(dim(pPDF))>1){ # check to make sure pPDF is a data frame
-    # The textFrame object will be used to create a grey rectangle around each node label
-    textFrame = data.frame(x = pPDF$x, y = pPDF$y, label = pPDF$label)
-    textFrame = transform(textFrame,
-                          w = strwidth(pPDF$label, 'inches') + 0.75,
-                          h = strheight(pPDF$label, 'inches') + 0.25
-    )
     
-    # The plotImage object creates a grey rectangle (geom_rect) to highlight the node
-    # label; three line segments (geom_segment) to create node label underline, node
-    # label overline, and edges between nodes; and text (geom_text) to write the node label.
-    plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = x, y = y)) + 
-      ggplot2::geom_rect(data = textFrame, ggplot2::aes(xmin = x - strwidth(label, "inches")*3,
-                                                        xmax = x + strwidth(label, "inches")*3, 
-                                                        ymin = y-.1, ymax = y+.1), fill = "grey80") +
-      ggplot2::geom_segment(ggplot2::aes(x=x - strwidth(label, "inches")*3, y=y-.1,
-                                         xend =  x + strwidth(label, "inches")*3, yend = y-.1)) +
-      ggplot2::geom_segment(ggplot2::aes(x=x - strwidth(label, "inches")*3, y=y+.1,
-                                         xend =  x + strwidth(label, "inches")*3, yend = y+.1)) +
+    plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = xstart, y = y, label=label)) +
       ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
-      ggplot2::geom_text(data = textFrame,ggplot2::aes(x = x, y = y, label = label), size = 4) + 
-      ggplot2::xlab("Year") +     
+      ggplot2::geom_label(fill = "grey80", size = 3, fontface=pPDF$fontface) +
+      ggplot2::xlab("Year") +
+      ggplot2::scale_x_continuous(expand = c(.1, .1)) +
       ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(),
                      axis.title.y=ggplot2::element_blank(),legend.position="none",
                      panel.grid.major.y=ggplot2::element_blank(),
