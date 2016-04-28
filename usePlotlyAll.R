@@ -18,6 +18,7 @@
 #' @param pathNodeSize text size of the path node labels, default is 3
 #' @param pathNodeFont font face of text of the path node labels ("plain", "italic", "bold", "bold.italic"), default is "bold"
 #' @param nodeLabel If non-path nodes should be in text, default is TRUE. If FALSE, then non-path nodes will be represented as dots, which could conserve space and reduce text overlap in large datasets.
+#' @param animate If the plot will have interactive capabilities, default is FALSE
 #' @param nodeCol color of the non-path node labels, default is black
 #' @examples
 #' data(sbGeneal)
@@ -30,7 +31,7 @@
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
 #' 
-plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE, nodeCol = "black"){
+plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE, nodeCol = "black", animate = FALSE){
   x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -80,8 +81,18 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
                    axis.title.y=ggplot2::element_blank(),legend.position="none",
                    panel.grid.major.y=ggplot2::element_blank(),
                    panel.grid.minor=ggplot2::element_blank())
-  # Return the plotTotalImage
-  plotTotalImage
+  
+  # Return the plotTotalImage, if animate is FALSE
+  if (animate==FALSE){
+    plotTotalImage    
+  }
+  # Return the animatePlotTotalImage, if animate is TRUE
+  else{
+    animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = "label"))
+    animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
+    animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
+    animatePlotTotalImage
+  }
 }
 
 ############## MWE posted to https://github.com/ropensci/plotly/issues ##############
@@ -94,7 +105,7 @@ pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal, isDirected =
 
 myPlot = plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5, pathNodeSize = 2.5, nodeLabel=FALSE, nodeCol = "dimgray", edgeCol = "pink") + ggplot2::theme(axis.text = ggplot2::element_text(size = 12), axis.title = ggplot2::element_text(size = 12)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
 
-l <- plotly_build(ggplotly(myPlot, tooltip = "label"))
-l$data[[1]]$hoverinfo <- "none"
-l$data[[2]]$hoverinfo <- "none"
-l
+#l <- plotly_build(ggplotly(myPlot, tooltip = "label"))
+#l$data[[1]]$hoverinfo <- "none"
+#l$data[[2]]$hoverinfo <- "none"
+#l

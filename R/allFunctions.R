@@ -1070,6 +1070,8 @@ plotPath = function(path){
 #' @param pathNodeSize text size of the path node labels, default is 3
 #' @param pathNodeFont font face of text of the path node labels ("plain", "italic", "bold", "bold.italic"), default is "bold"
 #' @param nodeLabel If non-path nodes should be in text, default is TRUE. If FALSE, then non-path nodes will be represented as dots, which could conserve space and reduce text overlap in large datasets.
+#' @param animate If the plot will have interactive capabilities, default is FALSE
+#' @param nodeCol color of the non-path node labels, default is black
 #' @examples
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
@@ -1080,7 +1082,8 @@ plotPath = function(path){
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
-plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE){
+#' 
+plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE, nodeCol = "black", animate = FALSE){
   x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -1119,10 +1122,9 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
     ggplot2::geom_segment(data = eTDF, ggplot2::aes(x=x, y=y-.1, xend=xend, yend=yend+.1), colour = edgeCol) +
     ggplot2::geom_segment(data = pTDF, ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend), colour = pathEdgeCol, size = 1) +
     if (nodeLabel){
-      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize)
+      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
     }else{
-      #ggplot2::ggplot(data = textFrame, ggplot2::aes(x = x, y = y)) + ggplot2::geom_point(shape=18, size = nodeSize)
-      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = "."), size = nodeSize)
+      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol) # changed label = "." to label
     }
   plotTotalImage = plotTotalImage + ggplot2::geom_text(data = pTDF,ggplot2::aes(x = x, y = y, label = label), size = pathNodeSize, fontface=pathNodeFont) +
     ggplot2::xlab("Year") +
@@ -1131,8 +1133,18 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
                    axis.title.y=ggplot2::element_blank(),legend.position="none",
                    panel.grid.major.y=ggplot2::element_blank(),
                    panel.grid.minor=ggplot2::element_blank())
-  # Return the plotTotalImage
-  plotTotalImage
+  
+  # Return the plotTotalImage, if animate is FALSE
+  if (animate==FALSE){
+    plotTotalImage    
+  }
+  # Return the animatePlotTotalImage, if animate is TRUE
+  else{
+    animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = "label"))
+    animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
+    animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
+    animatePlotTotalImage
+  }
 }
 
 #' Returns the image object to show the heat map of years between the inputted set of vertices
