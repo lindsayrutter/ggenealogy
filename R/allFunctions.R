@@ -936,9 +936,7 @@ plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
       ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                      panel.grid.minor = ggplot2::element_blank(),
                      axis.text=ggplot2::element_blank(), 
-                     axis.ticks=ggplot2::element_blank()) + 
-      # ggplot2::scale_x_continuous(expand = c(.1, 1.075)) + 
-      # ggplot2::scale_y_continuous(expand = c(.1, 1.075)) + 
+                     axis.ticks=ggplot2::element_blank()) +
       ggplot2::labs(x="",y="")
   } else {
     plotGenImage = ggplot2::ggplot() + 
@@ -1029,7 +1027,6 @@ plotPath = function(path, fontFace = 1){
       ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
       ggplot2::geom_label(fill = "grey80", size = 3, fontface=pPDF$fontface) +
       ggplot2::xlab("Year") +
-      ggplot2::scale_x_continuous(expand = c(.1, .1)) +
       ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(),
                      axis.title.y=ggplot2::element_blank(),legend.position="none",
                      panel.grid.major.y=ggplot2::element_blank(),
@@ -1062,7 +1059,6 @@ plotPath = function(path, fontFace = 1){
 #' @param nodeSize text size of the non-path node labels, default is 3
 #' @param pathNodeSize text size of the path node labels, default is 3
 #' @param pathNodeFont font face of text of the path node labels ("plain", "italic", "bold", "bold.italic"), default is "bold"
-#' @param nodeLabel If non-path nodes should be in text, default is TRUE. If FALSE, then non-path nodes will be represented as dots, which could conserve space and reduce text overlap in large datasets.
 #' @param animate If the plot will have interactive capabilities, default is FALSE
 #' @param nodeCol color of the non-path node labels, default is black
 #' @examples
@@ -1076,7 +1072,7 @@ plotPath = function(path, fontFace = 1){
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
 #' 
-plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE, nodeCol = "black", animate = FALSE){
+plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black", animate = FALSE){
   x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -1114,11 +1110,9 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
   plotTotalImage = ggplot2::ggplot(data = pMPDF, ggplot2::aes(x = x, y = y)) +
     ggplot2::geom_segment(data = eTDF, ggplot2::aes(x=x, y=y-.1, xend=xend, yend=yend+.1), colour = edgeCol) +
     ggplot2::geom_segment(data = pTDF, ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend), colour = pathEdgeCol, size = 1) +
-    if (nodeLabel){
       ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
-    }else{
-      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol) # changed label = "." to label
-    }
+      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
+
   plotTotalImage = plotTotalImage + ggplot2::geom_text(data = pTDF,ggplot2::aes(x = x, y = y, label = label), size = pathNodeSize, fontface=pathNodeFont) +
     ggplot2::xlab("Year") +
     # Erase the y-axis, and only include grids from the x-axis
@@ -1133,9 +1127,11 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
   }
   # Return the animatePlotTotalImage, if animate is TRUE
   else{
-    animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = "label"))
+    animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
     animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
     animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
+    animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+text")
+    animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+text")
     animatePlotTotalImage
   }
 }

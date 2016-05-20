@@ -22,5 +22,5 @@
 #' @usage data(statGeneal)
 #' @format A data frame with 8165 rows and 6 variables
 #' @references
-#' Mathematics Genealogy Project (2016). URL http://www.genealogy.math.ndsu.nodak.edu.
+#' North Dakota State University and American Mathematical Society (2010). The Mathematics Genealogy Project. Archived Web Site. Retrieved from the Library of Congress, Accessed on March 6, 2015, URL http://www.genealogy.math.ndsu.nodak.edu.
 NULL
