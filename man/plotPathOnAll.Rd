@@ -6,8 +6,8 @@
 \usage{
 plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
   edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3,
-  pathNodeSize = 3, pathNodeFont = "bold", nodeLabel = TRUE,
-  nodeCol = "black", animate = FALSE)
+  pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black",
+  animate = FALSE)
 }
 \arguments{
 \item{path}{path as returned from getPath() or a vector of two variety names which exist in ig}
@@ -46,8 +46,8 @@ boldfaced edges.
 data(sbGeneal)
 ig <- dfToIG(sbGeneal)
 path <- getPath("Brim", "Bedford", ig, sbGeneal)
-binVector <- sample(1:12, 12)
-plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, binVector= sample(1:12, 12))
+bV <- sample(1:12, 12)
+plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, binVector = bV)
 plotTotalImage
 }
 \seealso{

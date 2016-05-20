@@ -535,7 +535,6 @@ getAncestors = function(v1, geneal, gen = 3){
 #' whole graph is connected, number of components, average path length, graph diameter, etc.)
 #' @param ig the graph representation of the data genealogy (in igraph format)
 #' @examples
-#' 
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
 #' getBasicStatistics(ig)
@@ -1065,8 +1064,8 @@ plotPath = function(path, fontFace = 1){
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
 #' path <- getPath("Brim", "Bedford", ig, sbGeneal)
-#' binVector <- sample(1:12, 12)
-#' plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, binVector= sample(1:12, 12))
+#' bV <- sample(1:12, 12)
+#' plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, binVector = bV)
 #' plotTotalImage
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building

@@ -14,7 +14,6 @@ Returns basic statistics of the graph object (number of nodes, number of edges, 
 whole graph is connected, number of components, average path length, graph diameter, etc.)
 }
 \examples{
-
 data(sbGeneal)
 ig <- dfToIG(sbGeneal)
 getBasicStatistics(ig)
