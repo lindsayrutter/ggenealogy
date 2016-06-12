@@ -1,7 +1,3 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^cran-comments\.md$
-usePlotly.R
-usePlotlyAll.R
-plotlyScript.R
-mwePlotly.R
