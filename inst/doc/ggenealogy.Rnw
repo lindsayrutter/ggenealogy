@@ -496,6 +496,126 @@ Here, we did not change any defaults. As such, the resulting plot in Figure~\ref
 
 Running this function on this particular set of eight vertices suggests that most combinations of varieties are only one or two decades apart in year introduction, with the exception of the ``Tokyo" variety, which appears to be separated from each of the other seven varieties by about six decades. This is not surprising, because we have seen througout the tutorial that the ``Tokyo" variety is the oldest variety in the dataset.
 
+\section{Interactive plotting methods of genealogical data}
+
+There is a second example dataset included in the \pkg{ggenealogy} package of the academic genelaogy of statisticians. More information about this example dataset can be found in the \code{R/data-statGeneal.R} file. We can load the example dataset of academic genealogy of statisticians (\code{statGeneal}) and examine its structure. 
+
+<<>>=
+data("statGeneal")
+dim(statGeneal)
+colnames(statGeneal)
+@
+
+As this example academic genealogy dataset is much larger than the example soybean dataset, we can begin by creating a plot of ancestors and descendants. The ability to plot ancestors and descendants by generation was demonstrated using the plant breeding genealogy in Figure \ref{fig:plotAncDes1} and \ref{fig:plotAncDes2}. As we believe this is the most novel plotting tool in the \pkg{ggenealogy} package, we will test it again here using the academic genealogy.
+
+We need to choose a central individual of interest in order to create this plot. Perhaps we can use the academic statistician in the dataset that has the largest number of ``descendants". To determine the name of this individual, below we use the \pkg{ggenealogy} function \code{getNode()} to create a vector \code{indVec} that contains the names of all individuals in the dataset. We then use the \pkg{dplyr} package to apply the \pkg{ggenealogy} function \code{getDescendants()} on each individual in the \code{indVec} vector (\citealt{dplyr}). We set the parameter \code{gen} to a conservatively large value of 100 as this dataset is unlikely to have any individuals with more than 100 generations of ``descendants".
+
+After that, we can generate a table to examine all values of ``descendant" counts in the dataset, along with the number of individuals who have each of those values of ``descendant" counts. Of the 8165 individuals in this dataset, 6252 of them have zero ``descendants", 322 of them have one ``descendant", and 145 of them have two ``descendants". There are only 17 individuals who have more than 30 ``descendants", and there is one individual who has the largest value of 159 ``descendants". We determine that this individual is the prominent British statistician Sir David Cox, who is known for the Box-Cox transformation and Cox processes, as well as for mentoring many younger researchers who later became notable statisticians themselves.
+
+<<>>=
+library("dplyr")
+indVec <- getNodes(statGeneal)
+indVec <- indVec[which(indVec != "", )]
+dFunc <- function(var) nrow(getDescendants(var, statGeneal, gen = 100))
+numDesc <- sapply(indVec, dFunc)
+table(numDesc)
+which(numDesc == 159)
+@
+
+We can now visualize how these 159 ``descendants" are related to Sir David Cox by calling the \code{plotAncDes()} function of \pkg{ggenealogy}. As such, we create Figure \ref{fig:dCox} using the code below.
+
+<<label=dCox, include=FALSE>>=
+plotAncDes("David Cox", statGeneal, mAnc = 6, mDes = 6, vCol = "blue")
+@
+
+\begin{figure}
+\centering
+  %\begin{adjustbox}{width=7in,height=8.7in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=dCox,fig=TRUE,echo=FALSE>>= 
+<<dCox>>
+@ 
+%\end{adjustbox}
+\caption{The 159 academic statistician ``descendants" of Sir David Cox.}
+\label{fig:dCox}
+\end{figure}
+
+We see from Figure \ref{fig:dCox} that Sir David Cox had 42 ``children", many of them becoming notable statisticians themselves, such as Basilio Pereira, Valerie Isham, Gauss Cordeiro, Peter McCullagh, and Henry Wynn. Of his ``children", the one who produced the most ``children" of their own was Peter Bloomfield, who has 26 ``children" and 49 ``descendants". In total, Sir David Cox had five generations of academic statistics mentees in this dataset.
+
+<<>>=
+length(getChild("Peter Bloomfield", statGeneal))
+nrow(getDescendants("Peter Bloomfield", statGeneal, gen = 100))
+@
+
+At this point, it would be insightful to examine a more detailed view of one of the longest strings of ``parent-child" relationships between Sir David Cox and one of the two individuals who are his fifth generation ``descendants". We do so with the code below, choosing his fifth generation ``descendant" to be Petra Buzkova. We set the \code{fontFace} variable of the \code{plotPath()} to a value of 4, indicating we wish to boldface and italicize the two varieties of interest.
+
+<<label=pathCB, include=FALSE>>=
+statIG <- dfToIG(statGeneal)
+pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal,
+  isDirected = FALSE)
+plotPath(pathCB, fontFace = 4) + ggplot2::theme(axis.text =
+  ggplot2::element_text(size = 10), axis.title =
+  ggplot2::element_text(size = 10)) + ggplot2::scale_x_continuous(expand
+  = c(.1, .2))
+@
+
+\begin{figure}
+\centering
+  %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=pathCB,fig=TRUE,echo=FALSE>>= 
+<<pathCB>>
+@ 
+  %\end{adjustbox}
+\caption{The shortest path between Sir David Cox and one of his fifth generation ``descendants", Petra Buzkova.}
+\label{fig:pathCB}
+\end{figure}
+
+This code results in Figure \ref{fig:pathCB}. We see that the shortest path between Sir David Cox and Petra Buzkova is strictly composed of five unidirectional ``parent-child" relationships that span about 55 years. We see that the time difference between when an advisor and student earned their degrees is not consistent across this path: The three statisticians who earned their degrees earliest in this path span more than 30 years in degree acquisition, whereas the three statisticians who earned their degrees later in this path only span less than ten years in degree acquisition.
+
+We also notice in Figure \ref{fig:pathCB} that Sir David Cox received his statistics degree in about 1950, and Petra Buzkova received her statistics degree in about 2005. This genealogy only contains historical information about obtained degrees, and does not project into the future. Hence, we can be assured that Petra Buzkova is one of the younger individuals in the dataset, at least in the sense that the youngest individual could only have received his or her degree ten years after Petra Buzkova. However, we cannot be assured that Sir David Cox is one of the oldest individuals in the dataset. As such, it would be informative to superimpose this path of interest onto the entire dataset, using the \code{plotPathOnAll()} function of the \pkg{ggenealogy} package, as we did for the soybean genealogy in Figures \ref{fig:plotPathOnAll1} and \ref{fig:plotPathOnAll2}.
+
+We can achieve this using the below code. After trial and error, we use a \code{binVector} of size 200, and append \pkg{ggplot2} syntax to define suitable x-axis limits. The output of this process is illustrated in Figure \ref{fig:plotCBText}.
+
+<<label=plotCBText, include=FALSE>>=
+plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200) +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+@
+
+\begin{figure}
+\centering
+  %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=plotCBText,fig=TRUE,echo=FALSE>>= 
+<<plotCBText>>
+@ 
+  %\end{adjustbox}
+\caption{The shortest path between Sir David Cox and Petra Buzkova, superimposed over the data structure, using a bin size of 200.}
+\label{fig:plotCBText}
+\end{figure}
+
+We see from the resulting Figure \ref{fig:plotCBText} that almost all text labels for individuals who received their graduate-level statistics degrees between 1950 and 2015 are undecipherable. We also see that the year Sir David Cox acquired his statistics degree is somewhere in the later half of the variable year for this dataset, as the oldest dates for acquisition of statistics degrees in this dataset occur around 1860. However, the number of individuals who are documented as receiving their statistics degrees between 1860 and 1950 are few enough so that their text labels are somewhat readable.
+
+The text labels are so numerous in Figure \ref{fig:plotCBText} that simply trying different values for the input parameter \code{binVector} will not solve the text overlapping problem. Instead, one approach we can try is to reconstruct the plot using the same \pkg{ggenealogy} function \code{plotPathOnAll()}, only now specifying variables to render the size (2.5) and color (default of black) of the text for nodes that are on the path of interest to be more noticeable than the size (0.5) and color (dark gray) of the text for nodes that are not on the path of interest. Moreover, we can make the edges that are not on the path of interest to be represented in a less noticeable color (light gray) than the edges that are on the path of interest (default of dark green). The variable names and options for these aesthetics is further detailed in the help manual of the function. We provide one example code that alters the defaults of the text color and sizes of nodes and edges below, which results in Figure \ref{fig:plotCBNoText}.
+
+<<label=plotCBNoText, include=FALSE>>=
+plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5,
+   pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray") +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+@
+
+\begin{figure}
+\centering
+  %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=plotCBNoText,fig=TRUE,echo=FALSE>>= 
+<<plotCBNoText>>
+@ 
+  %\end{adjustbox}
+\caption{The shortest path between Sir David Cox and Petra Buzkova, superimposed over the data structure, using a bin size of 200. Individuals on the shortest path are labeled in large and black text and connected by dark green edges; all other individuals are labeled in small and gray text and connected by light gray edges.}
+\label{fig:plotCBNoText}
+\end{figure}
+
+
+
 \section{Conclusions}
 
 The \pkg{ggenealogy} package offers various plotting tools that can assist those studying genealogical lineages in the data exploration phases. As each plot comes with its advantages and disadvantages, we recommend for users to explore several of the available visualization tools.

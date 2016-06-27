@@ -299,3 +299,100 @@ varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Z
 plotYearMatrix(varieties,sbGeneal)
 
 
+###################################################
+### code chunk number 46: ggenealogy.Rnw:503-506
+###################################################
+data("statGeneal")
+dim(statGeneal)
+colnames(statGeneal)
+
+
+###################################################
+### code chunk number 47: ggenealogy.Rnw:515-522
+###################################################
+library("dplyr")
+indVec <- getNodes(statGeneal)
+indVec <- indVec[which(indVec != "", )]
+dFunc <- function(var) nrow(getDescendants(var, statGeneal, gen = 100))
+numDesc <- sapply(indVec, dFunc)
+table(numDesc)
+which(numDesc == 159)
+
+
+###################################################
+### code chunk number 48: dCox
+###################################################
+plotAncDes("David Cox", statGeneal, mAnc = 6, mDes = 6, vCol = "blue")
+
+
+###################################################
+### code chunk number 49: dCox
+###################################################
+plotAncDes("David Cox", statGeneal, mAnc = 6, mDes = 6, vCol = "blue")
+
+
+###################################################
+### code chunk number 50: ggenealogy.Rnw:544-546
+###################################################
+length(getChild("Peter Bloomfield", statGeneal))
+nrow(getDescendants("Peter Bloomfield", statGeneal, gen = 100))
+
+
+###################################################
+### code chunk number 51: pathCB
+###################################################
+statIG <- dfToIG(statGeneal)
+pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal,
+  isDirected = FALSE)
+plotPath(pathCB, fontFace = 4) + ggplot2::theme(axis.text =
+  ggplot2::element_text(size = 10), axis.title =
+  ggplot2::element_text(size = 10)) + ggplot2::scale_x_continuous(expand
+  = c(.1, .2))
+
+
+###################################################
+### code chunk number 52: pathCB
+###################################################
+statIG <- dfToIG(statGeneal)
+pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal,
+  isDirected = FALSE)
+plotPath(pathCB, fontFace = 4) + ggplot2::theme(axis.text =
+  ggplot2::element_text(size = 10), axis.title =
+  ggplot2::element_text(size = 10)) + ggplot2::scale_x_continuous(expand
+  = c(.1, .2))
+
+
+###################################################
+### code chunk number 53: plotCBText
+###################################################
+plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200) +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+
+
+###################################################
+### code chunk number 54: plotCBText
+###################################################
+plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200) +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+
+
+###################################################
+### code chunk number 55: plotCBNoText
+###################################################
+plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5,
+   pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray") +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+
+
+###################################################
+### code chunk number 56: plotCBNoText
+###################################################
+plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5,
+   pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray") +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+
+

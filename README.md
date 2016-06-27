@@ -17,6 +17,7 @@ Some of the currently-available methods include:
   * Showing shortest path between two given varieties, and superimpose over full lineage structure.
   * Obtaining graph theory measures of the full lineage structure.
   * Producing color matrix plots of variables between a subset of varieties.
+  * Interactively visualizing genealogical structure
 
 **Installation:**
 
