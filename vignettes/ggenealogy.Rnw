@@ -515,15 +515,28 @@ We need to choose a central individual of interest in order to create this plot.
 
 After that, we can generate a table to examine all values of ``descendant" counts in the dataset, along with the number of individuals who have each of those values of ``descendant" counts. Of the 8165 individuals in this dataset, 6252 of them have zero ``descendants", 322 of them have one ``descendant", and 145 of them have two ``descendants". There are only 17 individuals who have more than 30 ``descendants", and there is one individual who has the largest value of 159 ``descendants". We determine that this individual is the prominent British statistician Sir David Cox, who is known for the Box-Cox transformation and Cox processes, as well as for mentoring many younger researchers who later became notable statisticians themselves.
 
-<<>>=
-library("dplyr")
+<<eval=FALSE>>=
 indVec <- getNodes(statGeneal)
 indVec <- indVec[which(indVec != "", )]
 dFunc <- function(var) nrow(getDescendants(var, statGeneal, gen = 100))
-numDesc <- sapply(indVec, dFunc)
+numDesc <- dplyr::sapply(indVec, dFunc)
 table(numDesc)
+@
+
+numDesc
+   0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18
+6251  322  145   88   58   36   31   22   23   14   17   13   14   10    9    6    4    3    2
+  19   20   21   22   23   24   25   26   27   29   30   34   37   38   40   41   44   45   48
+   5    7    4    3    3    2    2    6    1    1    3    2    1    1    1    1    1    1    1
+  49   60   61   75   77   84  159
+   2    1    1    1    1    1    1
+
+<<eval=FALSE>>=
 which(numDesc == 159)
 @
+
+David Cox
+     1980
 
 We can now visualize how these 159 ``descendants" are related to Sir David Cox by calling the \code{plotAncDes()} function of \pkg{ggenealogy}. As such, we create Figure \ref{fig:dCox} using the code below.
 
@@ -615,20 +628,13 @@ plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5,
 
 In Figure \ref{fig:plotCBNoText}, we can now see each individual on the path of interest, and how their values for the variable year are overlaid on the entire genealogy structure. We can also more clearly see that, even though only ten years span between the youngest individual in the genealogy and Petra Buzkova, there are many individuals in that last decade. Indeed, the decade from 2005 to 2015 appears to be the densest in this dataset in terms of acquisition of statistics degrees.
 
-We could still improve upon Figure \ref{fig:plotCBNoText}. Even though we may be primarily interested in understanding how the path of interest is overlaid across the entire genealogical structure, we could, upon viewing the entire structure, also develop an interest in nodes that are not on the path of interest but are revealed to stand out among the rest of the genealogical structure. For instance, in Figure \ref{fig:plotCBNoText}, it may be of interest for us to determine the names of the few individuals who obtained their statistics degrees before 1900. Fortunately, within the \code{plotPathOnAll()} function, there is a variable \code{animate} that we can set to a value of TRUE to create an interactive version of the figure that allows us to hover over individual illegible labels and immediately receive their labels in a readable format. This interactive functionality comes from methods in the \pkg{plotly} package. A short video demonstration of these interactive features can be viewed below in Figure \ref{fig:plotAnimate}.
+We could still improve upon Figure \ref{fig:plotCBNoText}. Even though we may be primarily interested in understanding how the path of interest is overlaid across the entire genealogical structure, we could, upon viewing the entire structure, also develop an interest in nodes that are not on the path of interest but are revealed to stand out among the rest of the genealogical structure. For instance, in Figure \ref{fig:plotCBNoText}, it may be of interest for us to determine the names of the few individuals who obtained their statistics degrees before 1900. Fortunately, within the \code{plotPathOnAll()} function, there is a variable \code{animate} that we can set to a value of TRUE to create an interactive version of the figure that allows us to hover over individual illegible labels and immediately receive their labels in a readable format. This interactive functionality comes from methods in the \pkg{plotly} package. The code below would create an animated version of Figure \ref{fig:plotCBNoText}.
 
 <<label=plotAnimate, include=FALSE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, binVector = 1:200, nodeSize = .5,
    pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray", animate =
    TRUE)
 @
-
-\begin{figure}
-    \centering
-    \fbox{\includemedia[label = v1, playbutton=none, width=1.0\textwidth, addresource=animateGen.mov, activate=pageopen, flashvars={source=animateGen.mov}]{\includegraphics{./plotAnimate.png}}{VPlayer.swf}}
-    \caption{A short video demonstrating the animation features for this function. Please note that to properly view this video, the PDF version of this document must be opened in Adobe Acrobat Reader DC (version >=9), which can be downloaded free of charge. This video can only be viewed on Windows or Mac OS X platforms; it cannot be viewed on mobile devices.}
-    \label{fig:plotAnimate}
-\end{figure}
 
 \clearpage
 
