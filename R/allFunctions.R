@@ -153,7 +153,7 @@ buildAncDesTotalDF = function(v1, geneal, mAnc=3, mDes=3){
     })
     
     # This creates a unique color for the variety label of interest
-    cols = hcl(h=seq(0, 300, by=50), c=80, l=55, fixup=TRUE)
+    cols = grDevices::hcl(h=seq(0, 300, by=50), c=80, l=55, fixup=TRUE)
     temp2$color = "#000000"
     
     # The number 7 was selected as it is the average working memory maximum
@@ -1091,15 +1091,15 @@ plotPathOnAll = function(path, geneal, ig, binVector=sample(1:12, 12), edgeCol =
   eTDF <- buildEdgeTotalDF(geneal, ig, binVector)
   pTDF <- buildPlotTotalDF(path, geneal, ig, binVector)
   
-  eTDF <- na.omit(eTDF) #remove any row that has at least one NA
+  eTDF <- stats::na.omit(eTDF) #remove any row that has at least one NA
   
   textFrame = data.frame(x = pMPDF$x, y = pMPDF$y, label = pMPDF$label)
   textFrame = transform(textFrame,
-                        w = strwidth(pMPDF$label, 'inches') + 0.25,
-                        h = strheight(pMPDF$label, 'inches') + 0.25
+                        w = graphics::strwidth(pMPDF$label, 'inches') + 0.25,
+                        h = graphics::strheight(pMPDF$label, 'inches') + 0.25
   )
   
-  textFrame <- na.omit(textFrame) #remove any row that has at least one NA
+  textFrame <- stats::na.omit(textFrame) #remove any row that has at least one NA
   
   # The plotTotalImage object creates two line segments (geom_segment), one to create grey
   # edges for non-path connections between pairs of nodes, the other to create light-green
