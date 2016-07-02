@@ -15,10 +15,10 @@ Imports:
     igraph (>= 0.7.1),
     plyr (>= 1.8.1),
     reshape2 (>= 1.4),
-    plotly (>= 3.4.13)
+    plotly (>= 3.4.13),
 VignetteBuilder: knitr
 Suggests:
     stringr (>= 0.6.2),
-    knitr,
+    knitr (>= 1.13),
     roxygen2 (>= 3.0.0)
 RoxygenNote: 5.0.1
