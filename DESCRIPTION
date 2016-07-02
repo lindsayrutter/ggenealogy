@@ -9,7 +9,7 @@ Author: Lindsay Rutter, Susan Vanderplas, Di Cook
 Maintainer: Lindsay Rutter <lrutter@iastate.edu>
 License: GPL
 Depends:
-    R (>= 3.0.2)
+    R (>= 3.2.4)
 Imports:
     ggplot2 (>= 1.0.0),
     igraph (>= 0.7.1),
