@@ -6,7 +6,7 @@ Author: Lindsay Rutter, Susan Vanderplas, Di Cook
 Maintainer: Lindsay Rutter <lrutter@iastate.edu>
 License: GPL
 Depends:
-    R (>= 3.3.1)
+    R (>= 3.3.0)
 Imports:
     ggplot2 (>= 1.0.0),
     igraph (>= 0.7.1),
