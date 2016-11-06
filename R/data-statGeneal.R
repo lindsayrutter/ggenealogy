@@ -10,7 +10,7 @@
 #' @details \itemize{
   #' \item child name of the individual who received an advanced degree in statistics
   #' \item parent name of the individual who mentored the child and also received an advanced degree in statistics. If the child has no such parent, then this field is an empty string
-  #' \item year year the child received their advanced degree in statistics
+  #' \item date year the child received their advanced degree in statistics
   #' \item country country from which the child received their advanced degree in statistics
   #' \item school school from which the child received their advanced degree in statistics
   #' \item thesis title of the thesis the child submitted to receive their advanced degree in statistics. If this information is not available, then this field is an empty string
