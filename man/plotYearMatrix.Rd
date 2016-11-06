@@ -2,10 +2,10 @@
 % Please edit documentation in R/allFunctions.R
 \name{plotYearMatrix}
 \alias{plotYearMatrix}
-\title{Returns the image object to show the heat map of years between the inputted set of vertices}
+\title{Returns the image object to show the heat map of dates between the inputted set of vertices}
 \usage{
 plotYearMatrix(varieties, geneal, xLab = "Variety", yLab = "Variety",
-  legendLab = "Difference in years")
+  legendLab = "Difference in dates")
 }
 \arguments{
 \item{varieties}{subset of varieties used to generate the heat map}
@@ -19,7 +19,7 @@ plotYearMatrix(varieties, geneal, xLab = "Variety", yLab = "Variety",
 \item{legendLab}{string label on the legend (default is "Degree")}
 }
 \description{
-Returns the image object to show the heat map of years between the inputted set of vertices
+Returns the image object to show the heat map of dates between the inputted set of vertices
 }
 \examples{
 data(sbGeneal)

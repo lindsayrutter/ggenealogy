@@ -12,7 +12,7 @@ buildPathDF(path)
 \description{
 This function builds a dataframe of information about the path object that can later be used
 for visualization. The dataframe includes "label" (name of each variety) of each node,
-"x" (the year of the variety, the x-axis value for which the label and
+"x" (the date of the variety, the x-axis value for which the label and
 incoming/outgoing edges are centered), "y" (the y-axis value, which is the index
 of the path, incremented by unity), "xstart" (the x-axis position of the 
 outgoing edge (leaving to connect to the node at the next largest y-value)),

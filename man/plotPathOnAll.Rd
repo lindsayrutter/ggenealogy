@@ -4,10 +4,9 @@
 \alias{plotPathOnAll}
 \title{Plot a path between two vertices over the full genealogy}
 \usage{
-plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
-  edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3,
-  pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black",
-  animate = FALSE)
+plotPathOnAll(path, geneal, ig, bin = 12, edgeCol = "gray84",
+  pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3,
+  pathNodeFont = "bold", nodeCol = "black", animate = FALSE)
 }
 \arguments{
 \item{path}{path as returned from getPath() or a vector of two variety names which exist in ig}
@@ -16,7 +15,7 @@ plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
 
 \item{ig}{the graph representation of the data genealogy (in igraph format)}
 
-\item{binVector}{vector of numbers between 1 and length(binVector), each repeated exactly once}
+\item{bin}{the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette}
 
 \item{edgeCol}{color of the non-path edges, default is "gray84"}
 
@@ -36,7 +35,7 @@ plotPathOnAll(path, geneal, ig, binVector = sample(1:12, 12),
 This function requires a path and the ig object, and plots the full genealogy 
 with the path highlighted.
 The image will correctly position the node labels with x-axis representing the node
-year, and y-axis representing the node path index. Light grey edges between two nodes
+date, and y-axis representing the node path index. Light grey edges between two nodes
 represent parent-child relationships between those nodes. To enhance the visual
 understanding of how the path-of-interest fits into the entire graph structure, the
 nodes within the path are labelled in boldface, and connected with light-green
@@ -46,8 +45,8 @@ boldfaced edges.
 data(sbGeneal)
 ig <- dfToIG(sbGeneal)
 path <- getPath("Brim", "Bedford", ig, sbGeneal)
-bV <- sample(1:12, 12)
-plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, binVector = bV)
+bV <- 12
+plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, bin = bV)
 plotTotalImage
 }
 \seealso{

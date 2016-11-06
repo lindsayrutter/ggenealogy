@@ -18,9 +18,9 @@ This data contains information on copy number variants, single nucleotide polymo
 
 \itemize{
 \item child name of child soybean variety
-\item year child variety was introduced
+\item date year child variety was introduced
 \item yield protein yield
-\item year.imputed whether or not the introduced year of the child variety was imputed
+\item date.imputed whether or not the introduced year of the child variety was imputed
 \item parent name of parent soybean variety
 }
 }

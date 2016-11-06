@@ -4,19 +4,18 @@
 \alias{buildSpreadTotalDF}
 \title{Build a data frame where the varieties are spread so they do not overlap}
 \usage{
-buildSpreadTotalDF(geneal, ig, binVector = 1:12)
+buildSpreadTotalDF(geneal, ig, bin = 12)
 }
 \arguments{
 \item{geneal}{the full genealogy  (in data frame format)}
 
 \item{ig}{the graph representation of the data genealogy (in igraph format)}
 
-\item{binVector}{vector of numbers between 1 and length(binVector), each repeated exactly once
-This vector will determine the order that increasing y index positions are repeatedly assigned to. For instance, if binVector = c(1,4,7,10,2,5,8,11,3,6,9,12), then y-axis position one will be assigned to a variety in the first bin of years, y-axis position two will be assigned to a variety in the fourth bin of years, ...., and y-axis position thirteen will be assigned again to a variety in the first bin of years. This vector can help minimize overlap of the labelling of varieties, without regard to how the layout affects the edges between varieties, as those edges will be colored faintly.}
+\item{bin}{the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette}
 }
 \description{
 Constructs a data frame object so that varieties are spread such that they do not overlap, even
-though the x-axis position will represent years.
+though the x-axis position will represent dates.
 }
 \seealso{
 \url{http://www.r-project.org} for iGraph information

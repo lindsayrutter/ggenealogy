@@ -4,14 +4,14 @@
 \alias{buildEdgeTotalDF}
 \title{Build the edges in the genealogy graph.}
 \usage{
-buildEdgeTotalDF(geneal, ig, binVector = 1:12)
+buildEdgeTotalDF(geneal, ig, bin = 12)
 }
 \arguments{
 \item{geneal}{the full genealogy  (in data frame format)}
 
 \item{ig}{the graph representation of the data genealogy (in igraph format)}
 
-\item{binVector}{the number of bins between 1 and length(binVector) (default is 12). For more information on choosing binVector size, please visit the ggenealogy vignette.}
+\item{bin}{the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette.}
 }
 \description{
 This function takes the graph object and creates a data frame object of the edges between all parent-child relationships in the graph.
