@@ -29,7 +29,7 @@ plotPathOnAll(path, geneal, ig, bin = 12, edgeCol = "gray84",
 
 \item{nodeCol}{color of the non-path node labels, default is black}
 
-\item{animate}{If the plot will have interactive capabilities, default is FALSE}
+\item{animate}{if the plot will have interactive capabilities, default is FALSE}
 }
 \description{
 This function requires a path and the ig object, and plots the full genealogy 

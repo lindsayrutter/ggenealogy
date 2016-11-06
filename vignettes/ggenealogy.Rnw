@@ -430,7 +430,7 @@ Using the plot, we immediately recognize that the path spans most of the years i
 However, this plot has significant empty spaces between the distinct bins, and almost all text labels are overlapping, causing decreased readability. To force variety text labels into these spaces, the user may consider choosing a larger number of bins. Hence, we next examine a \texttt{bin} size of six:
 
 <<label=plotPathOnAll2, include=FALSE>>=
-plotPathOnAll(pathNT, sbGeneal, ig, bin = 6)
+plotPathOnAll(pathNT, sbGeneal, ig, bin = 6) + ggplot2::xlab("Year")
 @
 
 \setkeys{Gin}{width=6in, height=6in}
@@ -445,6 +445,8 @@ plotPathOnAll(pathNT, sbGeneal, ig, bin = 6)
 \end{figure}
 
 Figure~\ref{fig:plotPathOnAll2} shows that the \texttt{bin} size of six successfully mitigated text overlap compared to Figure~\ref{fig:plotPathOnAll1}, which had a \texttt{bin} size of three. Most of the remaining textual overlap is confined to the range of years (1950-1970) of which the most varieties had development years.
+
+Notice from Figure ~\ref{fig:plotPathOnAll}, that the default horizontal axis label for the \texttt{plotPath()} method has a value of ``Date". Given that the ``Date" variable in this example dataset is on the timescale of years, we wanted to change the default value of the horizontal axis label to ``Year". We did this in the code above for Figure ~\ref{fig:plotPathOnAll2} by appending appended \texttt{ggplot2} syntax.
 
 \subsection{Plotting pairwise distance matrices between a set of vertices}
 
@@ -635,7 +637,7 @@ In Figure \ref{fig:plotCBNoText}, we can now see each individual on the path of 
 
 We could still improve upon Figure \ref{fig:plotCBNoText}. Even though we may be primarily interested in understanding how the path of interest is overlaid across the entire genealogical structure, we could, upon viewing the entire structure, also develop an interest in nodes that are not on the path of interest but are revealed to stand out among the rest of the genealogical structure. For instance, in Figure \ref{fig:plotCBNoText}, it may be of interest for us to determine the names of the few individuals who obtained their statistics degrees before 1900. Fortunately, within the \code{plotPathOnAll()} function, there is a variable \code{animate} that we can set to a value of TRUE to create an interactive version of the figure that allows us to hover over individual illegible labels and immediately receive their labels in a readable format. This interactive functionality comes from methods in the \pkg{plotly} package. The code below would create an animated version of Figure \ref{fig:plotCBNoText}.
 
-<<label=plotAnimate, include=FALSE>>=
+<<label=plotAnimate, include=FALSE, eval = FALSE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, bin = 200, nodeSize = .5,
    pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray", animate =
    TRUE)
