@@ -496,7 +496,7 @@ buildSpreadTotalDF = function(geneal, ig, bin = 12){
   numrows <- ceiling(nrow(totalDF)/bin)
   
   idx <- matrix(1:(numrows*bin), ncol=bin, nrow=numrows, byrow=TRUE)
-  idx <- idx[, bin]
+  idx <- idx[, 1:bin]
   idx <- as.numeric(t(idx))[1:nrow(totalDF)]
   
   spreadTotalDF <- totalDF
@@ -1024,7 +1024,7 @@ plotPath = function(path, fontFace = 1){
     plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = xstart, y = y, label=label)) +
       ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
       ggplot2::geom_label(fill = "grey80", size = 3, fontface=pPDF$fontface) +
-      ggplot2::xlab("Year") +
+      ggplot2::xlab("Date") +
       ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(),
                      axis.title.y=ggplot2::element_blank(),legend.position="none",
                      panel.grid.major.y=ggplot2::element_blank(),
@@ -1057,7 +1057,7 @@ plotPath = function(path, fontFace = 1){
 #' @param nodeSize text size of the non-path node labels, default is 3
 #' @param pathNodeSize text size of the path node labels, default is 3
 #' @param pathNodeFont font face of text of the path node labels ("plain", "italic", "bold", "bold.italic"), default is "bold"
-#' @param animate If the plot will have interactive capabilities, default is FALSE
+#' @param animate if the plot will have interactive capabilities, default is FALSE
 #' @param nodeCol color of the non-path node labels, default is black
 #' @examples
 #' data(sbGeneal)
@@ -1112,7 +1112,7 @@ plotPathOnAll = function(path, geneal, ig, bin = 12, edgeCol = "gray84", pathEdg
       ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
 
   plotTotalImage = plotTotalImage + ggplot2::geom_text(data = pTDF,ggplot2::aes(x = x, y = y, label = label), size = pathNodeSize, fontface=pathNodeFont) +
-    ggplot2::xlab("Year") +
+    ggplot2::xlab("Date") +
     # Erase the y-axis, and only include grids from the x-axis
     ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(),
                    axis.title.y=ggplot2::element_blank(),legend.position="none",

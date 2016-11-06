@@ -351,7 +351,24 @@ plotPath(pathBB)
 \label{fig:plotPath1}
 \end{figure}
 
-This produces a neat visual (see Figure~\ref{fig:plotPath1}) that informs us of all the varieties involved in the shortest path between ``Brim" and ``Bedford". In this plot, the years of all varieties involved in the path are indicated on the horizontal axis, while the vertical axis has no meaning other than to simply to display the labels evenly spaced vertically. 
+Notice that the horizontal label by default uses the general label of ``Date". We can tailor this plot by appending basic \texttt{ggplot} syntax. For instance, if we wish to change the horizontal label to the more specific value of ``Year", then we can do as follows:
+
+<<label=plotPath1a, include=FALSE>>=
+plotPath(pathBB) + ggplot2::xlab("Year")
+@
+
+\setkeys{Gin}{width=5in, height=5in}
+\begin{figure}[b!]
+\begin{center}
+<<label=plotPath1a,fig=TRUE,echo=FALSE>>= 
+<<plotPath1a>>
+@
+\end{center}
+\caption{The shortest path between varieties ``Brim" and ``Bedford" is not strictly composed of unidirectional parent-child relationships, but instead, includes cousin-like relationships. We changed the horizontal axis label from Figure \ref{fig:plotPath1} to now be ``Year".}
+\label{fig:plotPath1a}
+\end{figure}
+
+This produces a neat visual (see Figure~\ref{fig:plotPath1a}) that informs us of all the varieties involved in the shortest path between ``Brim" and ``Bedford". In this plot, the years of all varieties involved in the path are indicated on the horizontal axis, while the vertical axis has no meaning other than to simply to display the labels evenly spaced vertically. 
 
 Although a call to the \pkg{ggenealogy} function \texttt{getDate()} indicates that ``Bedford" was developed in \Sexpr{getDate("Bedford",sbGeneal)} and ``Brim" in \Sexpr{getDate("Brim",sbGeneal)}, we quickly determine from the plot that ``Brim" is not a parent, grandparent, nor any great-grandparent of ``Bedford". Instead, we see that these two varieties are not related through a unidirectional parent-child lineage, but have a cousin-like relationship. The oldest common ancestor between ``Bedford" and ``Brim" is the variety ``Essex", which was developed in \Sexpr{getDate("Essex",sbGeneal)}.
 
@@ -373,19 +390,7 @@ plotPath(pathNT)
 \label{fig:plotPath2}
 \end{figure}
 
-From the output, shown in Figure~\ref{fig:plotPath2}, we see that the variety ``Tokyo" is an ancestor of ``Narow" via four linear parent-child relationships. Because of this, we can still view the pathway, even when we use an \texttt{igraph} object \texttt{dirIG} that is directed, and set the boolean \texttt{isDirected} variable to true.
-
-Either ordering of the two varieties will produce the exact same result. In other words, the following two code blocks would produce the same figure we saw in Figure~\ref{fig:plotPath2}:
-
-<<eval=FALSE>>=
-pathNT = getPath("Narow", "Tokyo", dirIG, sbGeneal, isDirected=TRUE)
-plotPath(pathNT)
-@
-
-<<eval=FALSE>>=
-pathTN = getPath("Tokyo", "Narow", dirIG, sbGeneal, isDirected=TRUE)
-plotPath(pathTN)
-@
+From the output, shown in Figure~\ref{fig:plotPath2}, we see that the variety ``Tokyo" is an ancestor of ``Narow" via four linear parent-child relationships.
 
 \subsection{Plotting shortest paths superimposed on full genealogical structure}
 
@@ -519,7 +524,7 @@ After that, we can generate a table to examine all values of ``descendant" count
 indVec <- getNodes(statGeneal)
 indVec <- indVec[which(indVec != "", )]
 dFunc <- function(var) nrow(getDescendants(var, statGeneal, gen = 100))
-numDesc <- dplyr::sapply(indVec, dFunc)
+numDesc <- sapply(indVec, dFunc)
 table(numDesc)
 @
 
