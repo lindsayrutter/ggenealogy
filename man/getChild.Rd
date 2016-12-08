@@ -7,7 +7,7 @@
 getChild(v1, geneal)
 }
 \arguments{
-\item{v1}{the label of the variety/vertex of interest (in character string format)}
+\item{v1}{the label of the vertex of interest (in character string format)}
 
 \item{geneal}{the full genealogy  (in data frame format)}
 }

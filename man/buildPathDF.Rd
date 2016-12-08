@@ -4,10 +4,16 @@
 \alias{buildPathDF}
 \title{Build data frame for path representation}
 \usage{
-buildPathDF(path)
+buildPathDF(path, geneal, colName, colNameY = "")
 }
 \arguments{
 \item{path}{path object representing the path between two vertices}
+
+\item{geneal}{the full genealogy  (in data frame format)}
+
+\item{colName}{the name of the column of the data frame that contains the quantitative variable of interest (in character string format)}
+
+\item{colNameY}{the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.}
 }
 \description{
 This function builds a dataframe of information about the path object that can later be used

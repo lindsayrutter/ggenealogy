@@ -9,9 +9,9 @@
 #' @format a \code{RData} instance, 1 row per each child-parent relationship between soybean varieties
 #' @details \itemize{
   #' \item child name of child soybean variety
-  #' \item date year child variety was introduced
+  #' \item devYear year child variety was introduced
   #' \item yield protein yield
-  #' \item date.imputed whether or not the introduced year of the child variety was imputed
+  #' \item yearImputed whether or not the introduced year of the child variety was imputed
   #' \item parent name of parent soybean variety
   #' }
   #'

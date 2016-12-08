@@ -4,9 +4,10 @@
 \alias{plotPathOnAll}
 \title{Plot a path between two vertices over the full genealogy}
 \usage{
-plotPathOnAll(path, geneal, ig, bin = 12, edgeCol = "gray84",
-  pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3,
-  pathNodeFont = "bold", nodeCol = "black", animate = FALSE)
+plotPathOnAll(path, geneal, ig, colName, colNameY = "", bin = 12,
+  edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3,
+  pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black",
+  animate = FALSE)
 }
 \arguments{
 \item{path}{path as returned from getPath() or a vector of two variety names which exist in ig}
@@ -14,6 +15,10 @@ plotPathOnAll(path, geneal, ig, bin = 12, edgeCol = "gray84",
 \item{geneal}{the full genealogy  (in data frame format)}
 
 \item{ig}{the graph representation of the data genealogy (in igraph format)}
+
+\item{colName}{the name of the column of the data frame that contains the quantitative variable of interest (in character string format)}
+
+\item{colNameY}{the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.}
 
 \item{bin}{the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette}
 
@@ -43,11 +48,11 @@ boldfaced edges.
 }
 \examples{
 data(sbGeneal)
-ig <- dfToIG(sbGeneal)
-path <- getPath("Brim", "Bedford", ig, sbGeneal)
-bV <- 12
-plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, bin = bV)
-plotTotalImage
+sb <- sbGeneal[complete.cases(sbGeneal[1:3]),]
+ig <- dfToIG(sb)
+pathCL <- getPath("Clark", "Lawrence", ig, sb, "yield")
+plotPathOnAll(pathCL, sb, ig, "yield", bin = 3, pathEdgeCol = "red") + ggplot2::xlab("Yield")
+plotPathOnAll(pathCL, sb, ig, "yield", "devYear") + ggplot2::xlab("Yield") + ggplot2::ylab("Year")
 }
 \seealso{
 \url{http://www.r-project.org} for iGraph information

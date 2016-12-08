@@ -7,7 +7,7 @@
 buildAncDesTotalDF(v1, geneal, mAnc = 3, mDes = 3)
 }
 \arguments{
-\item{v1}{the label of the variety/vertex of interest (in character string format)}
+\item{v1}{the label of the vertex of interest (in character string format)}
 
 \item{geneal}{the full genealogy (in data frame format)}
 

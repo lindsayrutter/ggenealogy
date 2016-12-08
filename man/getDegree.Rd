@@ -7,9 +7,9 @@
 getDegree(v1, v2, ig, geneal)
 }
 \arguments{
-\item{v1}{the label of the first variety/vertex of interest (in character string format)}
+\item{v1}{the label of the first vertex of interest (in character string format)}
 
-\item{v2}{the label of the second variety/vertex of interest (in character string format)}
+\item{v2}{the label of the second vertex of interest (in character string format)}
 
 \item{ig}{the graph representation of the data genealogy (in igraph format)}
 

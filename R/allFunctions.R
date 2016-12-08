@@ -114,7 +114,7 @@ buildAncDesCoordDF = function(df){
 #' 
 #' Returns the data frame that includes labels and plot coordinates of all ancestors and descendants of a variety. Users can specify the maximum number of ancestors and descendants to display.
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param mAnc the maximum number of generations of ancestors of v1 to be displayed (in numeric format)
 #' @param mDes the maximum number of generations of descendants of v1 to be displayed (in numeric format)
 #' @param geneal the full genealogy (in data frame format)
@@ -186,7 +186,7 @@ buildAncDesTotalDF = function(v1, geneal, mAnc=3, mDes=3){
 #' 
 #' This function returns a nested list of the ancestors of the inputted variety.
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param geneal the full genealogy  (in data frame format)
 #' @param gen the generation (note: This should be left as default, as any other input will not affect results anyway)
 #' @seealso \code{\link{getParent}} for information on determining parents
@@ -219,7 +219,7 @@ buildAncList = function(v1, geneal, gen = 0){
 #' 
 #' This function returns a nested list of the descendants of the inputted variety.
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param geneal the full genealogy  (in data frame format)
 #' @param gen the generation (note: This should be left as default, as any other input will not affect results)
 #' @seealso \code{\link{getChild}} for information on determining children
@@ -255,9 +255,10 @@ buildDesList = function(v1, geneal, gen=0){
 #' @param geneal the full genealogy  (in data frame format)
 #' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette.
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @seealso \code{\link{dfToIG}} for information on producing ig from the genealogy
 #' @seealso \url{http://www.r-project.org} for iGraph information
-buildEdgeTotalDF = function(geneal, ig, bin = 12){
+buildEdgeTotalDF = function(geneal, ig, colName, bin = 12){
   
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -267,7 +268,7 @@ buildEdgeTotalDF = function(geneal, ig, bin = 12){
     stop("bin must contain a number")
   }
   
-  tG <- buildSpreadTotalDF(geneal, ig, bin)
+  tG <- buildSpreadTotalDF(geneal, ig, colName, bin)
   eG <- igraph::get.data.frame(ig, "edges")
   
   # edgeTotalDF used in function plotPathOnAll()
@@ -276,12 +277,14 @@ buildEdgeTotalDF = function(geneal, ig, bin = 12){
   y=as.numeric(rep("",numEdges))
   xend=as.numeric(rep("",numEdges))
   yend=as.numeric(rep("",numEdges))
+  name=as.numeric(rep("",numEdges))
+  nameEnd=as.numeric(rep("",numEdges))
   # For each edge in the graph
   for (i in 1:numEdges){
     xname = as.character(eG[i,]$from)
     xendname = as.character(eG[i,]$to)
-    x_i = getDate(xname, tG)
-    xend_i = getDate(xendname, tG)
+    x_i = getVariable(xname, tG, colName)
+    xend_i = getVariable(xendname, tG, colName)
     if(!xname%in%tG$name) {
       stop(paste(xname, "cannot be found in ig vertices"))
     }
@@ -294,9 +297,11 @@ buildEdgeTotalDF = function(geneal, ig, bin = 12){
     xend[i] = xend_i
     y[i] = y_i
     yend[i] = yend_i
+    name[i] = xname
+    nameEnd[i] = xendname
   }
   # Create a dataframe containing the start and end positions of the x and y axes
-  edgeTotalDF = as.data.frame(cbind(x, y, xend, yend))
+  edgeTotalDF = as.data.frame(cbind(x, y, xend, yend, name, nameEnd))
   
   edgeTotalDF
 }
@@ -310,10 +315,12 @@ buildEdgeTotalDF = function(geneal, ig, bin = 12){
 #' @param path path as returned from getPath() or a vector of two variety names which exist in the ig object
 #' @param geneal the full genealogy  (in data frame format)
 #' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
+#' @param colNameY the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette.
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
-buildMinusPathDF = function(path, geneal, ig, bin = 12){
+buildMinusPathDF = function(path, geneal, ig, colName, colNameY, bin = 12){
   
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -328,18 +335,28 @@ buildMinusPathDF = function(path, geneal, ig, bin = 12){
       stop("path needs to contain two variety names")
     }
     varieties <- path
-    path <- getPath(varieties[1], varieties[2], ig)
-  } else if(sum(names(path)%in%c("pathVertices", "dateVertices"))!=2){
+    path <- getPath(varieties[1], varieties[2], ig, colName)
+  } else if(sum(names(path)%in%c("pathVertices", "variableVertices"))!=2){
     stop("path does not appear to be a result of the getPath() function")
   } 
   
-  tG <- buildSpreadTotalDF(geneal, ig, bin)
-  eG <- igraph::get.data.frame(ig, "edges")
+  tG <- buildSpreadTotalDF(geneal, ig, colName, bin)
+  #eG <- igraph::get.data.frame(ig, "edges")
+  
+  if (colNameY !=""){
+    rowNametG <- rownames(tG)
+    rownames(tG) <- 1:nrow(tG)
+    rowNameG <- rownames(geneal)
+    rownames(geneal) <- 1:nrow(geneal)
+    tG$y <- geneal[match(tG$name, geneal$child),][[colNameY]]
+    rownames(tG) <- rowNametG
+    rownames(geneal) <- rowNameG
+  }
   
   label=tG$name
-  x=tG$date
+  x=tG[[colName]]
   y=tG$y
-  # If the label is part of the path, then we change the its value to NA
+  # If the label is part of the path, then we change its value to NA
   for (i in 1:length(label)){
     if (label[i]%in%path$pathVertices){
       label[i]=NA
@@ -364,22 +381,29 @@ buildMinusPathDF = function(path, geneal, ig, bin = 12){
 #' to connect to the node at the next largest y-value), "yend" (the y-axis position
 #' of the outgoing edge (connected to the node at the next largest y-value))).
 #' @param path path object representing the path between two vertices
-buildPathDF = function(path){
+#' @param geneal the full genealogy  (in data frame format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
+#' @param colNameY the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.
+buildPathDF = function(path, geneal, colName, colNameY=""){
   if(length(path) > 0){
     # The labels of the nodes are the names of the varieties in the path
     label=path$pathVertices
     # The x-axis position of the node labels are the dates of the varieties in the path
-    x=as.numeric(path$dateVertices)
+    x=as.numeric(path$variableVertices)
     # The y-axis position of the node labels are incremented by unity for each new connected
     # node in the path
-    y=seq(1, length(label), 1)
+    if (colNameY==""){
+      y=seq(1, length(label), 1)
+    }
+    else{
+      y =geneal[match(label, geneal$child),][[colNameY]]
+    }
     # The starting x-axis position of the edge between two nodes will be the x-axis position
     # of the label of the first node
     xstart=x
     xend=rep(0,length(label))
     yend=rep(0,length(label))
     for (i in 1:length(label)){
-      y[i] = i
       xend[i] = xstart[i]
       if (i < length(label)){
         # The ending x-axis position of the edge between two nodes will be the x-axis position
@@ -415,11 +439,13 @@ buildPathDF = function(path){
 #' @param path path as returned from getPath() or a vector of two variety names which exist in ig
 #' @param geneal the full genealogy  (in data frame format)
 #' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
+#' @param colNameY the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
-buildPlotTotalDF = function(path, geneal, ig, bin = 12){
+buildPlotTotalDF = function(path, geneal, ig, colName, colNameY = "", bin = 12){
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
   }
@@ -429,20 +455,29 @@ buildPlotTotalDF = function(path, geneal, ig, bin = 12){
       stop("path needs to contain two variety names")
     }
     varieties <- path
-    path <- getPath(varieties[1], varieties[2], ig)
-  } else if(sum(names(path)%in%c("pathVertices", "dateVertices"))!=2){
+    path <- getPath(varieties[1], varieties[2], ig, colName)
+  } else if(sum(names(path)%in%c("pathVertices", "variableVertices"))!=2){
     stop("path does not appear to be a result of the getPath() function")
   } 
-  
   
   if(class(bin) != "numeric"){
     stop("bin must contain a number")
   }
   
-  tG <- buildSpreadTotalDF(geneal, ig, bin)
+  tG <- buildSpreadTotalDF(geneal, ig, colName, bin)
+  
+  if (colNameY !=""){
+    rowNametG <- rownames(tG)
+    rownames(tG) <- 1:nrow(tG)
+    rowNameG <- rownames(geneal)
+    rownames(geneal) <- 1:nrow(geneal)
+    tG$y <- geneal[match(tG$name, geneal$child),][[colNameY]]
+    rownames(tG) <- rowNametG
+    rownames(geneal) <- rowNameG
+  }
   
   label=path$pathVertices
-  x=as.numeric(path$dateVertices)
+  x=as.numeric(path$variableVertices)
   xstart=x
   xend=rep(0,length(label))
   ystart=rep(0,length(label))
@@ -467,9 +502,10 @@ buildPlotTotalDF = function(path, geneal, ig, bin = 12){
 #' though the x-axis position will represent dates.
 #' @param geneal the full genealogy  (in data frame format)
 #' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette
 #' @seealso \url{http://www.r-project.org} for iGraph information
-buildSpreadTotalDF = function(geneal, ig, bin = 12){
+buildSpreadTotalDF = function(geneal, ig, colName, bin = 12){
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object.")
   }
@@ -483,15 +519,15 @@ buildSpreadTotalDF = function(geneal, ig, bin = 12){
   
   dateVector = c()
   for (i in 1:dim(totalDF)[1]){
-    currYear = getDate(totalDF[i,],geneal)
+    currYear = getVariable(totalDF[i,],geneal,colName)
     dateVector = c(dateVector, currYear)
   }
   
   totalDF2 = cbind(totalDF, dateVector)
-  colnames(totalDF2)[2] = "date"
+  colnames(totalDF2)[2] = colName
   totalDF = totalDF2
   
-  totalDF = totalDF[order(totalDF$date, decreasing=FALSE), ]
+  totalDF = totalDF[order(totalDF[[colName]], decreasing=FALSE), ]
   
   numrows <- ceiling(nrow(totalDF)/bin)
   
@@ -509,7 +545,7 @@ buildSpreadTotalDF = function(geneal, ig, bin = 12){
 #' 
 #' This function returns a list of the ancestors of the inputted variety within and including a given number of generations
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param geneal the full genealogy  (in data frame format)
 #' @param gen the number of generations back to include as ancestors
 #' @export
@@ -520,6 +556,9 @@ buildSpreadTotalDF = function(geneal, ig, bin = 12){
 #' getAncestors("Essex", sbGeneal, 5)
 getAncestors = function(v1, geneal, gen = 3){
   id.offset <- NULL
+  if (is.null(buildAncList(v1, geneal))){
+    return(data.frame())
+  }
   aDF = buildAncDesCoordDF(nodeToDF(buildAncList(v1, geneal)))
   subDF = aDF[aDF$gen <= gen & aDF$gen != 0,]
   keep = c("label","gen")
@@ -573,7 +612,7 @@ getBasicStatistics = function(ig){
 #' 
 #' This function returns a list of the descendants of the inputted variety within and including a given number of generations
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param geneal the full genealogy  (in data frame format)
 #' @param gen the number of generations back to include as descendants
 #' @export
@@ -624,7 +663,7 @@ getEdges = function(ig, geneal){
 #' 
 #' This function returns zero or more values that indicate the children of the inputted variety.
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param geneal the full genealogy  (in data frame format)
 #' @examples
 #' data(sbGeneal)
@@ -640,10 +679,11 @@ getChild = function(v1, geneal){
 #' 
 #' Returns the degree (distance between unweighted edges) between two varieties, where an edge
 #' represents a parent-child relationship
-#' @param v1 the label of the first variety/vertex of interest (in character string format)
-#' @param v2 the label of the second variety/vertex of interest (in character string format)
+#' @param v1 the label of the first vertex of interest (in character string format)
+#' @param v2 the label of the second vertex of interest (in character string format)
 #' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param geneal the full genealogy  (in data frame format)
+#'
 #' @examples
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
@@ -651,14 +691,14 @@ getChild = function(v1, geneal){
 #' @export
 getDegree = function(v1, v2, ig, geneal){
   if(is.null(geneal)){
-    stop("Please input a genealogy data frame where the first two columns are nodes at least one other column is labeled `$date`")
+    stop("Please input a genealogy data frame")
   }
   if(is.null(ig)){
     stop("Please input an igraph object formatted by dfToIG()")
   }
-  path <- getPath(v1=v1, v2=v2, ig=ig, geneal = geneal, isDirected=F)
+  path <- getPathOnly(v1=v1, v2=v2, ig=ig, geneal = geneal, isDirected=F)
   # The degree between two vertices is equal to one less than the number of nodes in the shortest path
-  return(length(path$pathVertices)-1)
+  return(length(path)-1)
 }
 
 #' Returns the nodes for a full genealogy
@@ -680,7 +720,7 @@ getNodes = function(geneal){
 #' 
 #' This function returns up to two values that indicate the parents of the inputted variety.
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param geneal the full genealogy  (in data frame format)
 #' @examples
 #' data(sbGeneal)
@@ -699,21 +739,22 @@ getParent = function(v1, geneal){
 #' path will be returned. If there is not a path, a list of character(0) will be returned. Note:
 #' For a directed graph, the direction matters. However, this function will check both directions
 #' and return the path if it exists.
-#' @param v1 the label of the first variety/vertex of interest (in character string format)
-#' @param v2 the label of the second variety/vertex of interest (in character string format)
+#' @param v1 the label of the first vertex of interest (in character string format)
+#' @param v2 the label of the second vertex of interest (in character string format)
 #' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param geneal the full genealogy  (in data frame format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @param silent whether or not to print output (defaults to false) 
 #' @param isDirected whether or not the graph is directed (defaults to false)
 #' @examples
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
-#' getPath("Brim", "Bedford", ig, sbGeneal)
-#' getPath("Tokyo", "Volstate", ig, sbGeneal)
+#' getPath("Brim", "Bedford", ig, sbGeneal, "devYear")
+#' getPath("Tokyo", "Volstate", ig, sbGeneal, "yield")
 #' @export
-getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
-  v1Year = getDate(v1, geneal)
-  v2Year = getDate(v2, geneal)
+getPath = function(v1, v2, ig, geneal, colName, silent=FALSE, isDirected=FALSE){
+  v1Year = getVariable(v1, geneal, colName)
+  v2Year = getVariable(v2, geneal, colName)
   geneal = geneal[which(geneal$parent!=""),]
   ig = dfToIG(geneal)
   if(!is.character(v1) & !is.character(v2)){
@@ -741,7 +782,7 @@ getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
   }
   
   retPath = list()
-  dateVertices = character()
+  variableVertices = character()
   pathVertices = character()
   # If the genealogy is directed
   if (igraph::is.directed(ig)){
@@ -753,29 +794,29 @@ getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
     if (length(pathVIndicesForward) != 0){
       for (i in 1:length(pathVIndicesForward)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesForward[i]))
-        dateVertices = c(dateVertices, getDate(pathVertices[i], geneal))
-        if (is.na(getDate(pathVertices[i], geneal)) && pathVertices[i] == v1){
-          dateVertices[i] = v1Year
+        variableVertices = c(variableVertices, getVariable(pathVertices[i], geneal, colName))
+        if (is.na(getVariable(pathVertices[i], geneal, colName)) && pathVertices[i] == v1){
+          variableVertices[i] = v1Year
         }
-        if (is.na(getDate(pathVertices[i], geneal)) && pathVertices[i] == v2){
-          dateVertices[i] = v2Year
+        if (is.na(getVariable(pathVertices[i], geneal, colName)) && pathVertices[i] == v2){
+          variableVertices[i] = v2Year
         }
       }
-      retPath = list(pathVertices = pathVertices, dateVertices = dateVertices)
+      retPath = list(pathVertices = pathVertices, variableVertices = variableVertices)
     }
     # If there is a path in the reverse direction, then we save the names of the vertices in that order
     if (length(pathVIndicesReverse) != 0){
       for (i in 1:length(pathVIndicesReverse)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesReverse[i]))
-        dateVertices = c(dateVertices, getDate(pathVertices[i], geneal))
-        if (is.na(getDate(pathVertices[i], geneal)) && pathVertices[i] == v1){
-          dateVertices[i] = v1Year
+        variableVertices = c(variableVertices, getVariable(pathVertices[i], geneal, colName))
+        if (is.na(getVariable(pathVertices[i], geneal, colName)) && pathVertices[i] == v1){
+          variableVertices[i] = v1Year
         }
-        if (is.na(getDate(pathVertices[i], geneal)) && pathVertices[i] == v2){
-          dateVertices[i] = v2Year
+        if (is.na(getVariable(pathVertices[i], geneal, colName)) && pathVertices[i] == v2){
+          variableVertices[i] = v2Year
         }   
       }
-      retPath = list(pathVertices = pathVertices, dateVertices = dateVertices)
+      retPath = list(pathVertices = pathVertices, variableVertices = variableVertices)
     }
   } else {
     # The direction does not matter, any shortest path between the vertices will be listed
@@ -783,15 +824,96 @@ getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
     if (length(pathVIndices) != 0){
       for (i in 1:length(pathVIndices)){
         pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndices[i]))
-        dateVertices = c(dateVertices, getDate(pathVertices[i], geneal))
-        if (is.na(getDate(pathVertices[i], geneal)) && pathVertices[i] == v1){
-          dateVertices[i] = v1Year
+        variableVertices = c(variableVertices, getVariable(pathVertices[i], geneal, colName))
+        if (is.na(getVariable(pathVertices[i], geneal, colName)) && pathVertices[i] == v1){
+          variableVertices[i] = v1Year
         }
-        if (is.na(getDate(pathVertices[i], geneal)) && pathVertices[i] == v2){
-          dateVertices[i] = v2Year
+        if (is.na(getVariable(pathVertices[i], geneal, colName)) && pathVertices[i] == v2){
+          variableVertices[i] = v2Year
         }
       }
-      retPath = list(pathVertices = pathVertices, dateVertices = dateVertices)
+      retPath = list(pathVertices = pathVertices, variableVertices = variableVertices)
+    }
+  }
+  if(length(retPath)==0 & !silent){
+    message("Warning: There is no path between those two vertices")
+  }
+  # Return the shortest path, if it exists
+  retPath
+}
+
+
+#' Determine the path between two varieties
+#' 
+#' Determines the shortest path between the two inputted vertices, and takes into
+#' account whether or not the graph is directed. If there is a path, the list of vertices of the
+#' path will be returned. If there is not a path, a list of character(0) will be returned. Note:
+#' For a directed graph, the direction matters. However, this function will check both directions
+#' and return the path if it exists.
+#' @param v1 the label of the first vertex of interest (in character string format)
+#' @param v2 the label of the second vertex of interest (in character string format)
+#' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param silent whether or not to print output (defaults to false) 
+#' @param isDirected whether or not the graph is directed (defaults to false)
+#' @export
+getPathOnly = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
+  geneal = geneal[which(geneal$parent!=""),]
+  ig = dfToIG(geneal)
+  if(!is.character(v1) & !is.character(v2)){
+    stop("First two arguments must be strings")
+  } else {
+    if(!v1%in%igraph::V(ig)$name){
+      warning("v1 is not a graph vertex")
+    }
+    if(!v2%in%igraph::V(ig)$name){
+      warning("v2 is not a graph vertex")
+    }
+  }
+  if(is.null(geneal)){
+    stop("Please input a genealogy data frame where the first two columns are nodes at least one other column is labeled `Year`")
+  }
+  if(is.null(ig)){
+    stop("Please input an igraph object formatted by dfToIG()")
+  }
+  
+  if(igraph::is.directed(ig) != isDirected){
+    if(isDirected){
+      stop("Cannot compute directed path on an undirected graph")
+    }
+    warning("Graph type does not match isDirected specification")
+  }
+  
+  retPath = list()
+  pathVertices = character()
+  # If the genealogy is directed
+  if (igraph::is.directed(ig)){
+    # We need to look at both forward and reverse cases of directions, because the user may not know
+    # the potential direction of a path between the two vertices
+    pathVIndicesForward = igraph::get.shortest.paths(ig, v1, v2, weights = NA, output="vpath")$vpath[[1]]
+    pathVIndicesReverse = igraph::get.shortest.paths(ig, v2, v1, weights = NA, output="vpath")$vpath[[1]]
+    # If there is a path in the forward direction, then we save the names of the vertices in that order
+    if (length(pathVIndicesForward) != 0){
+      for (i in 1:length(pathVIndicesForward)){
+        pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesForward[i]))
+      }
+      retPath = pathVertices
+    }
+    # If there is a path in the reverse direction, then we save the names of the vertices in that order
+    if (length(pathVIndicesReverse) != 0){
+      for (i in 1:length(pathVIndicesReverse)){
+        pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndicesReverse[i]))
+      }
+      retPath = pathVertices
+    }
+  } else {
+    # The direction does not matter, any shortest path between the vertices will be listed
+    pathVIndices = igraph::get.shortest.paths(ig, v1, v2, weights = NA, output="vpath")$vpath[[1]]
+    if (length(pathVIndices) != 0){
+      for (i in 1:length(pathVIndices)){
+        pathVertices = c(pathVertices, igraph::get.vertex.attribute(ig, "name", index=pathVIndices[i]))
+      }
+      retPath = pathVertices
     }
   }
   if(length(retPath)==0 & !silent){
@@ -804,15 +926,17 @@ getPath = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
 #' Determine the date of a variety
 #' 
 #' Returns the documented date of the inputted variety
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param geneal the full genealogy  (in data frame format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @examples
 #' data(sbGeneal)
-#' getDate("Essex", sbGeneal)
-#' getDate("Tokyo", sbGeneal)
+#' getVariable("Essex", sbGeneal, "devYear")
+#' getVariable("Tokyo", sbGeneal, "yield")
 #' @export
-getDate = function(v1, geneal){
-  return(geneal[which(geneal[,1] == v1),]$date[1])
+getVariable = function(v1, geneal, colName){
+  rowIndex = which(geneal[,1] == v1)[1]
+  return(geneal[[colName]][rowIndex])
 }
 
 #' Determine if a variety is a child of another
@@ -904,7 +1028,7 @@ nodeToDF = local({
 #'
 #' Returns the image object to show the ancestors and descendants of a variety, with the variety highlighted, if desired
 #' 
-#' @param v1 the label of the variety/vertex of interest (in character string format)
+#' @param v1 the label of the vertex of interest (in character string format)
 #' @param mAnc the maximum number of generations of ancestors of v1 to be displayed (in numeric format)
 #' @param mDes the maximum number of generations of descendants of v1 to be displayed (in numeric format)
 #' @param geneal the full genealogy  (in data frame format)
@@ -955,20 +1079,17 @@ plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
 #' @param varieties subset of varieties used to generate the heat map
 #' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param geneal the full genealogy  (in data frame format)
-#' @param xLab string label on the x axis (default is "Variety")
-#' @param yLab string label on the y axis (default is "Variety")
-#' @param legendLab string label on the legend (default is "Degree")
 #' 
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @examples
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
 #' varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-#' p <- plotDegMatrix(varieties, ig, sbGeneal, "Soybean label", "Soybean label", "Degree")
+#' p <- plotDegMatrix(varieties, ig, sbGeneal)
 #' p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
 #' 
 #' @export
-plotDegMatrix = function(varieties,ig,geneal,xLab="Variety",yLab="Variety",legendLab="Degree"){
+plotDegMatrix = function(varieties,ig,geneal){
   Var1 <- Var2 <- value <- NULL
   matVar = matrix(, nrow = length(varieties), ncol = length(varieties))
   for (i in 1:length(varieties)){
@@ -980,7 +1101,7 @@ plotDegMatrix = function(varieties,ig,geneal,xLab="Variety",yLab="Variety",legen
   tdm <- reshape2::melt(matVar)
   
   heatMap = ggplot2::ggplot(tdm, ggplot2::aes(x = Var1, y = rev(Var2), fill = value)) +
-    ggplot2::labs(x = xLab, y = yLab, fill = legendLab) +
+    ggplot2::labs(x = "Variable", y = "Variable", fill = "Degree") +
     ggplot2::geom_raster() +
     ggplot2::scale_x_continuous(breaks=seq(1, length(varieties), 1), labels=varieties) +
     ggplot2::scale_y_continuous(breaks=seq(1, length(varieties), 1), labels=rev(varieties)) +
@@ -996,39 +1117,56 @@ plotDegMatrix = function(varieties,ig,geneal,xLab="Variety",yLab="Variety",legen
 #' parent-child relationships between those nodes. For visual appeal, there is a grey
 #' box that outlines the node label, as well as an underline and overline for each label.
 #' @param path object created from function getPath
+#' @param geneal the full genealogy  (in data frame format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
+#' @param colNameY the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.
 #' @param fontFace fontface for the two nodes of interest (1=plain, 2=bold, 3=italic, 4=bold-italic), DEFAULT is 1 
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
 #' @examples
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
-#' p <- getPath("Brim", "Bedford", ig, sbGeneal)
-#' plotPath(p)
-#' plotPath(p, fontFace = 4)
-plotPath = function(path, fontFace = 1){
+#' pathTN <- getPath("Tokyo", "Narow", sbIG, sbGeneal, "devYear")
+#' plotPath(pathTN, sbGeneal, "devYear")
+#' 
+#' sbFilt <- sbGeneal[complete.cases(sbGeneal[1:3]),]
+#' sbFiltIG <- dfToIG(sbFilt)
+#' pathCL <- getPath("Clark", "Lawrence", sbFiltIG, sbFilt, "yield")
+#' plotPath(pathCL, sbFilt, "devYear", "yield") + ggplot2::xlab("Dev Year") + ggplot2::ylab("Yield")
+plotPath = function(path, geneal, colName, colNameY="", fontFace = 1){
   x <- y <- label <- xstart <- ystart <- xend <- yend <- NULL
-  if(sum(names(path)%in%c("pathVertices", "dateVertices"))!=2){
+  if(sum(names(path)%in%c("pathVertices", "variableVertices"))!=2){
     stop("path does not appear to be a result of the getPath() function")
   }
   
-  pPDF <- buildPathDF(path)
+  pPDF <- buildPathDF(path, geneal, colName, colNameY)
   pPDF$fontface = rep(1,each=length(path$pathVertices))
   pPDF[pPDF$label==path$pathVertices[1],]$fontface = fontFace
   pPDF[pPDF$label==path$pathVertices[length(path$pathVertices)],]$fontface = fontFace
   
-  colnames(pPDF)[which(colnames(pPDF)=="x")] = "Year"
-  #ggplot2::ggplot(data = pPDF,ggplot2::aes(x = x, y = y, label = label)) + geom_label()
+  if (colNameY!=""){
+    pPDF$y <- geneal[match(pPDF$label, geneal$child),][[colNameY]]
+  }
   
   if (length(dim(pPDF))>1){ # check to make sure pPDF is a data frame
-    
-    plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = xstart, y = y, label=label)) +
-      ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
-      ggplot2::geom_label(fill = "grey80", size = 3, fontface=pPDF$fontface) +
-      ggplot2::xlab("Date") +
-      ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(),
-                     axis.title.y=ggplot2::element_blank(),legend.position="none",
-                     panel.grid.major.y=ggplot2::element_blank(),
-                     panel.grid.minor=ggplot2::element_blank())
+    if (colNameY==""){
+      plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = xstart, y = y, label=label)) +
+        ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
+        ggplot2::geom_label(fill = "grey80", size = 3, fontface=pPDF$fontface) +
+        ggplot2::xlab(colName) +
+        ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(),
+                       axis.title.y=ggplot2::element_blank(),legend.position="none",
+                       panel.grid.major.y=ggplot2::element_blank(),
+                       panel.grid.minor=ggplot2::element_blank())      
+    }
+    else{
+      plotPathImage = ggplot2::ggplot(data = pPDF,ggplot2::aes(x = xstart, y = y, label=label)) +
+        ggplot2::geom_segment(ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend)) +
+        ggplot2::geom_label(fill = "grey80", size = 3, fontface=pPDF$fontface) +
+        ggplot2::xlab(colName) + ggplot2::ylab(colNameY) +
+        ggplot2::theme(legend.position="none", panel.grid.minor=ggplot2::element_blank())
+    }
+
   }
   else{
     plotPathImage = print("There is no path to display between the two inputted vertices.")
@@ -1051,6 +1189,8 @@ plotPath = function(path, fontFace = 1){
 #' @param path path as returned from getPath() or a vector of two variety names which exist in ig
 #' @param geneal the full genealogy  (in data frame format)
 #' @param ig the graph representation of the data genealogy (in igraph format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
+#' @param colNameY the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette
 #' @param edgeCol color of the non-path edges, default is "gray84"
 #' @param pathEdgeCol color of the path edges, default is "seagreen"
@@ -1061,16 +1201,16 @@ plotPath = function(path, fontFace = 1){
 #' @param nodeCol color of the non-path node labels, default is black
 #' @examples
 #' data(sbGeneal)
-#' ig <- dfToIG(sbGeneal)
-#' path <- getPath("Brim", "Bedford", ig, sbGeneal)
-#' bV <- 12
-#' plotTotalImage <- plotPathOnAll(path = path, geneal = sbGeneal, ig = ig, bin = bV)
-#' plotTotalImage
+#' sb <- sbGeneal[complete.cases(sbGeneal[1:3]),]
+#' ig <- dfToIG(sb)
+#' pathCL <- getPath("Clark", "Lawrence", ig, sb, "yield")
+#' plotPathOnAll(pathCL, sb, ig, "yield", bin = 3, pathEdgeCol = "red") + ggplot2::xlab("Yield")
+#' plotPathOnAll(pathCL, sb, ig, "yield", "devYear") + ggplot2::xlab("Yield") + ggplot2::ylab("Year")
 #' @seealso \url{http://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
 #' 
-plotPathOnAll = function(path, geneal, ig, bin = 12, edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black", animate = FALSE){
+plotPathOnAll = function(path, geneal, ig, colName, colNameY = "", bin = 12, edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black", animate = FALSE){
   x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object")
@@ -1081,14 +1221,14 @@ plotPathOnAll = function(path, geneal, ig, bin = 12, edgeCol = "gray84", pathEdg
       stop("path needs to contain two variety names")
     }
     varieties <- path
-    path <- getPath(varieties[1], varieties[2], ig)
-  } else if(sum(names(path)%in%c("pathVertices", "dateVertices"))!=2){
+    path <- getPath(varieties[1], varieties[2], ig, colName)
+  } else if(sum(names(path)%in%c("pathVertices", "variableVertices"))!=2){
     stop("path does not appear to be a result of the getPath() function")
   } 
   
-  pMPDF <- buildMinusPathDF(path, geneal, ig, bin)
-  eTDF <- buildEdgeTotalDF(geneal, ig, bin)
-  pTDF <- buildPlotTotalDF(path, geneal, ig, bin)
+  pMPDF <- buildMinusPathDF(path, geneal, ig, colName, colNameY, bin)
+  eTDF <- buildEdgeTotalDF(geneal, ig, colName, bin)
+  pTDF <- buildPlotTotalDF(path, geneal, ig, colName, colNameY, bin)
   
   eTDF <- stats::na.omit(eTDF) #remove any row that has at least one NA
   
@@ -1099,6 +1239,19 @@ plotPathOnAll = function(path, geneal, ig, bin = 12, edgeCol = "gray84", pathEdg
   )
   
   textFrame <- stats::na.omit(textFrame) #remove any row that has at least one NA
+  eTDF <- eTDF[(eTDF$x %in% textFrame$x) & (eTDF$xend %in% textFrame$x),]
+  
+  rowETDF <- rownames(eTDF)
+  rowTextFrame <- rownames(textFrame)
+  rownames(eTDF) <- 1:nrow(eTDF)
+  rownames(textFrame) <- 1:nrow(textFrame)
+  eTDF$y <- textFrame[match(eTDF$name, textFrame$label),]$y
+  eTDF$yend <- textFrame[match(eTDF$nameEnd, textFrame$label),]$y
+  eTDF <- eTDF[,-c(5,6)]
+  rownames(eTDF) <- rowETDF
+  rownames(textFrame) <- rowTextFrame
+  eTDF$x <- as.integer(as.character(eTDF$x))
+  eTDF$xend <- as.integer(as.character(eTDF$xend)) 
   
   # The plotTotalImage object creates two line segments (geom_segment), one to create grey
   # edges for non-path connections between pairs of nodes, the other to create light-green
@@ -1106,18 +1259,21 @@ plotPathOnAll = function(path, geneal, ig, bin = 12, edgeCol = "gray84", pathEdg
   # create labels of size 2 for non-path connections between pairs of nodes, the other to
   # create labels of size 2.5 and boldfaced for path connections between pairs of nodes.
   plotTotalImage = ggplot2::ggplot(data = pMPDF, ggplot2::aes(x = x, y = y)) +
-    ggplot2::geom_segment(data = eTDF, ggplot2::aes(x=x, y=y-.1, xend=xend, yend=yend+.1), colour = edgeCol) +
+    ggplot2::geom_segment(data = eTDF, ggplot2::aes(x=x, y=y, xend=xend, yend=yend), colour = edgeCol) +
     ggplot2::geom_segment(data = pTDF, ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend), colour = pathEdgeCol, size = 1) +
-      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
       ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
 
   plotTotalImage = plotTotalImage + ggplot2::geom_text(data = pTDF,ggplot2::aes(x = x, y = y, label = label), size = pathNodeSize, fontface=pathNodeFont) +
-    ggplot2::xlab("Date") +
-    # Erase the y-axis, and only include grids from the x-axis
-    ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(),
-                   axis.title.y=ggplot2::element_blank(),legend.position="none",
-                   panel.grid.major.y=ggplot2::element_blank(),
-                   panel.grid.minor=ggplot2::element_blank())
+    ggplot2::xlab(colName) +
+    ggplot2::theme(legend.position="none", panel.grid.minor=ggplot2::element_blank())
+  
+  if (colNameY == ""){
+    plotTotalImage = plotTotalImage + ggplot2::theme(axis.text.y=ggplot2::element_blank(),axis.ticks.y=ggplot2::element_blank(), axis.title.y=ggplot2::element_blank(), panel.grid.major.y=ggplot2::element_blank())
+  }
+  
+  if (colNameY != ""){
+    plotTotalImage = plotTotalImage + ggplot2::ylab(colNameY)
+  }
   
   # Return the plotTotalImage, if animate is FALSE
   if (animate==FALSE){
@@ -1125,12 +1281,22 @@ plotPathOnAll = function(path, geneal, ig, bin = 12, edgeCol = "gray84", pathEdg
   }
   # Return the animatePlotTotalImage, if animate is TRUE
   else{
-    animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
-    animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
-    animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
-    animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+text")
-    animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+text")
-    animatePlotTotalImage
+    if (colNameY == ""){
+      animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
+      animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
+      animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
+      animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+text")
+      animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+text")
+      animatePlotTotalImage 
+    }
+    else{
+      animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
+      animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
+      animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
+      animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+y+text")
+      animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+y+text")
+      animatePlotTotalImage       
+    }
   }
 }
 
@@ -1140,22 +1306,23 @@ plotPathOnAll = function(path, geneal, ig, bin = 12, edgeCol = "gray84", pathEdg
 #' 
 #' @param varieties subset of varieties used to generate the heat map
 #' @param geneal the full genealogy  (in data frame format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @param xLab string label on the x axis (default is "Variety")
 #' @param yLab string label on the y axis (default is "Variety")
 #' @param legendLab string label on the legend (default is "Degree")
 #' @examples
 #' data(sbGeneal)
 #' varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
-#' p <- plotYearMatrix(varieties, sbGeneal, "Variety", "Variety", "Degree")
+#' p <- plotVariableMatrix(varieties, sbGeneal, "devYear", "Variety", "Variety", "Difference")
 #' p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
 #' 
 #' @export
-plotYearMatrix = function(varieties, geneal, xLab = "Variety", yLab = "Variety", legendLab = "Difference in dates"){
+plotVariableMatrix = function(varieties, geneal, colName, xLab = "Variety", yLab = "Variety", legendLab = "Difference in variable"){
   Var1 <- Var2 <- value <- NULL
   matVar = matrix(, nrow = length(varieties), ncol = length(varieties))
   for (i in 1:length(varieties)){
     for (j in 1:length(varieties)){
-      matVar[i,j]=abs(getDate(varieties[i],geneal)-getDate(varieties[j],geneal))
+      matVar[i,j]=abs(getVariable(varieties[i],geneal,colName)-getVariable(varieties[j],geneal,colName))
     }
   }
   
@@ -1212,4 +1379,80 @@ dfToIG = function(geneal, vertexinfo = NULL, edgeweights = 1, isDirected=FALSE){
   edges$weight <- edgeweights
   
   igraph::graph.data.frame(d=edges, directed=isDirected, vertices=nodes)
+}
+
+#' Descendant branch calculations for quantitative variable 
+#' 
+#' Returns a data frame containing the names of all children of an individual of interest ("Name"). The mean and standard deviation ("Mean" and "SD") of a quantitative variable across all descendents of each child is reported. In addition, for each child, the number of its descendants is reported ("Count"), the number of its descendants who do not have a value for the quantitative variable ("NACount") is reported, and the names of all of its descendants is reported ("DesNames").
+#' 
+#' @param v1 the label of the vertex of interest (in character string format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
+#' @param gen the number of generations back to include as ancestors
+#' @examples
+#' data(statGeneal)
+#' DC_Year <- getBranchQuant("David Cox", statGeneal, "gradYear", 15)
+#' 
+#' @export
+getBranchQuant = function(v1, geneal, colName, gen=3){
+  id.offset <- NULL
+  if (is.null(getChild(v1, geneal))){
+    return(data.frame())
+  }
+  childList <- getChild(v1,geneal)
+  datRet <- data.frame()
+  for (i in 1:length(childList)){
+    dat <- getDescendants(childList[i], geneal, gen)
+    dat[[colName]] <- geneal[match(dat$label, geneal$child),][[colName]]
+    DesNames <- dat$label
+    Count <- length(DesNames)
+    Mean <- mean(dat[[colName]], na.rm=TRUE)
+    SD <- stats::sd(dat[[colName]], na.rm = TRUE)
+    NACount <- sum(is.na(dat[[colName]]))
+    datRet <- rbind(datRet, data.frame(Name=childList[i], Mean=Mean, SD=SD, Count=Count, NACount=NACount, DesNames=paste(DesNames, collapse = ',')))
+  }
+  datRet <- datRet[order(-datRet$Mean),]
+  rownames(datRet) <- 1:nrow(datRet)
+  return(datRet)
+}
+
+#' Descendant branch calculations for quantitative variable 
+#' 
+#' Returns a data frame containing the names of all children of an individual of interest ("Name"). The mean and standard deviation ("Mean" and "SD") of a quantitative variable across all descendents of each child is reported. In addition, for each child, the number of its descendants is reported ("Count"), the number of its descendants who do not have a value for the quantitative variable ("NACount") is reported, and the names of all of its descendants is reported ("DesNames").
+#' 
+#' @param v1 the label of the vertex of interest (in character string format)
+#' @param geneal the full genealogy  (in data frame format)
+#' @param colName the name of the column of the data frame that contains the qualitative variable of interest (in character string format)
+#' @param rExpr regular expression to be applied to the column that contains the qualitative variable of interest (in character string format). The regular expression syntax must work on a data frame column of type character. The term geneal$colName must be used in the regular expression.
+#' @param gen the number of generations back to include as ancestors
+#' @examples
+#' data(statGeneal)
+#' rExpr = "geneal$colName=='The Johns Hopkins University'"
+#' DC_JHU = getBranchQual("David Cox", statGeneal, "school", rExpr, 15)
+#' rExpr = "geneal$colName=='UnitedKingdom'"
+#' DC_UK = getBranchQual("David Cox", statGeneal, "country", rExpr, 15)
+#' rExpr = "grepl('(?i)Stochastic', geneal$colName)"
+#' DC_Stochastic = getBranchQual("David Cox", statGeneal, "thesis", rExpr, 15)
+#' @export
+#' 
+getBranchQual = function(v1, geneal, colName, rExpr, gen=3){
+  id.offset <- NULL
+  if (is.null(getChild(v1, geneal))){
+    return(data.frame())
+  }
+  childList <- getChild(v1,geneal)
+  datRet <- data.frame()
+  for (i in 1:length(childList)){
+    dat <- getDescendants(childList[i], geneal, gen)
+    dat[[colName]] <- geneal[match(dat$label, geneal$child),][[colName]]
+    DesNames <- dat$label
+    Count <- length(DesNames)
+    rExpr = gsub("geneal[$]colName", "dat[[colName]]", rExpr)
+    CountTrue <- sum(eval(parse(text=rExpr)),na.rm=TRUE)
+    NACount <- sum(dat[[colName]]=="")
+    datRet <- rbind(datRet, data.frame(Name=childList[i], CountTrue = CountTrue, Count=Count, NACount=NACount, DesNames=paste(DesNames, collapse = ',')))
+  }
+  datRet <- datRet[order(-datRet$CountTrue),]
+  rownames(datRet) <- 1:nrow(datRet)
+  return(datRet)
 }

@@ -4,7 +4,7 @@
 \alias{buildMinusPathDF}
 \title{Process the genealogy graph}
 \usage{
-buildMinusPathDF(path, geneal, ig, bin = 12)
+buildMinusPathDF(path, geneal, ig, colName, colNameY, bin = 12)
 }
 \arguments{
 \item{path}{path as returned from getPath() or a vector of two variety names which exist in the ig object}
@@ -12,6 +12,10 @@ buildMinusPathDF(path, geneal, ig, bin = 12)
 \item{geneal}{the full genealogy  (in data frame format)}
 
 \item{ig}{the graph representation of the data genealogy (in igraph format)}
+
+\item{colName}{the name of the column of the data frame that contains the quantitative variable of interest (in character string format)}
+
+\item{colNameY}{the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.}
 
 \item{bin}{the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette.}
 }

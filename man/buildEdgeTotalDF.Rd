@@ -4,12 +4,14 @@
 \alias{buildEdgeTotalDF}
 \title{Build the edges in the genealogy graph.}
 \usage{
-buildEdgeTotalDF(geneal, ig, bin = 12)
+buildEdgeTotalDF(geneal, ig, colName, bin = 12)
 }
 \arguments{
 \item{geneal}{the full genealogy  (in data frame format)}
 
 \item{ig}{the graph representation of the data genealogy (in igraph format)}
+
+\item{colName}{the name of the column of the data frame that contains the quantitative variable of interest (in character string format)}
 
 \item{bin}{the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette.}
 }
