@@ -18,6 +18,7 @@ Some of the currently-available methods include:
   * Obtaining graph theory measures of the full lineage structure.
   * Producing color matrix plots of variables between a subset of varieties.
   * Interactively visualizing genealogical structure
+  * Perform basic parsing and calculations on descendant branches of interest
 
 **Installation:**
 
