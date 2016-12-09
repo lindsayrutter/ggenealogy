@@ -17,5 +17,6 @@ VignetteBuilder: knitr
 Suggests:
     stringr (>= 0.6.2),
     knitr (>= 1.13),
-    roxygen2 (>= 3.0.0)
+    roxygen2 (>= 3.0.0),
+    dplyr (>= 0.5.0)
 RoxygenNote: 5.0.1
