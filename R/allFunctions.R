@@ -1261,7 +1261,7 @@ plotPathOnAll = function(path, geneal, ig, colName, colNameY = "", bin = 12, edg
   plotTotalImage = ggplot2::ggplot(data = pMPDF, ggplot2::aes(x = x, y = y)) +
     ggplot2::geom_segment(data = eTDF, ggplot2::aes(x=x, y=y, xend=xend, yend=yend), colour = edgeCol) +
     ggplot2::geom_segment(data = pTDF, ggplot2::aes(x=xstart, y=ystart, xend=xend, yend=yend), colour = pathEdgeCol, size = 1) +
-      ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
+    ggplot2::geom_text(data = textFrame, ggplot2::aes(x = x, y = y, label = label), size = nodeSize, colour = nodeCol)
 
   plotTotalImage = plotTotalImage + ggplot2::geom_text(data = pTDF,ggplot2::aes(x = x, y = y, label = label), size = pathNodeSize, fontface=pathNodeFont) +
     ggplot2::xlab(colName) +
@@ -1283,11 +1283,11 @@ plotPathOnAll = function(path, geneal, ig, colName, colNameY = "", bin = 12, edg
   else{
     if (colNameY == ""){
       animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
-      animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
-      animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
-      animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+text")
-      animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+text")
-      animatePlotTotalImage 
+      #animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
+      #animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
+      #animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+text")
+      #animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+text")
+      #animatePlotTotalImage 
     }
     else{
       animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
