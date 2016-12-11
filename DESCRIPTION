@@ -8,11 +8,12 @@ License: GPL
 Depends:
     R (>= 3.3.0)
 Imports:
-    ggplot2 (>= 1.0.0),
+    ggplot2 (>= 2.2.0),
     igraph (>= 0.7.1),
     plyr (>= 1.8.1),
     reshape2 (>= 1.4),
-    plotly (>= 3.4.13)
+    plotly (>= 4.5.6),
+    tibble (>= 1.2)
 VignetteBuilder: knitr
 Suggests:
     stringr (>= 0.6.2),
