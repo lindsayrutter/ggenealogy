@@ -1283,11 +1283,11 @@ plotPathOnAll = function(path, geneal, ig, colName, colNameY = "", bin = 12, edg
   else{
     if (colNameY == ""){
       animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
-      #animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
-      #animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
-      #animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+text")
-      #animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+text")
-      #animatePlotTotalImage 
+      animatePlotTotalImage$x$data[[1]]$hoverinfo <- "none"
+      animatePlotTotalImage$x$data[[2]]$hoverinfo <- "none"
+      animatePlotTotalImage$x$data[[3]]$hoverinfo <- c("x+text")
+      animatePlotTotalImage$x$data[[4]]$hoverinfo <- c("x+text")
+      animatePlotTotalImage 
     }
     else{
       animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
