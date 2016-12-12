@@ -257,7 +257,7 @@ buildDesList = function(v1, geneal, gen=0){
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette.
 #' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @seealso \code{\link{dfToIG}} for information on producing ig from the genealogy
-#' @seealso \url{http://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
 buildEdgeTotalDF = function(geneal, ig, colName, bin = 12){
   
   if(class(ig)!="igraph"){
@@ -318,7 +318,7 @@ buildEdgeTotalDF = function(geneal, ig, colName, bin = 12){
 #' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @param colNameY the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette.
-#' @seealso \url{http://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 buildMinusPathDF = function(path, geneal, ig, colName, colNameY, bin = 12){
   
@@ -442,8 +442,8 @@ buildPathDF = function(path, geneal, colName, colNameY=""){
 #' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @param colNameY the name of the second optional column of the data frame that contains the second optional quantitative variable of interest (in character string format). This optional quantitative variable will be plotted on the vertical axis.
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette
-#' @seealso \url{http://www.r-project.org} for iGraph information
-#' @seealso \url{http://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 buildPlotTotalDF = function(path, geneal, ig, colName, colNameY = "", bin = 12){
   if(class(ig)!="igraph"){
@@ -504,7 +504,7 @@ buildPlotTotalDF = function(path, geneal, ig, colName, colNameY = "", bin = 12){
 #' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param colName the name of the column of the data frame that contains the quantitative variable of interest (in character string format)
 #' @param bin the number of bins to determine the vertical positions of nodes (default is 12). For more information on choosing bin size, please visit the ggenealogy vignette
-#' @seealso \url{http://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
 buildSpreadTotalDF = function(geneal, ig, colName, bin = 12){
   if(class(ig)!="igraph"){
     stop("ig must be an igraph object.")
@@ -1080,7 +1080,7 @@ plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
 #' @param ig the graph representation of the data genealogy (in igraph format)
 #' @param geneal the full genealogy  (in data frame format)
 #' 
-#' @seealso \url{http://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
 #' @examples
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
@@ -1206,7 +1206,7 @@ plotPath = function(path, geneal, colName, colNameY="", fontFace = 1){
 #' pathCL <- getPath("Clark", "Lawrence", ig, sb, "yield")
 #' plotPathOnAll(pathCL, sb, ig, "yield", bin = 3, pathEdgeCol = "red") + ggplot2::xlab("Yield")
 #' plotPathOnAll(pathCL, sb, ig, "yield", "devYear") + ggplot2::xlab("Yield") + ggplot2::ylab("Year")
-#' @seealso \url{http://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
 #' 
@@ -1346,7 +1346,7 @@ plotVariableMatrix = function(varieties, geneal, colName, xLab = "Variety", yLab
 #' @param vertexinfo (default NULL) either names of columns in the genealogy which should be added to the database as vertex information or a data frame with information for all vertices such that the first column contains vertex names.
 #' @param edgeweights (default 1) name of a column which contains edge weights
 #' @param isDirected (default FALSE) should the graph be a directed graph?
-#' @seealso \url{http://www.r-project.org} for iGraph information
+#' @seealso \url{https://www.r-project.org} for iGraph information
 #' @export
 dfToIG = function(geneal, vertexinfo = NULL, edgeweights = 1, isDirected=FALSE){
   parent <- child <- NULL
