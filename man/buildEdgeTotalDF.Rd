@@ -21,6 +21,6 @@ This function takes the graph object and creates a data frame object of the edge
 \seealso{
 \code{\link{dfToIG}} for information on producing ig from the genealogy
 
-\url{http://www.r-project.org} for iGraph information
+\url{https://www.r-project.org} for iGraph information
 }
 

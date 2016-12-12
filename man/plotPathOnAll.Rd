@@ -55,7 +55,7 @@ plotPathOnAll(pathCL, sb, ig, "yield", bin = 3, pathEdgeCol = "red") + ggplot2::
 plotPathOnAll(pathCL, sb, ig, "yield", "devYear") + ggplot2::xlab("Yield") + ggplot2::ylab("Year")
 }
 \seealso{
-\url{http://www.r-project.org} for iGraph information
+\url{https://www.r-project.org} for iGraph information
 
 \code{\link{getPath}} for information on input path building
 }

@@ -25,6 +25,6 @@ p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
 
 }
 \seealso{
-\url{http://www.r-project.org} for iGraph information
+\url{https://www.r-project.org} for iGraph information
 }
 

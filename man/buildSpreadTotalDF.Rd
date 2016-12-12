@@ -20,6 +20,6 @@ Constructs a data frame object so that varieties are spread such that they do no
 though the x-axis position will represent dates.
 }
 \seealso{
-\url{http://www.r-project.org} for iGraph information
+\url{https://www.r-project.org} for iGraph information
 }
 

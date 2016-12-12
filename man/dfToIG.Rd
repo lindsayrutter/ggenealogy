@@ -19,6 +19,6 @@ dfToIG(geneal, vertexinfo = NULL, edgeweights = 1, isDirected = FALSE)
 Processes the genealogy into an igraph object with appropriate vertex information, graph type, and edge weights.
 }
 \seealso{
-\url{http://www.r-project.org} for iGraph information
+\url{https://www.r-project.org} for iGraph information
 }
 
