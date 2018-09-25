@@ -1,4 +1,11 @@
+---
+title: "README"
+output: html_document
+---
+
 # ggenealogy
+
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/lrutter/ggenealogy)](https://cranlogs.r-pkg.org/badges/lrutter/ggenealogy)
 
 **Motivation:**
 
