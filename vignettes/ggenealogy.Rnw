@@ -487,7 +487,7 @@ Figure~\ref{fig:plotDegMatrix1} shows that the degree of the shortest path betwe
 getDegree("Bedford", "Zane", ig, sbGeneal)
 @
 
-Indeed, the degree of the shortest path between ``Bedford" and ``Zane" is \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)}. The distance matrix plot provides us additonal information: The degree of \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)} may be a comparatively large degree within the given soybean dataset \texttt{sbGeneal}, seeing that the degrees of the shortest paths for the other 27 pairwise combinations of the eight varieties that we explored here are less than \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)}.
+Indeed, the degree of the shortest path between ``Bedford" and ``Zane" is \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)}. The distance matrix plot provides us additional information: The degree of \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)} may be a comparatively large degree within the given soybean dataset \texttt{sbGeneal}, seeing that the degrees of the shortest paths for the other 27 pairwise combinations of the eight varieties that we explored here are less than \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)}.
 
 In a similar function \texttt{plotYearMatrix()}, the difference in years between all pairwise combinations of vertices can be constructed and viewed:
 

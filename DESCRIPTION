@@ -1,12 +1,12 @@
 Package: ggenealogy
-Version: 0.3.0
+Version: 0.4.0
 Title: Visualization Tools for Genealogical Data
 Description: Methods for searching through genealogical data and displaying the results. Plotting algorithms assist with data exploration and publication-quality image generation. Includes interactive genealogy visualization tools. Provides parsing and calculation methods for variables in descendant branches of interest. Uses the Grammar of Graphics.
 Author: Lindsay Rutter, Susan Vanderplas, Di Cook
-Maintainer: Lindsay Rutter <lrutter@iastate.edu>
+Maintainer: Lindsay Rutter <lindsayannerutter@gmail.com>
 License: GPL
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.6.0)
 Imports:
     ggplot2 (>= 2.2.0),
     igraph (>= 0.7.1),
