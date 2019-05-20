@@ -23,4 +23,3 @@ This function takes the graph object and creates a data frame object of the edge
 
 \url{https://www.r-project.org} for iGraph information
 }
-

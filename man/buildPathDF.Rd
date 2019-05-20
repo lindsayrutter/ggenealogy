@@ -27,4 +27,3 @@ next largest y-value)), "ystart" (the y-axis position of the outgoing edge (leav
 to connect to the node at the next largest y-value), "yend" (the y-axis position
 of the outgoing edge (connected to the node at the next largest y-value))).
 }
-

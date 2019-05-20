@@ -17,4 +17,3 @@ Calculates coordinates to plot each ancestors and descendant of a variety in a l
 
 \code{\link{buildDesList}} for information on determining descendants
 }
-

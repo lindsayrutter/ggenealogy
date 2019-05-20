@@ -16,4 +16,3 @@ Returns a character list, where rows contains names of the unique nodes in the f
 data(sbGeneal)
 getNodes(sbGeneal)
 }
-

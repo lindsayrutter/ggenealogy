@@ -29,4 +29,3 @@ DC_UK = getBranchQual("David Cox", statGeneal, "country", rExpr, 15)
 rExpr = "grepl('(?i)Stochastic', geneal$colName)"
 DC_Stochastic = getBranchQual("David Cox", statGeneal, "thesis", rExpr, 15)
 }
-

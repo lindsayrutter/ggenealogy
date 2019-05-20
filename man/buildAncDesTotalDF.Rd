@@ -28,4 +28,3 @@ buildAncDesTotalDF(v1, sbGeneal)
 
 \code{\link{buildDesList}} for information on determining descendants
 }
-

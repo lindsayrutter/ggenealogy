@@ -24,4 +24,3 @@ buildAncList("Essex", sbGeneal)
 \seealso{
 \code{\link{getParent}} for information on determining parents
 }
-

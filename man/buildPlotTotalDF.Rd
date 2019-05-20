@@ -31,4 +31,3 @@ varieties in the path, as well as the edges only in the varieties in the path.
 
 \code{\link{getPath}} for information on input path building
 }
-

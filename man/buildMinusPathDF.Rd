@@ -30,4 +30,3 @@ will be treated differently.
 
 \code{\link{getPath}} for information on input path building
 }
-

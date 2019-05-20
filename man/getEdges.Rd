@@ -19,4 +19,3 @@ data(sbGeneal)
 ig <- dfToIG(sbGeneal)
 getEdges(ig, sbGeneal)
 }
-

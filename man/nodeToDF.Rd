@@ -21,4 +21,3 @@ and references its' parent's id value. ID value ranges correspond to generation.
 It is possible that with more complex genealogical structures the range of id values may need to
 expand to reduce the probability of two varieties being assigned the same id value.
 }
-

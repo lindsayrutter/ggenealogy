@@ -24,4 +24,3 @@ buildDesList("Essex", sbGeneal, 3)
 \seealso{
 \code{\link{getChild}} for information on determining children
 }
-

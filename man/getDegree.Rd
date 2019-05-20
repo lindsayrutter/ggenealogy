@@ -24,4 +24,3 @@ data(sbGeneal)
 ig <- dfToIG(sbGeneal)
 getDegree("Brim", "Bedford", ig, sbGeneal)
 }
-

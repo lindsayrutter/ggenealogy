@@ -72,7 +72,7 @@ The \pkg{ggenealogy} package provides tools to examine genealogical data, genera
 
 \subsection{Installation}
 
-\R is a open source software project for statistical computing, and can be freely downloaded from the Comprehensive R Archive Network (CRAN) website. The link to contributed documentation on the CRAN website offers practical resources for an introduction to \R, in several languages. After downloading and installing \R, the installation of additional packages is straightforward. To install the \pkg{ggenealogy} package from \R, use the command:
+\R is an open source software project for statistical computing, and can be freely downloaded from the Comprehensive R Archive Network (CRAN) website. The link to contributed documentation on the CRAN website offers practical resources for an introduction to \R, in several languages. After downloading and installing \R, the installation of additional packages is straightforward. To install the \pkg{ggenealogy} package from \R, use the command:
 
 <<results = hide, eval=FALSE>>=
 install.packages("ggenealogy")

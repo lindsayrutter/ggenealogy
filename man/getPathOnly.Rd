@@ -26,4 +26,3 @@ path will be returned. If there is not a path, a list of character(0) will be re
 For a directed graph, the direction matters. However, this function will check both directions
 and return the path if it exists.
 }
-

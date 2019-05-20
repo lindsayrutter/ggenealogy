@@ -21,4 +21,3 @@ data(sbGeneal)
 isChild("Essex", "Young", sbGeneal)
 isChild("Young", "Essex", sbGeneal)
 }
-

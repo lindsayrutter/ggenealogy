@@ -22,4 +22,3 @@ getParent("Essex", sbGeneal)
 getAncestors("Essex", sbGeneal, 1)
 getAncestors("Essex", sbGeneal, 5)
 }
-

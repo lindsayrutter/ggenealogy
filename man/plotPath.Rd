@@ -38,4 +38,3 @@ plotPath(pathCL, sbFilt, "devYear", "yield") + ggplot2::xlab("Dev Year") + ggplo
 \seealso{
 \code{\link{getPath}} for information on input path building
 }
-

@@ -22,4 +22,3 @@ getChild("Essex", sbGeneal)
 getDescendants("Essex", sbGeneal, 1)
 getDescendants("Essex", sbGeneal, 3)
 }
-

@@ -28,4 +28,3 @@ This data contains information on copy number variants, single nucleotide polymo
 "Pedigrees of soybean cultivars released in the United States and Canada." Theodore Hyivitz, C.A. Newell, S.G. Carmer. College of Agriculture, University of Illinois at Urbana-Champaign (1977).
 }
 \keyword{datasets}
-

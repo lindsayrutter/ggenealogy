@@ -30,4 +30,3 @@ p <- plotVariableMatrix(varieties, sbGeneal, "devYear", "Variety", "Variety", "D
 p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
 
 }
-

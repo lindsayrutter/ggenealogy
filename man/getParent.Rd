@@ -19,4 +19,3 @@ data(sbGeneal)
 getParent("Tokyo", sbGeneal)
 getParent("Essex", sbGeneal)
 }
-

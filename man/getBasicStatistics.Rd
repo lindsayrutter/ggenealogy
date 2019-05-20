@@ -18,4 +18,3 @@ data(sbGeneal)
 ig <- dfToIG(sbGeneal)
 getBasicStatistics(ig)
 }
-

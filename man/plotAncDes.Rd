@@ -25,4 +25,3 @@ data(sbGeneal)
 plotAncDes("Tokyo", sbGeneal, vColor = "red")
 plotAncDes("Essex", sbGeneal, 2, 3, "blue") + ggplot2::labs(x = "Generation index", y = "")
 }
-

@@ -23,4 +23,3 @@ data(statGeneal)
 DC_Year <- getBranchQuant("David Cox", statGeneal, "gradYear", 15)
 
 }
-

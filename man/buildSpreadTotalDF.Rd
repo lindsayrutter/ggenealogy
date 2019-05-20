@@ -22,4 +22,3 @@ though the x-axis position will represent dates.
 \seealso{
 \url{https://www.r-project.org} for iGraph information
 }
-

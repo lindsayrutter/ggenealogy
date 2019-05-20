@@ -1283,19 +1283,29 @@ plotPathOnAll = function(path, geneal, ig, colName, colNameY = "", bin = 12, edg
   else{
     if (colNameY == ""){
       animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
-      animatePlotTotalImage$x$data[[1]]$hoverinfo <- "none"
-      animatePlotTotalImage$x$data[[2]]$hoverinfo <- "none"
-      animatePlotTotalImage$x$data[[3]]$hoverinfo <- c("x+text")
-      animatePlotTotalImage$x$data[[4]]$hoverinfo <- c("x+text")
-      animatePlotTotalImage 
+      for (i in 1:length(animatePlotTotalImage$x$data[[3]]$hovertext)){
+        animatePlotTotalImage$x$data[[3]]$hovertext[i] <- strsplit(animatePlotTotalImage$x$data[[3]]$hovertext[i], '<br />x:', fixed=TRUE)[[1]][1]
+        animatePlotTotalImage$x$data[[3]]$hovertext[i] <- gsub('^.', colName, animatePlotTotalImage$x$data[[3]]$hovertext[i])
+      }
+      for (i in 1:length(animatePlotTotalImage$x$data[[4]]$hovertext)){
+        animatePlotTotalImage$x$data[[4]]$hovertext[i] <- strsplit(animatePlotTotalImage$x$data[[4]]$hovertext[i], '<br />x:', fixed=TRUE)[[1]][1]
+        animatePlotTotalImage$x$data[[4]]$hovertext[i] <- gsub('^.', colName, animatePlotTotalImage$x$data[[4]]$hovertext[i])
+      }
+      animatePlotTotalImage
     }
     else{
       animatePlotTotalImage <- plotly::plotly_build(plotly::ggplotly(plotTotalImage, tooltip = c("x", "label")))
-      animatePlotTotalImage$data[[1]]$hoverinfo <- "none"
-      animatePlotTotalImage$data[[2]]$hoverinfo <- "none"
-      animatePlotTotalImage$data[[3]]$hoverinfo <- c("x+y+text")
-      animatePlotTotalImage$data[[4]]$hoverinfo <- c("x+y+text")
-      animatePlotTotalImage       
+      for (i in 1:length(animatePlotTotalImage$x$data[[3]]$hovertext)){
+        animatePlotTotalImage$x$data[[3]]$hovertext[i] <- strsplit(animatePlotTotalImage$x$data[[3]]$hovertext[i], '<br />x:', fixed=TRUE)[[1]][1]
+        animatePlotTotalImage$x$data[[3]]$hovertext[i] <- gsub('^.', colName, animatePlotTotalImage$x$data[[3]]$hovertext[i])
+        animatePlotTotalImage$x$data[[3]]$hovertext[i] <- paste0(animatePlotTotalImage$x$data[[3]]$hovertext[i], "<br />", colNameY, ": ", animatePlotTotalImage$x$data[[3]]$y[i])
+      }
+      for (i in 1:length(animatePlotTotalImage$x$data[[4]]$hovertext)){
+        animatePlotTotalImage$x$data[[4]]$hovertext[i] <- strsplit(animatePlotTotalImage$x$data[[4]]$hovertext[i], '<br />x:', fixed=TRUE)[[1]][1]
+        animatePlotTotalImage$x$data[[4]]$hovertext[i] <- gsub('^.', colName, animatePlotTotalImage$x$data[[4]]$hovertext[i])
+        animatePlotTotalImage$x$data[[4]]$hovertext[i] <- paste0(animatePlotTotalImage$x$data[[4]]$hovertext[i], "<br />", colNameY, ": ", animatePlotTotalImage$x$data[[4]]$y[i])
+      }
+      animatePlotTotalImage
     }
   }
 }

@@ -59,4 +59,3 @@ plotPathOnAll(pathCL, sb, ig, "yield", "devYear") + ggplot2::xlab("Yield") + ggp
 
 \code{\link{getPath}} for information on input path building
 }
-

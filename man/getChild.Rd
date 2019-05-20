@@ -19,4 +19,3 @@ data(sbGeneal)
 getChild("Tokyo", sbGeneal)
 getChild("Essex", sbGeneal)
 }
-

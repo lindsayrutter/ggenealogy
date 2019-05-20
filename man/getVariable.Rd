@@ -21,4 +21,3 @@ data(sbGeneal)
 getVariable("Essex", sbGeneal, "devYear")
 getVariable("Tokyo", sbGeneal, "yield")
 }
-
