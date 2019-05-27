@@ -5,6 +5,7 @@
 #' @param df the data frame of the ancestors and descendants of a variety (from function buildAncDesTotalDF)
 #' @seealso \code{\link{buildAncList}} for information on determining ancestors
 #' @seealso \code{\link{buildDesList}} for information on determining descendants
+#' @references \code{\link{CITATION}}
 buildAncDesCoordDF = function(df){
   id.offset <- NULL
   root.gen <- gen <- par.id <- label <- NULL 
