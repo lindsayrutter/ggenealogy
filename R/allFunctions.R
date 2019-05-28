@@ -126,6 +126,11 @@ buildAncDesCoordDF = function(df){
 #' data(sbGeneal)
 #' v1 <- "Essex"
 #' buildAncDesTotalDF(v1, sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 buildAncDesTotalDF = function(v1, geneal, mAnc=3, mDes=3){
   
   gen <- type <- NULL
@@ -196,6 +201,11 @@ buildAncDesTotalDF = function(v1, geneal, mAnc=3, mDes=3){
 #' data(sbGeneal)
 #' getParent("Essex", sbGeneal)
 #' buildAncList("Essex", sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 buildAncList = function(v1, geneal, gen = 0){
   if(is.na(v1)) return()
   
@@ -229,6 +239,11 @@ buildAncList = function(v1, geneal, gen = 0){
 #' data(sbGeneal)
 #' getParent("Essex", sbGeneal)
 #' buildDesList("Essex", sbGeneal, 3)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 buildDesList = function(v1, geneal, gen=0){
   if(is.na(v1)) return()
   
@@ -555,6 +570,11 @@ buildSpreadTotalDF = function(geneal, ig, colName, bin = 12){
 #' getParent("Essex", sbGeneal)
 #' getAncestors("Essex", sbGeneal, 1)
 #' getAncestors("Essex", sbGeneal, 5)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 getAncestors = function(v1, geneal, gen = 3){
   id.offset <- NULL
   if (is.null(buildAncList(v1, geneal))){
@@ -577,6 +597,11 @@ getAncestors = function(v1, geneal, gen = 3){
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
 #' getBasicStatistics(ig)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getBasicStatistics = function(ig){
   if(class(ig)!="igraph"){
@@ -622,6 +647,11 @@ getBasicStatistics = function(ig){
 #' getChild("Essex", sbGeneal)
 #' getDescendants("Essex", sbGeneal, 1)
 #' getDescendants("Essex", sbGeneal, 3)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 getDescendants = function(v1, geneal, gen=3){
   id.offset <- NULL
   if (is.null(buildDesList(v1, geneal))){
@@ -645,6 +675,11 @@ getDescendants = function(v1, geneal, gen=3){
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
 #' getEdges(ig, sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getEdges = function(ig, geneal){
   eList = igraph::get.edgelist(ig)
@@ -670,6 +705,11 @@ getEdges = function(ig, geneal){
 #' data(sbGeneal)
 #' getChild("Tokyo", sbGeneal)
 #' getChild("Essex", sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getChild = function(v1, geneal){
   parent <- NULL
@@ -689,6 +729,11 @@ getChild = function(v1, geneal){
 #' data(sbGeneal)
 #' ig <- dfToIG(sbGeneal)
 #' getDegree("Brim", "Bedford", ig, sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getDegree = function(v1, v2, ig, geneal){
   if(is.null(geneal)){
@@ -710,6 +755,11 @@ getDegree = function(v1, v2, ig, geneal){
 #' @examples
 #' data(sbGeneal)
 #' getNodes(sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getNodes = function(geneal){
   nodes = unique(c(geneal$child, geneal$parent))
@@ -727,6 +777,11 @@ getNodes = function(geneal){
 #' data(sbGeneal)
 #' getParent("Tokyo", sbGeneal)
 #' getParent("Essex", sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getParent = function(v1, geneal){
   child <- NULL
@@ -752,6 +807,11 @@ getParent = function(v1, geneal){
 #' ig <- dfToIG(sbGeneal)
 #' getPath("Brim", "Bedford", ig, sbGeneal, "devYear")
 #' getPath("Tokyo", "Volstate", ig, sbGeneal, "yield")
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getPath = function(v1, v2, ig, geneal, colName, silent=FALSE, isDirected=FALSE){
   v1Year = getVariable(v1, geneal, colName)
@@ -934,6 +994,11 @@ getPathOnly = function(v1, v2, ig, geneal, silent=FALSE, isDirected=FALSE){
 #' data(sbGeneal)
 #' getVariable("Essex", sbGeneal, "devYear")
 #' getVariable("Tokyo", sbGeneal, "yield")
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getVariable = function(v1, geneal, colName){
   rowIndex = which(geneal[,1] == v1)[1]
@@ -950,6 +1015,11 @@ getVariable = function(v1, geneal, colName){
 #' data(sbGeneal)
 #' isChild("Essex", "Young", sbGeneal)
 #' isChild("Young", "Essex", sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 isChild = function(child, parent, geneal){
   for (i in 1:length(which(geneal$parent==parent))){
@@ -973,6 +1043,11 @@ isChild = function(child, parent, geneal){
 #' data(sbGeneal)
 #' isParent("Essex", "Young", sbGeneal)
 #' isParent("Young", "Essex", sbGeneal)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 isParent = function(child, parent, geneal){
   return (geneal[which(geneal$child==child),]$parent[1] == parent
@@ -1040,6 +1115,11 @@ nodeToDF = local({
 #' data(sbGeneal)
 #' plotAncDes("Tokyo", sbGeneal, vColor = "red")
 #' plotAncDes("Essex", sbGeneal, 2, 3, "blue") + ggplot2::labs(x = "Generation index", y = "")
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
   color <- x <- y <- label2 <- size <- xstart <- ystart <- xend <- yend <- branchx <- branchy <- NULL
   # Plot the data frame, if it exists
@@ -1088,7 +1168,11 @@ plotAncDes = function(v1, geneal, mAnc=3, mDes=3, vColor="#D35C79"){
 #' varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
 #' p <- plotDegMatrix(varieties, ig, sbGeneal)
 #' p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
-#' 
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 plotDegMatrix = function(varieties,ig,geneal){
   Var1 <- Var2 <- value <- NULL
@@ -1134,6 +1218,11 @@ plotDegMatrix = function(varieties,ig,geneal){
 #' sbFiltIG <- dfToIG(sbFilt)
 #' pathCL <- getPath("Clark", "Lawrence", sbFiltIG, sbFilt, "yield")
 #' plotPath(pathCL, sbFilt, "devYear", "yield") + ggplot2::xlab("Dev Year") + ggplot2::ylab("Yield")
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 plotPath = function(path, geneal, colName, colNameY="", fontFace = 1){
   x <- y <- label <- xstart <- ystart <- xend <- yend <- NULL
   if(sum(names(path)%in%c("pathVertices", "variableVertices"))!=2){
@@ -1210,7 +1299,11 @@ plotPath = function(path, geneal, colName, colNameY="", fontFace = 1){
 #' @seealso \url{https://www.r-project.org} for iGraph information
 #' @seealso \code{\link{getPath}} for information on input path building
 #' @export
-#' 
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 plotPathOnAll = function(path, geneal, ig, colName, colNameY = "", bin = 12, edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3, pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black", animate = FALSE){
   x <- y <- xend <- yend <- xstart <- ystart <- label <- NULL
   if(class(ig)!="igraph"){
@@ -1326,7 +1419,11 @@ plotPathOnAll = function(path, geneal, ig, colName, colNameY = "", bin = 12, edg
 #' varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
 #' p <- plotVariableMatrix(varieties, sbGeneal, "devYear", "Variety", "Variety", "Difference")
 #' p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
-#' 
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 plotVariableMatrix = function(varieties, geneal, colName, xLab = "Variety", yLab = "Variety", legendLab = "Difference in variable"){
   Var1 <- Var2 <- value <- NULL
@@ -1403,7 +1500,11 @@ dfToIG = function(geneal, vertexinfo = NULL, edgeweights = 1, isDirected=FALSE){
 #' @examples
 #' data(statGeneal)
 #' DC_Year <- getBranchQuant("David Cox", statGeneal, "gradYear", 15)
-#' 
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 getBranchQuant = function(v1, geneal, colName, gen=3){
   id.offset <- NULL
@@ -1444,6 +1545,11 @@ getBranchQuant = function(v1, geneal, colName, gen=3){
 #' DC_UK = getBranchQual("David Cox", statGeneal, "country", rExpr, 15)
 #' rExpr = "grepl('(?i)Stochastic', geneal$colName)"
 #' DC_Stochastic = getBranchQual("David Cox", statGeneal, "thesis", rExpr, 15)
+#' @references Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+#' ggenealogy: An R Package for Visualizing Genealogical Data.
+#' \emph{Journal of Statistical Software},
+#' \bold{89}(13), 1--31.
+#' \doi{10.18637/jss.v089.i13}
 #' @export
 #' 
 getBranchQual = function(v1, geneal, colName, rExpr, gen=3){

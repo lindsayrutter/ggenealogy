@@ -21,5 +21,11 @@ Returns a data frame containing the names of all children of an individual of in
 \examples{
 data(statGeneal)
 DC_Year <- getBranchQuant("David Cox", statGeneal, "gradYear", 15)
-
+}
+\references{
+Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+ggenealogy: An R Package for Visualizing Genealogical Data.
+\emph{Journal of Statistical Software},
+\bold{89}(13), 1--31.
+\doi{10.18637/jss.v089.i13}
 }

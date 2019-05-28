@@ -22,3 +22,10 @@ getChild("Essex", sbGeneal)
 getDescendants("Essex", sbGeneal, 1)
 getDescendants("Essex", sbGeneal, 3)
 }
+\references{
+Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+ggenealogy: An R Package for Visualizing Genealogical Data.
+\emph{Journal of Statistical Software},
+\bold{89}(13), 1--31.
+\doi{10.18637/jss.v089.i13}
+}

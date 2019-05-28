@@ -16,3 +16,10 @@ Returns a character list, where rows contains names of the unique nodes in the f
 data(sbGeneal)
 getNodes(sbGeneal)
 }
+\references{
+Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+ggenealogy: An R Package for Visualizing Genealogical Data.
+\emph{Journal of Statistical Software},
+\bold{89}(13), 1--31.
+\doi{10.18637/jss.v089.i13}
+}

@@ -1,3 +1,9 @@
+# ggenealogy 1.0.0
+
+**Publication:**
+
+  * A publication regarding the ggenealogy package will be published soon in the Journal of Statistical Software. The citation is available in the package vignette.
+
 # ggenealogy 0.4.0
 
 **New features:**

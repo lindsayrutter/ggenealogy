@@ -35,6 +35,13 @@ sbFiltIG <- dfToIG(sbFilt)
 pathCL <- getPath("Clark", "Lawrence", sbFiltIG, sbFilt, "yield")
 plotPath(pathCL, sbFilt, "devYear", "yield") + ggplot2::xlab("Dev Year") + ggplot2::ylab("Yield")
 }
+\references{
+Rutter L, VanderPlas S, Cook D, Graham MA (2019).
+ggenealogy: An R Package for Visualizing Genealogical Data.
+\emph{Journal of Statistical Software},
+\bold{89}(13), 1--31.
+\doi{10.18637/jss.v089.i13}
+}
 \seealso{
 \code{\link{getPath}} for information on input path building
 }
