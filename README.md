@@ -4,8 +4,6 @@
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggenealogy)](https://cranlogs.r-pkg.org/badges/grand-total/ggenealogy)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-ff69b4.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.3.0-6666ff.svg)](https://cran.r-project.org/)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ggenealogy)](https://cran.r-project.org/package=ggenealogy)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/lrutter/ggenealogy/graphs/commit-activity)
 
 **Motivation:**
 
