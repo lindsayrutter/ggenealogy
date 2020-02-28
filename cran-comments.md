@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.6.0
+* local OS X install, R 3.6.2
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -9,7 +9,7 @@ There were no ERRORs or WARNINGs or NOTES.
 There are currently no downstream dependencies for this package.
 
 ## Other notes
-I apologize for updating a version so soon to the last time. Last week, I needed to fix an error and update the package for JSS reviewers to double-check that my code worked. This week, I was asked by JSS reviewers to update the package. Thank you for your understanding.
+I was requested to fix a "Invalid UTF-8 byte sequence" error by CRAN staff members. I believe I fixed the error and am now updating the patch version of the package.
 
 ## DOI comment
 The DOI in the CITATION is for a new JSS publication that will be registered after 

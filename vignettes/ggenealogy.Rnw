@@ -216,6 +216,22 @@ getDescendants("Ogden",sbGeneal,2)
 
 We see that variety ``Ogden" has \Sexpr{nrow(getDescendants("Ogden",sbGeneal,2))-nrow(getDescendants("Ogden",sbGeneal,1))} grandchildren from its \Sexpr{nrow(getDescendants("Ogden",sbGeneal,1))} children.
 
+For users who wish to apply obtain the ancestors or descendants across generations for not just one, but for a list, of individuals, please note that \texttt{getAncestors()} and \texttt{getDescendants()} can be run with a list of individuals as input. For example, here we can obtain ancestors for the past five generations for the last four members in the \texttt{sbGeneal} object (``Williams 82", ``York", ``Young", and ``Zane"):
+
+<<>>=
+nr = nrow(sbGeneal)
+listInd = sbGeneal[(nr-3):nr,]$child
+listAnc = sapply(listInd, function(x) getAncestors(x, sbGeneal, 5))
+listAnc
+@
+
+Note that we verify our earlier finding that ``Young" has 27 ancestors across five generations. To view the entire structure of ancestors across five generations for these four members, we can include a \texttt{simplify = F} option:
+
+<<>>=
+listAnc = sapply(listInd, function(x) getAncestors(x, sbGeneal, 5), simplify=F)
+listAnc
+@
+
 \subsection{Functions for pairs of vertices}
 
 Say you have a pair of vertices, and you wish to determine the degree of the shortest path between them, where edges represent parent-child relationships. You can accomplish that with the \texttt{getDegree()} function.

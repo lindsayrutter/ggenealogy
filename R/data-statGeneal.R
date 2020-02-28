@@ -18,7 +18,6 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @name statGeneal
 #' @usage data(statGeneal)
 #' @format A data frame with 8165 rows and 6 variables
 #' @references

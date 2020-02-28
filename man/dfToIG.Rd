@@ -4,8 +4,7 @@
 \alias{dfToIG}
 \title{Process the genealogy graph}
 \usage{
-dfToIG(geneal, vertexinfo = NULL, edgeweights = 1,
-  isDirected = FALSE)
+dfToIG(geneal, vertexinfo = NULL, edgeweights = 1, isDirected = FALSE)
 }
 \arguments{
 \item{geneal}{the full genealogy  (in data frame format)}

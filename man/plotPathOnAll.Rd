@@ -4,10 +4,21 @@
 \alias{plotPathOnAll}
 \title{Plot a path between two vertices over the full genealogy}
 \usage{
-plotPathOnAll(path, geneal, ig, colName, colNameY = "", bin = 12,
-  edgeCol = "gray84", pathEdgeCol = "seagreen", nodeSize = 3,
-  pathNodeSize = 3, pathNodeFont = "bold", nodeCol = "black",
-  animate = FALSE)
+plotPathOnAll(
+  path,
+  geneal,
+  ig,
+  colName,
+  colNameY = "",
+  bin = 12,
+  edgeCol = "gray84",
+  pathEdgeCol = "seagreen",
+  nodeSize = 3,
+  pathNodeSize = 3,
+  pathNodeFont = "bold",
+  nodeCol = "black",
+  animate = FALSE
+)
 }
 \arguments{
 \item{path}{path as returned from getPath() or a vector of two variety names which exist in ig}

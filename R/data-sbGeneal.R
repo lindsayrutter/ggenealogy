@@ -17,7 +17,6 @@
   #'
 #' @docType data
 #' @keywords datasets
-#' @name sbGeneal
 #' @usage data(sbGeneal)
 #' @format A data frame with 412 rows and 7 variables
 #' @references

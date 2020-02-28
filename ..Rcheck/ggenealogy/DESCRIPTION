@@ -5,20 +5,12 @@ Description: Methods for searching through genealogical data and displaying the 
 Author: Lindsay Rutter, Susan Vanderplas, Di Cook
 Maintainer: Lindsay Rutter <lindsayannerutter@gmail.com>
 License: GPL
-Depends:
-    R (>= 3.6.0)
-Imports:
-    ggplot2 (>= 2.2.0),
-    igraph (>= 0.7.1),
-    plyr (>= 1.8.1),
-    reshape2 (>= 1.4),
-    plotly (>= 4.5.6),
-    tibble (>= 1.2)
+Depends: R (>= 3.6.0)
+Imports: ggplot2 (>= 2.2.0), igraph (>= 0.7.1), plyr (>= 1.8.1),
+        reshape2 (>= 1.4), plotly (>= 4.5.6), tibble (>= 1.2)
 VignetteBuilder: knitr
-Suggests:
-    stringr (>= 0.6.2),
-    knitr (>= 1.13),
-    roxygen2 (>= 3.0.0),
-    dplyr (>= 0.5.0)
+Suggests: stringr (>= 0.6.2), knitr (>= 1.13), roxygen2 (>= 3.0.0),
+        dplyr (>= 0.5.0)
 RoxygenNote: 7.0.2
 Encoding: UTF-8
+Built: R 3.6.2; ; 2020-02-25 07:00:43 UTC; unix

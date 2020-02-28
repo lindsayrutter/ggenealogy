@@ -1,0 +1,50 @@
+buildAncDesCoordDF      Returns the coordinate positions of all
+                        ancestors and descendants of a variety.
+buildAncDesTotalDF      Returns data frame with plot coordinates of all
+                        ancestors and descendants of a variety.
+buildAncList            Returns the ancestors of a particular variety
+                        (if they exist).
+buildDesList            Returns the descendants of a particular variety
+                        (if they exist).
+buildEdgeTotalDF        Build the edges in the genealogy graph.
+buildMinusPathDF        Process the genealogy graph
+buildPathDF             Build data frame for path representation
+buildPlotTotalDF        Build all labels in the graph
+buildSpreadTotalDF      Build a data frame where the varieties are
+                        spread so they do not overlap
+dfToIG                  Process the genealogy graph
+getAncestors            Returns a list of the ancestors of a particular
+                        variety (if they exist)
+getBasicStatistics      Determine basic statistics of the graph object
+getBranchQual           Descendant branch calculations for quantitative
+                        variable
+getBranchQuant          Descendant branch calculations for quantitative
+                        variable
+getChild                Returns the children of a particular variety
+                        (if they exist)
+getDegree               Determine the degree between two varieties
+getDescendants          Returns a list of the descendants of a
+                        particular variety (if they exist)
+getEdges                Returns edges (vertex names and edge weights)
+                        for the full genealogy
+getNodes                Returns the nodes for a full genealogy
+getParent               Returns the parents of a particular variety (if
+                        they exist)
+getPath                 Determine the path between two varieties
+getPathOnly             Determine the path between two varieties
+getVariable             Determine the date of a variety
+isChild                 Determine if a variety is a child of another
+isParent                Determine if a variety is a parent of another
+nodeToDF                Returns the data frame representation of all
+                        ancestors and descendants of a variety
+plotAncDes              Returns the image object to show the ancestors
+                        and descendants of a variety
+plotDegMatrix           Returns the image object to show the heat map
+                        of degrees between the inputted set of vertices
+plotPath                Construct the graphic object of the path
+plotPathOnAll           Plot a path between two vertices over the full
+                        genealogy
+plotVariableMatrix      Returns the image object to show the heat map
+                        of dates between the inputted set of vertices
+sbGeneal                Soybean data
+statGeneal              Academic statistics data

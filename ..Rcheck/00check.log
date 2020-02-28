@@ -1,0 +1,199 @@
+* using log directory ‘/Users/suzu/ggenealogy/..Rcheck’
+* using R version 3.6.2 (2019-12-12)
+* using platform: x86_64-apple-darwin15.6.0 (64-bit)
+* using session charset: UTF-8
+* checking for file ‘./DESCRIPTION’ ... OK
+* this is package ‘ggenealogy’ version ‘1.0.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... WARNING
+Found the following executable files:
+  .git/objects/04/4c7684fbdce200b789a36883533de231eca237
+  .git/objects/06/35931ecf6af3e71c6343728a0fba1ac4f93d0c
+  .git/objects/07/d8f2fb5cdee6bedfa073e1cc34684a1f7ed6b0
+  .git/objects/09/fc4db7ee92e5a97fa0441a312f3f5e60c59790
+  .git/objects/0c/685adb42af754bb6e56215ffa63eabdf9cf646
+  .git/objects/0d/933b893238eab6dd7b26146adbc6b5a4dfbe38
+  .git/objects/13/00a17a21e93871cfc0f66d8c661503bb285d6e
+  .git/objects/14/90ff427925c0416dee2dfb7e45098805d3991c
+  .git/objects/15/c60d725fea3ca58e53833edc714196044420b3
+  .git/objects/18/200a2297238057d80574e09d1610dd8188e3a6
+  .git/objects/18/fecb105a149187b2a8c463eda1c0988f574e1f
+  .git/objects/1b/3c99b488e9b5f8b53ad1c47afe72720c15faed
+  .git/objects/1b/cb7c864ca836164d7990ba60e49abf975080a3
+  .git/objects/1c/69bc96073b38e34da0977f3550af73e7e75b4f
+  .git/objects/20/18ab4dae704ce6e261bd1b222f080b084b5266
+  .git/objects/23/04bdf60f203d962d9d3a77bb0407405819f0ed
+  .git/objects/23/2ad2f6e734d1e1ec56726707f2655a8c4e4378
+  .git/objects/25/190f7d2a9d5c92531b014c61f69ee1ebbb2b63
+  .git/objects/2b/937cf6f467d7f4dc7e16f0c1f35fafcfc2697d
+  .git/objects/30/badd81b7854a53e847a9e2f1e168d0711be83f
+  .git/objects/33/fdb1fd8aa822ead80cd6d20eff1e6e7ec819dd
+  .git/objects/34/d498bb7973df34be476b2debe2b84904cbb12d
+  .git/objects/37/7eb7ec20a949a4f945b89b7f10ccc6492f7204
+  .git/objects/38/50869d6d7647635e27c0d21daecaccafdda7ed
+  .git/objects/3b/e71c13f9d1d1224739ee7393accf024e0d60a9
+  .git/objects/3d/ecf267a79946ed5fc86865f34488f676791a55
+  .git/objects/3f/4c9ac07cf2583e536ecf09434006797d381ce7
+  .git/objects/3f/98a3b9740f6a9d37d0160298e9b1181cef69ad
+  .git/objects/41/523d48cb0dfb7acda6cae4fa4fce083b520fcc
+  .git/objects/45/a35377ac348f3c4a3f0e63ff5a5fa3624a07e6
+  .git/objects/48/3b24b93c357cdd7da642bc8658875162477762
+  .git/objects/48/f9dcb91a803b0943db96fe8f72ff1d638cab8b
+  .git/objects/55/1d3d363cbed6c75233a41c82aa9924aeafb6c0
+  .git/objects/55/7df05d0d34ea062d9195759bc4920c9a72ab48
+  .git/objects/56/15d6d6e6d1f45e5b0a7517f5d10c124b145fef
+  .git/objects/56/caa099248ed52ffe7c7197969876f6380b80a1
+  .git/objects/58/938da3292b55fbf40612d6d58d4cb38f8a2e38
+  .git/objects/5d/11e038aa46fa5c97922d00fb6cf214eb8e6039
+  .git/objects/63/0fb75ba368e200d76fdde4ef49a7e34d521674
+  .git/objects/63/25afc96a8962ff6ae17f9d93011e2281feb140
+  .git/objects/64/1d43afb9f5b8e4a15a73eef9b67e702a42ea70
+  .git/objects/67/6f84cd7f6659501f32b78a369bd485befa7e24
+  .git/objects/6f/5c8f1d8d4d357f071dc596664f0a0293d5eadf
+  .git/objects/6f/91cb3721eecb38c604999959af5a4a948bbc2f
+  .git/objects/71/7e486e430e63a4cf40526636dff3dcd54e74d8
+  .git/objects/71/b96ccba86f64f11c9bfc5d725188fec9e6c9ca
+  .git/objects/72/2edf35d8a72e98ae63eac81c6bd65ae03916f6
+  .git/objects/74/5a161400c5bc2b8289b3ca0c95aa41bfdc0c54
+  .git/objects/74/f217d50527d0b9f89d38e4c2af8396d3a1a88a
+  .git/objects/75/607069f61df8d3cf751c1ee3b69bd6fc1acac8
+  .git/objects/79/69d0d2b163c5384cbcb1d29f58e894c91e0520
+  .git/objects/7b/ab180ff2c7594086520aac49fa2f6f40f6548f
+  .git/objects/7d/ef23632e1ba4cbcc9d07b4bb9cf2107c1eb11d
+  .git/objects/7f/66365b36ff7b83caa4c96d47c5f0349dbf58ce
+  .git/objects/81/7581653dd9dfff7130a377f477e85f1e79cfc4
+  .git/objects/82/3cb6a1f89765a7c11e80a62980c63aa3608287
+  .git/objects/82/f1187a03c2ec2099b972ac0f2f4b46eb599f82
+  .git/objects/83/6d39f29345807bc8e48cb2df2a8f6e5a3cfb3c
+  .git/objects/86/5830d6cf8282d4d89783d157d20ddf2d0e319c
+  .git/objects/8a/58a3a865410046c5c26949bc5be9cc3586f993
+  .git/objects/8e/380e29719284d829494f820ab15a4bfdd2f763
+  .git/objects/91/3fb74cec3068265571caa265bf50e896366afc
+  .git/objects/94/d73caf2fdee4fab13016ea805c79a1b58c2337
+  .git/objects/95/485342a0dc3c8f7a03d5b79bdd5e061a6f89ee
+  .git/objects/95/7b87a864786d46f2ff5bb9a3826d5e5cd63055
+  .git/objects/96/d7a7c0fe139c92ccbe1a2d220580b228f43588
+  .git/objects/98/5c5f7cb7143ba9c080880e95628351d255e9b4
+  .git/objects/99/e0f41d3e49ba4bf35a4362e4f1b171078e593c
+  .git/objects/9a/13fb67e8c50c009e0ba5ad76f778fb2dedd629
+  .git/objects/9c/023fe37b7ac7efd25fc0474606f452263bd678
+  .git/objects/a0/40ddefa0acc821e1c5621e1abd5ae28cc465f7
+  .git/objects/a1/7e8ead665e4349115d7da16133ea760d9416ac
+  .git/objects/a1/ec1c9e73fc3262e955be3590ecaad22f6bad81
+  .git/objects/a2/c17b4c850415f2fac30e5265652aa82294518a
+  .git/objects/a3/751a27e0e29d8b8bcc9aa3ea25795b50488e79
+  .git/objects/a4/001561a34d93f1f00efb5d78e4d2e3fdd032f6
+  .git/objects/a6/2979284287c3cd22cb525e78636ae6b366afde
+  .git/objects/a8/116d44e4d9a2dc7cb966a6317c9b3d33d99618
+  .git/objects/b0/522a57ec8bb96b2ff4e58257f3d3be353ed94f
+  .git/objects/b8/7508bbc953a1e9249ba2a7941ab11d7ada5a2a
+  .git/objects/b8/77e44ccb0e24be751748cb72b38e172623f44b
+  .git/objects/bb/4cc621cbb158b183c556bddc5d5a6d562b5f13
+  .git/objects/bc/6c03eacac5aebcab3dccb93616540c5ff4a2f6
+  .git/objects/bc/8204c784b26ad467c0667139ebd013cee1c7e6
+  .git/objects/bd/27a8260ba3b8055566dc518831ce02c4adfc36
+  .git/objects/c1/b02a6a45c89795386e4fac52683cccb69cf7c8
+  .git/objects/c3/919eaaaf19f6b97fa11dac7f577cc6591eeff5
+  .git/objects/c7/c0c39b929dae37bdc73a188d95b15e3897d4d3
+  .git/objects/c9/1e79b6e3ce8ac4169539edfa1ae54ca614ff40
+  .git/objects/ca/8051857a094efb06030253fe484f24d9e88867
+  .git/objects/cb/e2e75b1c1fa8b0511d9faa92454135044eab6d
+  .git/objects/ce/99bdfbe08cfa44d75b296ed75219c33575be7d
+  .git/objects/d0/639c0f273f154c2509743027c287d53cffd3c0
+  .git/objects/d7/6105539d0f0b9305fa1e28b3ee312ab39d19cd
+  .git/objects/d8/3ea4739182a58e4244337173db73cb15f5673a
+  .git/objects/d8/e1b11d7f4c0597a6b65ca817a0a451c36c63f3
+  .git/objects/d9/fbef4839b14102ddae25ffc5604092d8a755d2
+  .git/objects/dc/05a0f61a3db080a37b28c701933430346d1f0c
+  .git/objects/dd/44f035819ef1bed0512c343da46d8d735a6c65
+  .git/objects/df/70af30ae9aa5a3e47ca910bca4c8b9f84afa39
+  .git/objects/e5/7194eebaa75312598491c44e4b59484fe0e6c2
+  .git/objects/ea/0cce51e0816e18cb78e203db80169725cac5a2
+  .git/objects/eb/74349ca36f6dd611d54b7c7de9ca88797cd7f7
+  .git/objects/ed/3e2cc52ffdd7a3fae34dc1187e885739e6847a
+  .git/objects/ef/a4e67358fbf197e9d75b0895d8209ac42556cc
+  .git/objects/f0/97393c420e13b23d9edd5efbc7a1b536590f73
+  .git/objects/f1/deaf912444a4c6c6bc39ce7b124830ef32c424
+  .git/objects/f2/3a62f6cfbb8586c9b194c0b9ea28278cc8b952
+  .git/objects/f4/241e23e2a8e7853536ed64b24d7531c0623c1e
+  .git/objects/f4/df8f890843848ccc890ea06dc9cffd04c5cf15
+  .git/objects/f6/9afda19025ecc5fb98638f68b3e0af6edb54fb
+  .git/objects/fb/dc26a5e001b046ea55bb177d8be6555beeef26
+  .git/objects/fd/40d6b2e06e592d6dbd1403b8c362253b342d97
+  .git/objects/fe/10baca521e2d3dfd3eeb3ce1dbebc10c2859e5
+Source packages should not contain undeclared executable files.
+See section ‘Package structure’ in the ‘Writing R Extensions’ manual.
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  .DS_Store
+  .Rhistory
+  .Rprofile
+  .gitignore
+  R/.Rapp.history
+  vignettes/.build.timestamp
+  ..Rcheck
+  .Rproj.user
+  .git
+These were most likely included in error. See section ‘Package
+structure’ in the ‘Writing R Extensions’ manual.
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘ggenealogy’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Checking should be performed on sources prepared by ‘R CMD build’.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... WARNING
+Found the following directory with the name of a check directory:
+  ./..Rcheck
+Most likely, these were included erroneously.
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... NOTE
+Namespace in Imports field not imported from: ‘tibble’
+  All declared Imports should be used.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... NOTE
+  Note: found 2356 marked UTF-8 strings
+* checking data for ASCII and uncompressed saves ... OK
+* checking files in ‘vignettes’ ... WARNING
+Files in the 'vignettes' directory but no files in 'inst/doc':
+  ‘dCox.png’, ‘ggenealogy.Rnw’
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... WARNING
+dir.exists(dir) is not TRUE
+Package vignette without corresponding single PDF/HTML:
+   ‘ggenealogy.Rnw’
+
+* checking running R code from vignettes ... OK
+  ‘ggenealogy.Rnw’using ‘UTF-8’... OK
+* checking re-building of vignette outputs ... OK
+* checking PDF version of manual ... OK
+* DONE
+Status: 4 WARNINGs, 4 NOTEs

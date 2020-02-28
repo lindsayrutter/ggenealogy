@@ -4,8 +4,7 @@
 \alias{getPath}
 \title{Determine the path between two varieties}
 \usage{
-getPath(v1, v2, ig, geneal, colName, silent = FALSE,
-  isDirected = FALSE)
+getPath(v1, v2, ig, geneal, colName, silent = FALSE, isDirected = FALSE)
 }
 \arguments{
 \item{v1}{the label of the first vertex of interest (in character string format)}

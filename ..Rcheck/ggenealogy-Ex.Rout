@@ -1,0 +1,1648 @@
+
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ggenealogy"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('ggenealogy')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("buildAncDesTotalDF")
+> ### * buildAncDesTotalDF
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: buildAncDesTotalDF
+> ### Title: Returns data frame with plot coordinates of all ancestors and
+> ###   descendants of a variety.
+> ### Aliases: buildAncDesTotalDF
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> v1 <- "Essex"
+> buildAncDesTotalDF(v1, sbGeneal)
+   variety                   label             root root.gen gen       type
+1    Essex                   5601T          TN89-39        2   3 descendant
+2    Essex                 IA 3023     Pioneer 9381        2   3 descendant
+3    Essex                  Hagood            Young        1   2 descendant
+4    Essex                  Dillon            Young        1   2 descendant
+5    Essex                    Cook            Young        1   2 descendant
+6    Essex                    Brim            Young        1   2 descendant
+7    Essex                 TN89-39           T80-69        1   2 descendant
+8    Essex                   5601T        Hutcheson        1   2 descendant
+9    Essex            Pioneer 9381 Essex x L69-4143        1   2 descendant
+10   Essex                   Young            Essex        0   1 descendant
+11   Essex                  TN5-85            Essex        0   1 descendant
+12   Essex                  T80-69            Essex        0   1 descendant
+13   Essex                Pershing            Essex        0   1 descendant
+14   Essex               Hutcheson            Essex        0   1 descendant
+15   Essex        Essex x L69-4143            Essex        0   1 descendant
+16   Essex                   Essex            Essex        0   0     center
+24   Essex                 Roanoke         N48-1248        2   3   ancestor
+25   Essex N45-745 x (Ogden x CNS)         N48-1248        2   3   ancestor
+26   Essex                  Illini            S 100        2   3   ancestor
+27   Essex                 Clemson              CNS        2   3   ancestor
+28   Essex                   Perry         S55-7075        1   2   ancestor
+29   Essex                N48-1248         S55-7075        1   2   ancestor
+30   Essex                   S 100              Lee        1   2   ancestor
+31   Essex                     CNS              Lee        1   2   ancestor
+32   Essex                S55-7075            Essex        0   1   ancestor
+33   Essex                     Lee            Essex        0   1   ancestor
+       branch  leaf genside         x        y     xstart   ystart      xend
+1  -0.5000000  TRUE       3  95.80938  6.62500  102.59063  6.62500  89.02813
+2  -0.5000000  TRUE       3  95.80938  1.00000  102.59063  1.00000  89.02813
+3   0.5000000  TRUE       2  67.42500 16.00000   79.05000 16.00000  55.80000
+4   0.1666667  TRUE       2  67.42500 14.12500   79.05000 14.12500  55.80000
+5  -0.1666667  TRUE       2  67.42500 12.25000   79.05000 12.25000  55.80000
+6  -0.5000000  TRUE       2  67.42500 10.37500   79.05000 10.37500  55.80000
+7   0.5000000 FALSE       2  67.42500  6.62500   79.05000  6.62500  55.80000
+8   0.5000000  TRUE       2  67.42500  2.87500   79.05000  2.87500  55.80000
+9   0.5000000 FALSE       2  67.42500  1.00000   79.05000  1.00000  55.80000
+10  0.5000000 FALSE       1  30.32187 13.18750   45.82187 13.18750  14.82188
+11  0.3000000  TRUE       1  30.32187  8.50000   45.82187  8.50000  14.82188
+12  0.1000000 FALSE       1  30.32187  6.62500   45.82187  6.62500  14.82188
+13 -0.1000000  TRUE       1  30.32187  4.75000   45.82187  4.75000  14.82188
+14 -0.3000000 FALSE       1  30.32187  2.87500   45.82187  2.87500  14.82188
+15 -0.5000000 FALSE       1  30.32187  1.00000   45.82187  1.00000  14.82188
+16  0.0000000 FALSE       0   0.00000  6.15625   -4.84375  6.15625   4.84375
+24  0.5000000  TRUE      -3 -88.05938 13.50000 -110.34063 13.50000 -65.77813
+25 -0.5000000 FALSE      -3 -88.05938  7.87500 -110.34063  7.87500 -65.77813
+26 -0.5000000 FALSE      -3 -88.05938  3.50000 -110.34063  3.50000 -65.77813
+27 -0.5000000  TRUE      -3 -88.05938  1.00000 -110.34063  1.00000 -65.77813
+28  0.5000000  TRUE      -2 -48.05000 16.00000  -55.80000 16.00000 -40.30000
+29 -0.5000000 FALSE      -2 -48.05000 10.68750  -55.80000 10.68750 -40.30000
+30  0.5000000 FALSE      -2 -48.05000  3.50000  -55.80000  3.50000 -40.30000
+31 -0.5000000 FALSE      -2 -48.05000  1.00000  -55.80000  1.00000 -40.30000
+32  0.5000000 FALSE      -1 -22.57187 13.34375  -30.32187 13.34375 -14.82188
+33 -0.5000000 FALSE      -1 -22.57187  2.25000  -30.32187  2.25000 -14.82188
+       yend   branchx  branchy size                  label2   color
+1   6.62500  79.05000  6.62500    1                   5601T #000000
+2   1.00000  79.05000  1.00000    1                 IA 3023 #000000
+3  16.00000  45.82187 13.18750    1                  Hagood #000000
+4  14.12500  45.82187 13.18750    1                  Dillon #000000
+5  12.25000  45.82187 13.18750    1                    Cook #000000
+6  10.37500  45.82187 13.18750    1                    Brim #000000
+7   6.62500  45.82187  6.62500    1                 TN89-39 #000000
+8   2.87500  45.82187  2.87500    1                   5601T #000000
+9   1.00000  45.82187  1.00000    1            Pioneer 9381 #000000
+10 13.18750   4.84375  6.15625    1                   Young #000000
+11  8.50000   4.84375  6.15625    1                  TN5-85 #000000
+12  6.62500   4.84375  6.15625    1                  T80-69 #000000
+13  4.75000   4.84375  6.15625    1                Pershing #000000
+14  2.87500   4.84375  6.15625    1               Hutcheson #000000
+15  1.00000   4.84375  6.15625    1        Essex x L69-4143 #000000
+16  6.15625   4.84375  6.15625    1                   Essex #D35C79
+24 13.50000 -55.80000 10.68750    1                 Roanoke #000000
+25  7.87500 -55.80000 10.68750    1 N45-745 x (Ogden x CNS) #000000
+26  3.50000 -55.80000  3.50000    1                  Illini #000000
+27  1.00000 -55.80000  1.00000    1                 Clemson #000000
+28 16.00000 -30.32187 13.34375    1                   Perry #000000
+29 10.68750 -30.32187 13.34375    1                N48-1248 #000000
+30  3.50000 -30.32187  2.25000    1                   S 100 #000000
+31  1.00000 -30.32187  2.25000    1                     CNS #000000
+32 13.34375  -4.84375  6.15625    1                S55-7075 #000000
+33  2.25000  -4.84375  6.15625    1                     Lee #000000
+> 
+> 
+> 
+> cleanEx()
+> nameEx("buildAncList")
+> ### * buildAncList
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: buildAncList
+> ### Title: Returns the ancestors of a particular variety (if they exist).
+> ### Aliases: buildAncList
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getParent("Essex", sbGeneal)
+[1] "Lee"      "S55-7075"
+> buildAncList("Essex", sbGeneal)
+$label
+[1] "Essex"
+
+$root
+[1] "Essex"
+
+$root.gen
+[1] 0
+
+$gen
+[1] 0
+
+$type
+[1] "ancestor"
+
+[[6]]
+[[6]]$label
+[1] "Lee"
+
+[[6]]$root
+[1] "Essex"
+
+[[6]]$root.gen
+[1] 0
+
+[[6]]$gen
+[1] 1
+
+[[6]]$type
+[1] "ancestor"
+
+[[6]][[6]]
+[[6]][[6]]$label
+[1] "CNS"
+
+[[6]][[6]]$root
+[1] "Lee"
+
+[[6]][[6]]$root.gen
+[1] 1
+
+[[6]][[6]]$gen
+[1] 2
+
+[[6]][[6]]$type
+[1] "ancestor"
+
+[[6]][[6]][[6]]
+[[6]][[6]][[6]]$label
+[1] "Clemson"
+
+[[6]][[6]][[6]]$root
+[1] "CNS"
+
+[[6]][[6]][[6]]$root.gen
+[1] 2
+
+[[6]][[6]][[6]]$gen
+[1] 3
+
+[[6]][[6]][[6]]$type
+[1] "ancestor"
+
+
+
+[[6]][[7]]
+[[6]][[7]]$label
+[1] "S 100"
+
+[[6]][[7]]$root
+[1] "Lee"
+
+[[6]][[7]]$root.gen
+[1] 1
+
+[[6]][[7]]$gen
+[1] 2
+
+[[6]][[7]]$type
+[1] "ancestor"
+
+[[6]][[7]][[6]]
+[[6]][[7]][[6]]$label
+[1] "Illini"
+
+[[6]][[7]][[6]]$root
+[1] "S 100"
+
+[[6]][[7]][[6]]$root.gen
+[1] 2
+
+[[6]][[7]][[6]]$gen
+[1] 3
+
+[[6]][[7]][[6]]$type
+[1] "ancestor"
+
+[[6]][[7]][[6]][[6]]
+[[6]][[7]][[6]][[6]]$label
+[1] "A.K."
+
+[[6]][[7]][[6]][[6]]$root
+[1] "Illini"
+
+[[6]][[7]][[6]][[6]]$root.gen
+[1] 3
+
+[[6]][[7]][[6]][[6]]$gen
+[1] 4
+
+[[6]][[7]][[6]][[6]]$type
+[1] "ancestor"
+
+
+
+
+
+[[7]]
+[[7]]$label
+[1] "S55-7075"
+
+[[7]]$root
+[1] "Essex"
+
+[[7]]$root.gen
+[1] 0
+
+[[7]]$gen
+[1] 1
+
+[[7]]$type
+[1] "ancestor"
+
+[[7]][[6]]
+[[7]][[6]]$label
+[1] "N48-1248"
+
+[[7]][[6]]$root
+[1] "S55-7075"
+
+[[7]][[6]]$root.gen
+[1] 1
+
+[[7]][[6]]$gen
+[1] 2
+
+[[7]][[6]]$type
+[1] "ancestor"
+
+[[7]][[6]][[6]]
+[[7]][[6]][[6]]$label
+[1] "N45-745 x (Ogden x CNS)"
+
+[[7]][[6]][[6]]$root
+[1] "N48-1248"
+
+[[7]][[6]][[6]]$root.gen
+[1] 2
+
+[[7]][[6]][[6]]$gen
+[1] 3
+
+[[7]][[6]][[6]]$type
+[1] "ancestor"
+
+[[7]][[6]][[6]][[6]]
+[[7]][[6]][[6]][[6]]$label
+[1] "Ogden x CNS"
+
+[[7]][[6]][[6]][[6]]$root
+[1] "N45-745 x (Ogden x CNS)"
+
+[[7]][[6]][[6]][[6]]$root.gen
+[1] 3
+
+[[7]][[6]][[6]][[6]]$gen
+[1] 4
+
+[[7]][[6]][[6]][[6]]$type
+[1] "ancestor"
+
+[[7]][[6]][[6]][[6]][[6]]
+[[7]][[6]][[6]][[6]][[6]]$label
+[1] "CNS"
+
+[[7]][[6]][[6]][[6]][[6]]$root
+[1] "Ogden x CNS"
+
+[[7]][[6]][[6]][[6]][[6]]$root.gen
+[1] 4
+
+[[7]][[6]][[6]][[6]][[6]]$gen
+[1] 5
+
+[[7]][[6]][[6]][[6]][[6]]$type
+[1] "ancestor"
+
+[[7]][[6]][[6]][[6]][[6]][[6]]
+[[7]][[6]][[6]][[6]][[6]][[6]]$label
+[1] "Clemson"
+
+[[7]][[6]][[6]][[6]][[6]][[6]]$root
+[1] "CNS"
+
+[[7]][[6]][[6]][[6]][[6]][[6]]$root.gen
+[1] 5
+
+[[7]][[6]][[6]][[6]][[6]][[6]]$gen
+[1] 6
+
+[[7]][[6]][[6]][[6]][[6]][[6]]$type
+[1] "ancestor"
+
+
+
+[[7]][[6]][[6]][[6]][[7]]
+[[7]][[6]][[6]][[6]][[7]]$label
+[1] "Ogden"
+
+[[7]][[6]][[6]][[6]][[7]]$root
+[1] "Ogden x CNS"
+
+[[7]][[6]][[6]][[6]][[7]]$root.gen
+[1] 4
+
+[[7]][[6]][[6]][[6]][[7]]$gen
+[1] 5
+
+[[7]][[6]][[6]][[6]][[7]]$type
+[1] "ancestor"
+
+[[7]][[6]][[6]][[6]][[7]][[6]]
+[[7]][[6]][[6]][[6]][[7]][[6]]$label
+[1] "PI 54610"
+
+[[7]][[6]][[6]][[6]][[7]][[6]]$root
+[1] "Ogden"
+
+[[7]][[6]][[6]][[6]][[7]][[6]]$root.gen
+[1] 5
+
+[[7]][[6]][[6]][[6]][[7]][[6]]$gen
+[1] 6
+
+[[7]][[6]][[6]][[6]][[7]][[6]]$type
+[1] "ancestor"
+
+
+[[7]][[6]][[6]][[6]][[7]][[7]]
+[[7]][[6]][[6]][[6]][[7]][[7]]$label
+[1] "Tokyo"
+
+[[7]][[6]][[6]][[6]][[7]][[7]]$root
+[1] "Ogden"
+
+[[7]][[6]][[6]][[6]][[7]][[7]]$root.gen
+[1] 5
+
+[[7]][[6]][[6]][[6]][[7]][[7]]$gen
+[1] 6
+
+[[7]][[6]][[6]][[6]][[7]][[7]]$type
+[1] "ancestor"
+
+
+
+
+
+[[7]][[6]][[7]]
+[[7]][[6]][[7]]$label
+[1] "Roanoke"
+
+[[7]][[6]][[7]]$root
+[1] "N48-1248"
+
+[[7]][[6]][[7]]$root.gen
+[1] 2
+
+[[7]][[6]][[7]]$gen
+[1] 3
+
+[[7]][[6]][[7]]$type
+[1] "ancestor"
+
+
+
+[[7]][[7]]
+[[7]][[7]]$label
+[1] "Perry"
+
+[[7]][[7]]$root
+[1] "S55-7075"
+
+[[7]][[7]]$root.gen
+[1] 1
+
+[[7]][[7]]$gen
+[1] 2
+
+[[7]][[7]]$type
+[1] "ancestor"
+
+
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("buildDesList")
+> ### * buildDesList
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: buildDesList
+> ### Title: Returns the descendants of a particular variety (if they exist).
+> ### Aliases: buildDesList
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getParent("Essex", sbGeneal)
+[1] "Lee"      "S55-7075"
+> buildDesList("Essex", sbGeneal, 3)
+[[1]]
+[[1]]$label
+[1] "Essex x L69-4143"
+
+[[1]]$root
+[1] "Essex"
+
+[[1]]$root.gen
+[1] 3
+
+[[1]]$gen
+[1] 4
+
+[[1]]$type
+[1] "descendant"
+
+[[1]][[6]]
+[[1]][[6]]$label
+[1] "Pioneer 9381"
+
+[[1]][[6]]$root
+[1] "Essex x L69-4143"
+
+[[1]][[6]]$root.gen
+[1] 4
+
+[[1]][[6]]$gen
+[1] 5
+
+[[1]][[6]]$type
+[1] "descendant"
+
+[[1]][[6]][[6]]
+[[1]][[6]][[6]]$label
+[1] "IA 3023"
+
+[[1]][[6]][[6]]$root
+[1] "Pioneer 9381"
+
+[[1]][[6]][[6]]$root.gen
+[1] 5
+
+[[1]][[6]][[6]]$gen
+[1] 6
+
+[[1]][[6]][[6]]$type
+[1] "descendant"
+
+
+
+
+[[2]]
+[[2]]$label
+[1] "Hutcheson"
+
+[[2]]$root
+[1] "Essex"
+
+[[2]]$root.gen
+[1] 3
+
+[[2]]$gen
+[1] 4
+
+[[2]]$type
+[1] "descendant"
+
+[[2]][[6]]
+[[2]][[6]]$label
+[1] "5601T"
+
+[[2]][[6]]$root
+[1] "Hutcheson"
+
+[[2]][[6]]$root.gen
+[1] 4
+
+[[2]][[6]]$gen
+[1] 5
+
+[[2]][[6]]$type
+[1] "descendant"
+
+
+
+[[3]]
+[[3]]$label
+[1] "Pershing"
+
+[[3]]$root
+[1] "Essex"
+
+[[3]]$root.gen
+[1] 3
+
+[[3]]$gen
+[1] 4
+
+[[3]]$type
+[1] "descendant"
+
+
+[[4]]
+[[4]]$label
+[1] "T80-69"
+
+[[4]]$root
+[1] "Essex"
+
+[[4]]$root.gen
+[1] 3
+
+[[4]]$gen
+[1] 4
+
+[[4]]$type
+[1] "descendant"
+
+[[4]][[6]]
+[[4]][[6]]$label
+[1] "TN89-39"
+
+[[4]][[6]]$root
+[1] "T80-69"
+
+[[4]][[6]]$root.gen
+[1] 4
+
+[[4]][[6]]$gen
+[1] 5
+
+[[4]][[6]]$type
+[1] "descendant"
+
+[[4]][[6]][[6]]
+[[4]][[6]][[6]]$label
+[1] "5601T"
+
+[[4]][[6]][[6]]$root
+[1] "TN89-39"
+
+[[4]][[6]][[6]]$root.gen
+[1] 5
+
+[[4]][[6]][[6]]$gen
+[1] 6
+
+[[4]][[6]][[6]]$type
+[1] "descendant"
+
+
+
+
+[[5]]
+[[5]]$label
+[1] "TN5-85"
+
+[[5]]$root
+[1] "Essex"
+
+[[5]]$root.gen
+[1] 3
+
+[[5]]$gen
+[1] 4
+
+[[5]]$type
+[1] "descendant"
+
+
+[[6]]
+[[6]]$label
+[1] "Young"
+
+[[6]]$root
+[1] "Essex"
+
+[[6]]$root.gen
+[1] 3
+
+[[6]]$gen
+[1] 4
+
+[[6]]$type
+[1] "descendant"
+
+[[6]][[6]]
+[[6]][[6]]$label
+[1] "Brim"
+
+[[6]][[6]]$root
+[1] "Young"
+
+[[6]][[6]]$root.gen
+[1] 4
+
+[[6]][[6]]$gen
+[1] 5
+
+[[6]][[6]]$type
+[1] "descendant"
+
+
+[[6]][[7]]
+[[6]][[7]]$label
+[1] "Cook"
+
+[[6]][[7]]$root
+[1] "Young"
+
+[[6]][[7]]$root.gen
+[1] 4
+
+[[6]][[7]]$gen
+[1] 5
+
+[[6]][[7]]$type
+[1] "descendant"
+
+
+[[6]][[8]]
+[[6]][[8]]$label
+[1] "Dillon"
+
+[[6]][[8]]$root
+[1] "Young"
+
+[[6]][[8]]$root.gen
+[1] 4
+
+[[6]][[8]]$gen
+[1] 5
+
+[[6]][[8]]$type
+[1] "descendant"
+
+
+[[6]][[9]]
+[[6]][[9]]$label
+[1] "Hagood"
+
+[[6]][[9]]$root
+[1] "Young"
+
+[[6]][[9]]$root.gen
+[1] 4
+
+[[6]][[9]]$gen
+[1] 5
+
+[[6]][[9]]$type
+[1] "descendant"
+
+
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getAncestors")
+> ### * getAncestors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getAncestors
+> ### Title: Returns a list of the ancestors of a particular variety (if they
+> ###   exist)
+> ### Aliases: getAncestors
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getParent("Essex", sbGeneal)
+[1] "Lee"      "S55-7075"
+> getAncestors("Essex", sbGeneal, 1)
+     label gen
+2      Lee   1
+1 S55-7075   1
+> getAncestors("Essex", sbGeneal, 5)
+                     label gen
+14                     Lee   1
+13                S55-7075   1
+12                     CNS   2
+11                   S 100   2
+10                N48-1248   2
+9                    Perry   2
+8                  Clemson   3
+7                   Illini   3
+6  N45-745 x (Ogden x CNS)   3
+5                  Roanoke   3
+4                     A.K.   4
+3              Ogden x CNS   4
+2                      CNS   5
+1                    Ogden   5
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getBasicStatistics")
+> ### * getBasicStatistics
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getBasicStatistics
+> ### Title: Determine basic statistics of the graph object
+> ### Aliases: getBasicStatistics
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> ig <- dfToIG(sbGeneal)
+> getBasicStatistics(ig)
+$isConnected
+[1] FALSE
+
+$numComponents
+[1] 11
+
+$avePathLength
+[1] 5.333746
+
+$graphDiameter
+[1] 13
+
+$numNodes
+[1] 230
+
+$numEdges
+[1] 340
+
+$logN
+[1] 5.438079
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getBranchQual")
+> ### * getBranchQual
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getBranchQual
+> ### Title: Descendant branch calculations for quantitative variable
+> ### Aliases: getBranchQual
+> 
+> ### ** Examples
+> 
+> data(statGeneal)
+> rExpr = "geneal$colName=='The Johns Hopkins University'"
+> DC_JHU = getBranchQual("David Cox", statGeneal, "school", rExpr, 15)
+> rExpr = "geneal$colName=='UnitedKingdom'"
+> DC_UK = getBranchQual("David Cox", statGeneal, "country", rExpr, 15)
+> rExpr = "grepl('(?i)Stochastic', geneal$colName)"
+> DC_Stochastic = getBranchQual("David Cox", statGeneal, "thesis", rExpr, 15)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getBranchQuant")
+> ### * getBranchQuant
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getBranchQuant
+> ### Title: Descendant branch calculations for quantitative variable
+> ### Aliases: getBranchQuant
+> 
+> ### ** Examples
+> 
+> data(statGeneal)
+> DC_Year <- getBranchQuant("David Cox", statGeneal, "gradYear", 15)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getChild")
+> ### * getChild
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getChild
+> ### Title: Returns the children of a particular variety (if they exist)
+> ### Aliases: getChild
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getChild("Tokyo", sbGeneal)
+[1] "Ogden"    "Volstate"
+> getChild("Essex", sbGeneal)
+[1] "Essex x L69-4143" "Hutcheson"        "Pershing"         "T80-69"          
+[5] "TN5-85"           "Young"           
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getDegree")
+> ### * getDegree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getDegree
+> ### Title: Determine the degree between two varieties
+> ### Aliases: getDegree
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> ig <- dfToIG(sbGeneal)
+> getDegree("Brim", "Bedford", ig, sbGeneal)
+[1] 6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getDescendants")
+> ### * getDescendants
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getDescendants
+> ### Title: Returns a list of the descendants of a particular variety (if
+> ###   they exist)
+> ### Aliases: getDescendants
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getChild("Essex", sbGeneal)
+[1] "Essex x L69-4143" "Hutcheson"        "Pershing"         "T80-69"          
+[5] "TN5-85"           "Young"           
+> getDescendants("Essex", sbGeneal, 1)
+             label gen
+6 Essex x L69-4143   1
+5        Hutcheson   1
+4         Pershing   1
+3           T80-69   1
+2           TN5-85   1
+1            Young   1
+> getDescendants("Essex", sbGeneal, 3)
+              label gen
+15 Essex x L69-4143   1
+14        Hutcheson   1
+13         Pershing   1
+12           T80-69   1
+11           TN5-85   1
+10            Young   1
+9      Pioneer 9381   2
+8             5601T   2
+7           TN89-39   2
+6              Brim   2
+5              Cook   2
+4            Dillon   2
+3            Hagood   2
+2           IA 3023   3
+1             5601T   3
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getEdges")
+> ### * getEdges
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getEdges
+> ### Title: Returns edges (vertex names and edge weights) for the full
+> ###   genealogy
+> ### Aliases: getEdges
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> ig <- dfToIG(sbGeneal)
+> getEdges(ig, sbGeneal)
+       child                           parent                         
+  [1,] "5601T"                         "Hutcheson"                    
+  [2,] "Adams"                         "Dunfield"                     
+  [3,] "A.K. (Harrow)"                 "A.K."                         
+  [4,] "Altona"                        "Flambeau"                     
+  [5,] "Amcor"                         "Amsoy 71"                     
+  [6,] "Amsoy"                         "Adams"                        
+  [7,] "Amsoy 71"                      "C1253"                        
+  [8,] "Anderson"                      "Lincoln"                      
+  [9,] "Bay"                           "York"                         
+ [10,] "Bedford"                       "Forrest"                      
+ [11,] "Beeson"                        "Kent"                         
+ [12,] "Blackhawk"                     "Richland"                     
+ [13,] "Bonus"                         "C1266R"                       
+ [14,] "Bradley"                       "J74-39"                       
+ [15,] "Bragg"                         "Jackson"                      
+ [16,] "Bragg x D60-7965"              "Bragg"                        
+ [17,] "Braxton"                       "F59-1505"                     
+ [18,] "Brim"                          "Young"                        
+ [19,] "C1069"                         "Lincoln"                      
+ [20,] "C1079"                         "Lincoln"                      
+ [21,] "C1253"                         "Blackhawk"                    
+ [22,] "C1266R"                        "Harosoy"                      
+ [23,] "Calland"                       "Kent"                         
+ [24,] "Capital"                       "A.K. (Harrow)"                
+ [25,] "Centennial"                    "D64-4636"                     
+ [26,] "Century"                       "Calland"                      
+ [27,] "Chippewa"                      "Lincoln"                      
+ [28,] "Clark"                         "Lincoln"                      
+ [29,] "Clark x Blackhawk"             "Clark"                        
+ [30,] "Clark x CNS"                   "Clark"                        
+ [31,] "CNS"                           "Clemson"                      
+ [32,] "Columbus"                      "Clark"                        
+ [33,] "Cook"                          "Young"                        
+ [34,] "Corsoy"                        "Capital"                      
+ [35,] "Crawford"                      "Williams"                     
+ [36,] "Cumberland"                    "Corsoy"                       
+ [37,] "Custer"                        "Peking x Scott"               
+ [38,] "Cutler"                        "C1069"                        
+ [39,] "D49-2491"                      "S 100"                        
+ [40,] "D49-2491 x Jackson"            "Jackson"                      
+ [41,] "D49-2510"                      "CNS"                          
+ [42,] "D51-2427"                      "Ralsoy"                       
+ [43,] "D52-810"                       "N48-1101"                     
+ [44,] "D55-4090"                      "Ogden"                        
+ [45,] "D55-4159"                      "Ogden"                        
+ [46,] "D55-4168"                      "Ogden"                        
+ [47,] "D56-1185"                      "Perry"                        
+ [48,] "D58-3358"                      "D49-2491"                     
+ [49,] "D59-5289"                      "Hood"                         
+ [50,] "D59-9289"                      "D55-4168"                     
+ [51,] "D60-7965"                      "D55-4159"                     
+ [52,] "D60-9647"                      "D49-2510"                     
+ [53,] "D61-618"                       "Hill"                         
+ [54,] "D64-4636"                      "D49-2491 x Jackson"           
+ [55,] "D65-6765"                      "D58-3358"                     
+ [56,] "D67-3297"                      "PI171450"                     
+ [57,] "D68-127"                       "Bragg"                        
+ [58,] "D68-18"                        "Dyer"                         
+ [59,] "D70-3115"                      "D64-4636"                     
+ [60,] "Dare"                          "D52-810"                      
+ [61,] "Davis"                         "Ralsoy x Ogden"               
+ [62,] "Davis x Peking"                "Davis"                        
+ [63,] "Dawson"                        "Evans"                        
+ [64,] "Dillon"                        "Young"                        
+ [65,] "Dorman"                        "Arksoy"                       
+ [66,] "Douglas"                       "Calland"                      
+ [67,] "Dunfield x Haberlandt"         "Dunfield"                     
+ [68,] "Dyer"                          "Hill"                         
+ [69,] "Elf"                           "Williams"                     
+ [70,] "Epps"                          "J74-47"                       
+ [71,] "Essex"                         "Lee"                          
+ [72,] "Essex x L69-4143"              "Essex"                        
+ [73,] "Evans"                         "Merit"                        
+ [74,] "F59-1505"                      "Jackson"                      
+ [75,] "Ford"                          "Richland"                     
+ [76,] "Forrest"                       "Bragg"                        
+ [77,] "Franklin"                      "Clark"                        
+ [78,] "Fremont"                       "Williams"                     
+ [79,] "Gasoy"                         "Bragg"                        
+ [80,] "Gnome"                         "Williams"                     
+ [81,] "Gordon"                        "Forrest"                      
+ [82,] "Hagood"                        "Centennial"                   
+ [83,] "Harcor"                        "Corsoy"                       
+ [84,] "Hark"                          "Hawkeye"                      
+ [85,] "Harosoy"                       "A.K. (Harrow)"                
+ [86,] "Harosoy 63"                    "Blackhawk"                    
+ [87,] "Hawkeye"                       "Richland"                     
+ [88,] "Hill"                          "Dunfield x Haberlandt"        
+ [89,] "Hodgson"                       "Corsoy"                       
+ [90,] "Holladay"                      "N77-179"                      
+ [91,] "Hood"                          "N45-745"                      
+ [92,] "Hutcheson"                     "V68-1034"                     
+ [93,] "IA 3023"                       "Dairyland DSR-365"            
+ [94,] "Illini"                        "A.K."                         
+ [95,] "J74-39"                        "Forrest"                      
+ [96,] "J74-40"                        "Forrest"                      
+ [97,] "Jackson"                       "Volstate"                     
+ [98,] "Kanrich"                       "Kanro"                        
+ [99,] "Kent"                          "Lincoln"                      
+[100,] "Kershaw"                       "Hale 3"                       
+[101,] "L11"                           "Clark"                        
+[102,] "L15"                           "Wayne"                        
+[103,] "L15 x L11"                     "L15"                          
+[104,] "L49-4091"                      "Lincoln x Richland"           
+[105,] "L57-0034"                      "Clark"                        
+[106,] "L66L-137"                      "Wayne"                        
+[107,] "L69-4143"                      "Wayne x Kanrich"              
+[108,] "L707-543G"                     "L15"                          
+[109,] "Lawrence"                      "Calland"                      
+[110,] "Lee"                           "CNS"                          
+[111,] "Lee 68"                        "Lee"                          
+[112,] "Lee 74"                        "R66-1517"                     
+[113,] "Lee x Peking"                  "Lee"                          
+[114,] "Leflore"                       "Centennial"                   
+[115,] "Lincoln x CNS"                 "Lincoln"                      
+[116,] "Lincoln x Richland"            "Lincoln"                      
+[117,] "(Lincoln x Richland) x Korean" "Lincoln x Richland"           
+[118,] "M10"                           "Lincoln"                      
+[119,] "M327"                          "PI 180501"                    
+[120,] "M372"                          "M10"                          
+[121,] "M63-217Y"                      "Corsoy"                       
+[122,] "Mack"                          "Lee 68"                       
+[123,] "Mandarin (Ottowa)"             "Mandarin"                     
+[124,] "Merit"                         "Blackhawk"                    
+[125,] "N44-92"                        "Haberlandt"                   
+[126,] "N45-2994"                      "Ralsoy"                       
+[127,] "N45-2994 x Ogden"              "N45-2994"                     
+[128,] "N45-745"                       "Ogden"                        
+[129,] "N45-745 x (Ogden x CNS)"       "Ogden x CNS"                  
+[130,] "N48-1101"                      "Roanoke"                      
+[131,] "N48-1248"                      "N45-745 x (Ogden x CNS)"      
+[132,] "N48-1867"                      "Roanoke"                      
+[133,] "N55-3818"                      "N44-92 x N48-1867"            
+[134,] "N55-5931"                      "Roanoke"                      
+[135,] "N70-1549"                      "D65-6765"                     
+[136,] "N72-3213"                      "Ransom"                       
+[137,] "N73-1102"                      "Tracy"                        
+[138,] "N77-179"                       "N72-3213"                     
+[139,] "Narow"                         "R66-873"                      
+[140,] "NC55"                          "Peking"                       
+[141,] "Oakland"                       "Calland"                      
+[142,] "Ogden"                         "Tokyo"                        
+[143,] "Ogden x CNS"                   "Ogden"                        
+[144,] "Ozzie"                         "Wilkin"                       
+[145,] "Peking x Scott"                "Peking"                       
+[146,] "Pella"                         "L66L-137"                     
+[147,] "Pershing"                      "D67-3297"                     
+[148,] "PI 1945654"                    "Flambeau"                     
+[149,] "Pickett"                       "D49-2491"                     
+[150,] "Pickett 71"                    "Pickett"                      
+[151,] "Pioneer 9381"                  "Essex x L69-4143"             
+[152,] "PRX9-249"                      "PI86972-1"                    
+[153,] "PRX9-274"                      "PI54615-1"                    
+[154,] "R54-168"                       "Roanoke"                      
+[155,] "R62-550"                       "R54-168"                      
+[156,] "R66-1517"                      "Lee"                          
+[157,] "R66-873"                       "Jackson"                      
+[158,] "Ralsoy x Ogden"                "Ralsoy"                       
+[159,] "Ransom"                        "D56-1185"                     
+[160,] "Renville"                      "Lincoln x Richland"           
+[161,] "Renville x Capital"            "Capital"                      
+[162,] "Roanoke x (Ogden x CNS)"       "Roanoke"                      
+[163,] "S 100"                         "Illini"                       
+[164,] "S55-7075"                      "Perry"                        
+[165,] "S62-6-16-12"                   "Davis x Peking"               
+[166,] "Semmes"                        "D51-2427"                     
+[167,] "Sprite"                        "Ransom"                       
+[168,] "Swift"                         "(Lincoln x Richland) x Korean"
+[169,] "T80-69"                        "Essex"                        
+[170,] "TN5-85"                        "D68-127"                      
+[171,] "TN81-2"                        "Lee 74"                       
+[172,] "TN89-39"                       "TN81-2"                       
+[173,] "Tracy"                         "D61-618"                      
+[174,] "V68-1034"                      "York"                         
+[175,] "Volstate"                      "Tokyo"                        
+[176,] "Wayne"                         "L49-4091"                     
+[177,] "Wayne x Kanrich"               "Wayne"                        
+[178,] "Wells"                         "C1253"                        
+[179,] "Wilkin"                        "Harosoy"                      
+[180,] "Williams"                      "L57-0034"                     
+[181,] "Williams 82"                   "Kingwa"                       
+[182,] "York"                          "Dorman"                       
+[183,] "Young"                         "Davis"                        
+[184,] "Zane"                          "Cumberland"                   
+[185,] "5601T"                         "TN89-39"                      
+[186,] "Adams"                         "Illini"                       
+[187,] "Amcor"                         "Corsoy"                       
+[188,] "Amsoy"                         "Harosoy"                      
+[189,] "Amsoy 71"                      "Amsoy"                        
+[190,] "Bay"                           "R62-550"                      
+[191,] "Bedford"                       "D68-18"                       
+[192,] "Beeson"                        "C1253"                        
+[193,] "Blackhawk"                     "Mukden"                       
+[194,] "Bonus"                         "C1253"                        
+[195,] "Bradley"                       "D70-3115"                     
+[196,] "Bragg"                         "D49-2491"                     
+[197,] "Bragg x D60-7965"              "D60-7965"                     
+[198,] "Braxton"                       "Bragg x D60-7965"             
+[199,] "Brim"                          "N73-1102"                     
+[200,] "C1069"                         "Ogden"                        
+[201,] "C1079"                         "Ogden"                        
+[202,] "C1253"                         "Harosoy"                      
+[203,] "C1266R"                        "C1079"                        
+[204,] "Calland"                       "C1253"                        
+[205,] "Capital"                       "No. 171"                      
+[206,] "Centennial"                    "Pickett 71"                   
+[207,] "Century"                       "Bonus"                        
+[208,] "Chippewa"                      "Richland"                     
+[209,] "Clark"                         "Richland"                     
+[210,] "Clark x Blackhawk"             "Blackhawk"                    
+[211,] "Clark x CNS"                   "CNS"                          
+[212,] "Columbus"                      "C1069"                        
+[213,] "Cook"                          "Braxton"                      
+[214,] "Corsoy"                        "Harosoy"                      
+[215,] "Crawford"                      "Columbus"                     
+[216,] "Cumberland"                    "Williams"                     
+[217,] "Cutler"                        "Clark"                        
+[218,] "D49-2491"                      "CNS"                          
+[219,] "D49-2510"                      "S 100"                        
+[220,] "D51-2427"                      "Ogden"                        
+[221,] "D55-4090"                      "CNS"                          
+[222,] "D55-4159"                      "Biloxi"                       
+[223,] "D55-4168"                      "Biloxi"                       
+[224,] "D56-1185"                      "Lee"                          
+[225,] "D58-3358"                      "Jackson"                      
+[226,] "D60-7965"                      "D55-4090"                     
+[227,] "D60-9647"                      "FC31745"                      
+[228,] "D61-618"                       "PI 171442"                    
+[229,] "D64-4636"                      "Hill"                         
+[230,] "D65-6765"                      "D59-9289"                     
+[231,] "D67-3297"                      "Hill"                         
+[232,] "D68-127"                       "Dyer"                         
+[233,] "D68-18"                        "Bragg"                        
+[234,] "D70-3115"                      "Pickett 71"                   
+[235,] "Dare"                          "Hill"                         
+[236,] "Davis"                         "Roanoke x (Ogden x CNS)"      
+[237,] "Davis x Peking"                "Peking"                       
+[238,] "Dawson"                        "M63-217Y"                     
+[239,] "Dillon"                        "Centennial"                   
+[240,] "Dorman"                        "Dunfield"                     
+[241,] "Douglas"                       "Williams"                     
+[242,] "Dunfield x Haberlandt"         "Haberlandt"                   
+[243,] "Dyer"                          "Lee x Peking"                 
+[244,] "Elf"                           "Ransom"                       
+[245,] "Essex"                         "S55-7075"                     
+[246,] "Essex x L69-4143"              "L69-4143"                     
+[247,] "Evans"                         "Harosoy"                      
+[248,] "F59-1505"                      "D49-2491"                     
+[249,] "Ford"                          "Lincoln"                      
+[250,] "Franklin"                      "Custer"                       
+[251,] "Fremont"                       "Amsoy-71"                     
+[252,] "Gasoy"                         "Hood"                         
+[253,] "Gnome"                         "Ransom"                       
+[254,] "Gordon"                        "Pickett 71"                   
+[255,] "Hagood"                        "Young"                        
+[256,] "Harcor"                        "OX383"                        
+[257,] "Hark"                          "Harosoy"                      
+[258,] "Harosoy"                       "Mandarin (Ottowa)"            
+[259,] "Harosoy 63"                    "Harosoy"                      
+[260,] "Hawkeye"                       "Mukden"                       
+[261,] "Hill"                          "S 100 x CNS"                  
+[262,] "Hodgson"                       "M372"                         
+[263,] "Hood"                          "Roanoke"                      
+[264,] "Hutcheson"                     "Essex"                        
+[265,] "IA 3023"                       "Pioneer 9381"                 
+[266,] "J74-39"                        "D68-18"                       
+[267,] "J74-40"                        "PI88788"                      
+[268,] "Jackson"                       "Palmetto"                     
+[269,] "Kanrich"                       "Richland"                     
+[270,] "Kent"                          "Ogden"                        
+[271,] "Kershaw"                       "Davis"                        
+[272,] "L15"                           "Clark"                        
+[273,] "L15 x L11"                     "L11"                          
+[274,] "L49-4091"                      "Lincoln x CNS"                
+[275,] "L57-0034"                      "Adams"                        
+[276,] "L66L-137"                      "L57-0034"                     
+[277,] "L69-4143"                      "L15 x L11"                    
+[278,] "L707-543G"                     "Amsoy-71"                     
+[279,] "Lawrence"                      "Williams"                     
+[280,] "Lee"                           "S 100"                        
+[281,] "Lee 68"                        "Arksoy"                       
+[282,] "Lee 74"                        "Lee 68"                       
+[283,] "Lee x Peking"                  "Peking"                       
+[284,] "Leflore"                       "J74-47"                       
+[285,] "Lincoln x CNS"                 "CNS"                          
+[286,] "Lincoln x Richland"            "Richland"                     
+[287,] "(Lincoln x Richland) x Korean" "Korean"                       
+[288,] "M10"                           "Richland"                     
+[289,] "M63-217Y"                      "M372"                         
+[290,] "Merit"                         "Capital"                      
+[291,] "N44-92"                        "Ogden"                        
+[292,] "N45-745"                       "CNS"                          
+[293,] "N48-1101"                      "Ogden"                        
+[294,] "N48-1248"                      "Roanoke"                      
+[295,] "N48-1867"                      "N45-745"                      
+[296,] "N55-3818"                      "N45-2994 x Ogden"             
+[297,] "N55-5931"                      "D49-2491"                     
+[298,] "N70-1549"                      "Dare"                         
+[299,] "N72-3213"                      "Lee"                          
+[300,] "N73-1102"                      "Ransom"                       
+[301,] "N77-179"                       "N70-1549"                     
+[302,] "Narow"                         "Mack"                         
+[303,] "Oakland"                       "Williams"                     
+[304,] "Ogden"                         "PI 54610"                     
+[305,] "Ogden x CNS"                   "CNS"                          
+[306,] "Ozzie"                         "M63-217Y"                     
+[307,] "Peking x Scott"                "Scott"                        
+[308,] "Pella"                         "Calland"                      
+[309,] "Pershing"                      "Essex"                        
+[310,] "Pickett"                       "Dorman"                       
+[311,] "Pickett 71"                    "Lee"                          
+[312,] "Pioneer 9381"                  "Sprite"                       
+[313,] "PRX9-249"                      "PI54615-1"                    
+[314,] "PRX9-274"                      "PI86962-1"                    
+[315,] "R54-168"                       "Ogden x CNS"                  
+[316,] "R62-550"                       "Hill"                         
+[317,] "R66-873"                       "Semmes"                       
+[318,] "Ralsoy x Ogden"                "Ogden"                        
+[319,] "Renville x Capital"            "Renville"                     
+[320,] "Roanoke x (Ogden x CNS)"       "Ogden x CNS"                  
+[321,] "S55-7075"                      "N48-1248"                     
+[322,] "S62-6-16-12"                   "Lee"                          
+[323,] "Semmes"                        "D49-2491"                     
+[324,] "Sprite"                        "Williams"                     
+[325,] "Swift"                         "Renville x Capital"           
+[326,] "T80-69"                        "J74-40"                       
+[327,] "TN5-85"                        "Essex"                        
+[328,] "TN89-39"                       "T80-69"                       
+[329,] "Tracy"                         "D60-9647"                     
+[330,] "V68-1034"                      "PI 71.506"                    
+[331,] "Volstate"                      "PI 54610"                     
+[332,] "Wayne"                         "Clark"                        
+[333,] "Wayne x Kanrich"               "Kanrich"                      
+[334,] "Wells"                         "C1266R"                       
+[335,] "Wilkin"                        "Merit"                        
+[336,] "Williams"                      "Wayne"                        
+[337,] "Williams 82"                   "Williams"                     
+[338,] "York"                          "Hood"                         
+[339,] "Young"                         "Essex"                        
+[340,] "Zane"                          "Pella"                        
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getNodes")
+> ### * getNodes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getNodes
+> ### Title: Returns the nodes for a full genealogy
+> ### Aliases: getNodes
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getNodes(sbGeneal)
+  [1] "5601T"                         "Adams"                        
+  [3] "A.K."                          "A.K. (Harrow)"                
+  [5] "Altona"                        "Amcor"                        
+  [7] "Amsoy"                         "Amsoy 71"                     
+  [9] "Anderson"                      "Arksoy"                       
+ [11] "Arksoy 2913"                   "Bay"                          
+ [13] "Bedford"                       "Beeson"                       
+ [15] "Blackhawk"                     "Bonus"                        
+ [17] "Bradley"                       "Bragg"                        
+ [19] "Bragg x D60-7965"              "Braxton"                      
+ [21] "Brim"                          "C1069"                        
+ [23] "C1079"                         "C1253"                        
+ [25] "C1266R"                        "Calland"                      
+ [27] "Capital"                       "Centennial"                   
+ [29] "Century"                       "Chippewa"                     
+ [31] "Clark"                         "Clark x Blackhawk"            
+ [33] "Clark x CNS"                   "Clemson"                      
+ [35] "CNS"                           "Columbus"                     
+ [37] "Cook"                          "Corsoy"                       
+ [39] "Crawford"                      "Cumberland"                   
+ [41] "Custer"                        "Cutler"                       
+ [43] "D49-2491"                      "D49-2491 x Jackson"           
+ [45] "D49-2510"                      "D51-2427"                     
+ [47] "D52-810"                       "D55-4090"                     
+ [49] "D55-4159"                      "D55-4168"                     
+ [51] "D56-1185"                      "D58-3358"                     
+ [53] "D59-5289"                      "D59-9289"                     
+ [55] "D60-7965"                      "D60-9647"                     
+ [57] "D61-618"                       "D64-4636"                     
+ [59] "D65-6765"                      "D67-3297"                     
+ [61] "D68-127"                       "D68-18"                       
+ [63] "D70-3115"                      "Dare"                         
+ [65] "Davis"                         "Davis x Peking"               
+ [67] "Dawson"                        "Dillon"                       
+ [69] "Dorman"                        "Douglas"                      
+ [71] "Dunfield"                      "Dunfield x Haberlandt"        
+ [73] "Dyer"                          "Elf"                          
+ [75] "Epps"                          "Essex"                        
+ [77] "Essex x L69-4143"              "Evans"                        
+ [79] "F59-1505"                      "Ford"                         
+ [81] "Forrest"                       "Franklin"                     
+ [83] "Fremont"                       "Gasoy"                        
+ [85] "Gnome"                         "Gordon"                       
+ [87] "Hagood"                        "Harcor"                       
+ [89] "Hark"                          "Harosoy"                      
+ [91] "Harosoy 63"                    "Hawkeye"                      
+ [93] "Hill"                          "Hodgson"                      
+ [95] "Holladay"                      "Hood"                         
+ [97] "Hutcheson"                     "IA 3023"                      
+ [99] "Illini"                        "J74-39"                       
+[101] "J74-40"                        "Jackson"                      
+[103] "Kanrich"                       "Kent"                         
+[105] "Kershaw"                       "Kingwa"                       
+[107] "L11"                           "L15"                          
+[109] "L15 x L11"                     "L37-1355"                     
+[111] "L49-4091"                      "L57-0034"                     
+[113] "L66L-137"                      "L69-4143"                     
+[115] "L707-543G"                     "Lawrence"                     
+[117] "Lee"                           "Lee 68"                       
+[119] "Lee 74"                        "Lee x Peking"                 
+[121] "Leflore"                       "Lincoln"                      
+[123] "Lincoln x CNS"                 "Lincoln x Richland"           
+[125] "(Lincoln x Richland) x Korean" "M10"                          
+[127] "M327"                          "M372"                         
+[129] "M63-217Y"                      "Mack"                         
+[131] "Manchu"                        "Mandarin"                     
+[133] "Mandarin (Ottowa)"             "Merit"                        
+[135] "Mukden"                        "N44-92"                       
+[137] "N45-2994"                      "N45-2994 x Ogden"             
+[139] "N45-745"                       "N45-745 x (Ogden x CNS)"      
+[141] "N48-1101"                      "N48-1248"                     
+[143] "N48-1867"                      "N55-3818"                     
+[145] "N55-5931"                      "N70-1549"                     
+[147] "N72-3213"                      "N73-1102"                     
+[149] "N77-179"                       "Narow"                        
+[151] "NC55"                          "No.171"                       
+[153] "Oakland"                       "Ogden"                        
+[155] "Ogden x CNS"                   "Ozzie"                        
+[157] "Palmetto"                      "Patoka"                       
+[159] "Peking x Scott"                "Pella"                        
+[161] "Perry"                         "Pershing"                     
+[163] "PI 1945654"                    "PI 54610"                     
+[165] "PI 70502"                      "PI 71.506"                    
+[167] "PI 71597"                      "Pickett"                      
+[169] "Pickett 71"                    "Pioneer 9381"                 
+[171] "PRX9-249"                      "PRX9-274"                     
+[173] "R54-168"                       "R62-550"                      
+[175] "R66-1517"                      "R66-873"                      
+[177] "Ralsoy x Ogden"                "Ransom"                       
+[179] "Renville"                      "Renville x Capital"           
+[181] "Richland"                      "Roanoke"                      
+[183] "Roanoke x (Ogden x CNS)"       "S 100"                        
+[185] "S55-7075"                      "S62-6-16-12"                  
+[187] "Semmes"                        "Sprite"                       
+[189] "Swift"                         "T80-69"                       
+[191] "TN5-85"                        "TN81-2"                       
+[193] "TN89-39"                       "Tokyo"                        
+[195] "Tracy"                         "V68-1034"                     
+[197] "Volstate"                      "Wayne"                        
+[199] "Wayne x Kanrich"               "Wells"                        
+[201] "Wilkin"                        "Williams"                     
+[203] "Williams 82"                   "York"                         
+[205] "Young"                         "Zane"                         
+[207] "Flambeau"                      "Ralsoy"                       
+[209] "PI171450"                      "J74-47"                       
+[211] "Dairyland DSR-365"             "Kanro"                        
+[213] "Hale 3"                        "PI 180501"                    
+[215] "Haberlandt"                    "N44-92 x N48-1867"            
+[217] "Peking"                        "PI86972-1"                    
+[219] "PI54615-1"                     "No. 171"                      
+[221] "Biloxi"                        "FC31745"                      
+[223] "PI 171442"                     "Amsoy-71"                     
+[225] "OX383"                         "S 100 x CNS"                  
+[227] "PI88788"                       "Korean"                       
+[229] "Scott"                         "PI86962-1"                    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getParent")
+> ### * getParent
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getParent
+> ### Title: Returns the parents of a particular variety (if they exist)
+> ### Aliases: getParent
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getParent("Tokyo", sbGeneal)
+character(0)
+> getParent("Essex", sbGeneal)
+[1] "Lee"      "S55-7075"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getPath")
+> ### * getPath
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getPath
+> ### Title: Determine the path between two varieties
+> ### Aliases: getPath
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> ig <- dfToIG(sbGeneal)
+> getPath("Brim", "Bedford", ig, sbGeneal, "devYear")
+$pathVertices
+[1] "Brim"    "Young"   "Essex"   "T80-69"  "J74-40"  "Forrest" "Bedford"
+
+$variableVertices
+[1] "1977" "1968" "1962" "1975" "1975" "1973" "1978"
+
+> getPath("Tokyo", "Volstate", ig, sbGeneal, "yield")
+$pathVertices
+[1] "Tokyo"    "Volstate"
+
+$variableVertices
+[1] NA NA
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getVariable")
+> ### * getVariable
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getVariable
+> ### Title: Determine the date of a variety
+> ### Aliases: getVariable
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> getVariable("Essex", sbGeneal, "devYear")
+[1] 1962
+> getVariable("Tokyo", sbGeneal, "yield")
+[1] NA
+> 
+> 
+> 
+> cleanEx()
+> nameEx("isChild")
+> ### * isChild
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: isChild
+> ### Title: Determine if a variety is a child of another
+> ### Aliases: isChild
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> isChild("Essex", "Young", sbGeneal)
+[1] FALSE
+> isChild("Young", "Essex", sbGeneal)
+[1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("isParent")
+> ### * isParent
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: isParent
+> ### Title: Determine if a variety is a parent of another
+> ### Aliases: isParent
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> isParent("Essex", "Young", sbGeneal)
+[1] FALSE
+> isParent("Young", "Essex", sbGeneal)
+[1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plotAncDes")
+> ### * plotAncDes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plotAncDes
+> ### Title: Returns the image object to show the ancestors and descendants
+> ###   of a variety
+> ### Aliases: plotAncDes
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> plotAncDes("Tokyo", sbGeneal, vColor = "red")
+> plotAncDes("Essex", sbGeneal, 2, 3, "blue") + ggplot2::labs(x = "Generation index", y = "")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plotDegMatrix")
+> ### * plotDegMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plotDegMatrix
+> ### Title: Returns the image object to show the heat map of degrees between
+> ###   the inputted set of vertices
+> ### Aliases: plotDegMatrix
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> ig <- dfToIG(sbGeneal)
+> varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+> p <- plotDegMatrix(varieties, ig, sbGeneal)
+> p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plotPath")
+> ### * plotPath
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plotPath
+> ### Title: Construct the graphic object of the path
+> ### Aliases: plotPath
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> ig <- dfToIG(sbGeneal)
+> pathTN <- getPath("Tokyo", "Narow", sbIG, sbGeneal, "devYear")
+> plotPath(pathTN, sbGeneal, "devYear")
+> 
+> sbFilt <- sbGeneal[complete.cases(sbGeneal[1:3]),]
+> sbFiltIG <- dfToIG(sbFilt)
+> pathCL <- getPath("Clark", "Lawrence", sbFiltIG, sbFilt, "yield")
+> plotPath(pathCL, sbFilt, "devYear", "yield") + ggplot2::xlab("Dev Year") + ggplot2::ylab("Yield")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plotPathOnAll")
+> ### * plotPathOnAll
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plotPathOnAll
+> ### Title: Plot a path between two vertices over the full genealogy
+> ### Aliases: plotPathOnAll
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> sb <- sbGeneal[complete.cases(sbGeneal[1:3]),]
+> ig <- dfToIG(sb)
+> pathCL <- getPath("Clark", "Lawrence", ig, sb, "yield")
+> plotPathOnAll(pathCL, sb, ig, "yield", bin = 3, pathEdgeCol = "red") + ggplot2::xlab("Yield")
+> plotPathOnAll(pathCL, sb, ig, "yield", "devYear") + ggplot2::xlab("Yield") + ggplot2::ylab("Year")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plotVariableMatrix")
+> ### * plotVariableMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plotVariableMatrix
+> ### Title: Returns the image object to show the heat map of dates between
+> ###   the inputted set of vertices
+> ### Aliases: plotVariableMatrix
+> 
+> ### ** Examples
+> 
+> data(sbGeneal)
+> varieties <- c("Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+> p <- plotVariableMatrix(varieties, sbGeneal, "devYear", "Variety", "Variety", "Difference")
+> p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen")
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.117 0.231 7.155 0.003 0.008 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

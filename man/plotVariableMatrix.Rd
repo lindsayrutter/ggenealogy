@@ -4,8 +4,14 @@
 \alias{plotVariableMatrix}
 \title{Returns the image object to show the heat map of dates between the inputted set of vertices}
 \usage{
-plotVariableMatrix(varieties, geneal, colName, xLab = "Variety",
-  yLab = "Variety", legendLab = "Difference in variable")
+plotVariableMatrix(
+  varieties,
+  geneal,
+  colName,
+  xLab = "Variety",
+  yLab = "Variety",
+  legendLab = "Difference in variable"
+)
 }
 \arguments{
 \item{varieties}{subset of varieties used to generate the heat map}

@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^cran-comments\.md$
 ^CRAN-RELEASE$
+^revdep$
+^\.travis\.yml$
