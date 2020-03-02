@@ -5,7 +5,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-ff69b4.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.3.0-6666ff.svg)](https://cran.r-project.org/)
 <!-- badges: start -->
-  [![Travis build status](https://travis-ci.org/lindsayrutter/ggenealogy.svg?branch=master)](https://travis-ci.org/lindsayrutter/ggenealogy)
+[![Travis build status](https://travis-ci.org/lindsayrutter/ggenealogy.svg?branch=master)](https://travis-ci.org/lindsayrutter/ggenealogy)
   <!-- badges: end -->
 
 **Motivation:**

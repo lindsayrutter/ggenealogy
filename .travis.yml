@@ -2,3 +2,6 @@
 
 language: R
 cache: packages
+
+tex-config:
+- packages=media9
