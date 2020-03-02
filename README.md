@@ -28,7 +28,7 @@ Some of the currently-available methods include:
 **Installation:**
 
 * The latest released version: `install.packages("ggenealogy")`
-* The latest development version: `install_github("lrutter/ggenealogy")`
+* The latest development version: `install_github("lindsayrutter/ggenealogy")`
 
 **Resources:**
 
