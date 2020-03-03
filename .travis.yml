@@ -9,7 +9,7 @@ warnings_are_errors: false
 before_install:
   # initialization for tlmgr
   - sudo apt-get install xzdec
-  - tlmgr init-usertree
+  #- tlmgr init-usertree
   # packages specified
   - sudo $(which tlmgr) install ifluatex ifxetex 
 install: echo "Nothing occurs at installation, only script"
