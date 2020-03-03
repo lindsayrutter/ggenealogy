@@ -7,7 +7,8 @@ pandoc: false
 warnings_are_errors: false
 
 before_install:
-- if [[ "$OSTYPE" != "linux-gnu" ]]; then sudo tlmgr install framed titling; fi
+  - tlmgr install framed
+  - sudo $(which tlmgr) install ifluatex ifxetex 
 install: echo "Nothing occurs at installation, only script"
 script:
 - Rscript install_texlive.R
@@ -23,3 +24,4 @@ deploy:
   file: Report.pdf
   on:
     repo: HughParsonage/latex-travis
+
