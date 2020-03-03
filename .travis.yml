@@ -7,7 +7,6 @@ pandoc: false
 warnings_are_errors: false
 
 before_install:
-  - tlmgr install framed
   - sudo $(which tlmgr) install ifluatex ifxetex 
 install: echo "Nothing occurs at installation, only script"
 script:
