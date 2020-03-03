@@ -7,7 +7,7 @@ pandoc: false
 warnings_are_errors: false
 
 before_install:
-- if [[ "$OSTYPE" != "linux-gnu" ]]; then sudo tlmgr install framed titling; fi
+- if [[ "$OSTYPE" != "linux-gnu" ]]; then sudo tlmgr install framed titling latexmk; fi
 - sudo apt-get update && sudo apt-get install --no-install-recommends texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra texlive-latex-recommended dvipng
 install: echo "Nothing occurs at installation, only script"
 script:
