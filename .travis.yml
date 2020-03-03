@@ -12,7 +12,7 @@ before_install:
 install: echo "Nothing occurs at installation, only script"
 script:
 - Rscript install_texlive.R
-- Rscript -e 'tinytex::pdflatex(list.files(pattern = "\\.tex$")[1], bib_engine = "biber")'
+#- Rscript -e 'tinytex::pdflatex(list.files(pattern = "\\.tex$")[1], bib_engine = "biber")'
 branches:
   - master
   - travising
