@@ -1,4 +1,4 @@
-language: r
+language: R
 sudo: true
 latex: false
 pandoc: false
