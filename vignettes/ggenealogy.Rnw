@@ -176,7 +176,7 @@ getParent("Tokyo",sbGeneal)
 getVariable("Tokyo", sbGeneal,"devYear")
 @
 
-We learn from this that ``Essex" is not the only parent of ``Young"; ``Young" also has a parent ``Davis". We also see that ``Tokyo" does not have any documented parents in this dataset, and has an older year of introduction (\Sexpr{getVariable("Tokyo", sbGeneal,"devYear")}) than other varieties we have examined thusfar. Likewise, in other cases, you may wish to obtain a complete list of all the children of a given variety. This can be achieved using the \texttt{getChild()} function:
+We learn from this that ``Essex" is not the only parent of ``Young"; ``Young" also has a parent ``Davis". We also see that ``Tokyo" does not have any documented parents in this dataset, and has an older year of introduction (\Sexpr{getVariable("Tokyo", sbGeneal,"devYear")}) than other varieties we have examined thus far. Likewise, in other cases, you may wish to obtain a complete list of all the children of a given variety. This can be achieved using the \texttt{getChild()} function:
 
 <<>>=
 getChild("Tokyo",sbGeneal)
@@ -298,7 +298,7 @@ plotAncDes("Lee", sbGeneal,5,4)
 
 We immediately see in Figure~\ref{fig:plotAncDes1} that this visual representation of the ancestors and descendants of a given variety can often provide enhanced readability compared to the list output provided in the previous functions, \texttt{getAncestors()} and \texttt{getDescendants()}. We notice that even though we specified for 5 generations of ancestors, the extent of documented ancestors of ``Lee" includes only 3 generations.
 
-We also see now that some node labels are repeated. For instance, the ``5601T" variety appears twice, once as a great-grandchild (third generation descendant) of ``Lee", and once as a great-great-granchild (fourth generation descendant) of ``Lee". This is because there are two separate parent-child pathways between ``Lee" and ``5601T", one pathway with only two nodes (``Essex" and ``Hutchson") between them, and one pathway with three nodes (``Essex", ``T80-69", and ``TN89-39") between them.
+We also see now that some node labels are repeated. For instance, the ``5601T" variety appears twice, once as a great-grandchild (third generation descendant) of ``Lee", and once as a great-great-grandchild (fourth generation descendant) of ``Lee". This is because there are two separate parent-child pathways between ``Lee" and ``5601T", one pathway with only two nodes (``Essex" and ``Hutchson") between them, and one pathway with three nodes (``Essex", ``T80-69", and ``TN89-39") between them.
 
 Why does this happen? In this visual tool, we are constraining the horizontal axis to generation count. Without allowing nodes to repeat, this data information cannot be clearly and succinctly presented. Most graph visualization software that genealogists might use to view their datasets do not allow for repeated nodes, as per the definition of a graph. Hence, the \texttt{plotAncDes()} function is one of the more unique visual tools of the \pkg{ggenealogy} package.
 
@@ -531,11 +531,11 @@ plotDegMatrix(varieties, ig, sbGeneal)
 
 Here, we did not change any defaults. As such, the resulting plot in Figure~\ref{fig:plotYearMatrix1} contains the default values of ``Variety" for the x-and y-axis labels, and ``Difference in dates" for the legend label. It also uses the default colors of dark blue for small year difference and light blue for large year difference.
 
-Running this function on this particular set of eight vertices suggests that most combinations of varieties are only one or two decades apart in year introduction, with the exception of the ``Tokyo" variety, which appears to be separated from each of the other seven varieties by about six decades. This is not surprising, because we have seen througout the tutorial that the ``Tokyo" variety is the oldest variety in the dataset.
+Running this function on this particular set of eight vertices suggests that most combinations of varieties are only one or two decades apart in year introduction, with the exception of the ``Tokyo" variety, which appears to be separated from each of the other seven varieties by about six decades. This is not surprising, because we have seen throughout the tutorial that the ``Tokyo" variety is the oldest variety in the dataset.
 
 \section{Interactive plotting methods of genealogical data}
 
-There is a second example dataset included in the \pkg{ggenealogy} package of the academic genelaogy of statisticians. More information about this example dataset can be found in the \code{R/data-statGeneal.R} file. We can load the example dataset of academic genealogy of statisticians (\code{statGeneal}) and examine its structure. 
+There is a second example dataset included in the \pkg{ggenealogy} package of the academic genealogy of statisticians. More information about this example dataset can be found in the \code{R/data-statGeneal.R} file. We can load the example dataset of academic genealogy of statisticians (\code{statGeneal}) and examine its structure. 
 
 <<>>=
 data("statGeneal")
