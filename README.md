@@ -31,9 +31,25 @@ Some of the currently-available methods include:
 * The latest released version: `install.packages("ggenealogy")`
 * The latest development version: `install_github("lindsayrutter/ggenealogy")`
 
-**Resources:**
+**Vignette:**
 
 Installation of the package will automatically download a vignette, which contains a more thorough explanation of the available methods, and example code.
+
+**Paper citation:**
+
+A software paper describing the `ggenealogy` package is available in the Journal of Statistical Software [here](https://www.jstatsoft.org/article/view/v089i13).
+
+```
+@article{rutter2019ggenealogy,
+  title={ggenealogy: An R Package for Visualizing Genealogical Data},
+  author={Rutter, Lindsay and VanderPlas, Susan and Cook, Dianne and Graham, Michelle A},
+  journal={Journal of Statistical Software},
+  volume={89},
+  number={1},
+  pages={1--31},
+  year={2019}
+}
+```
 
 **License:**
 
