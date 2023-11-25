@@ -1,0 +1,23 @@
+language: R
+sudo: true
+latex: false
+pandoc: false
+warnings_are_errors: false
+before_install:
+- if [[ "$OSTYPE" != "linux-gnu" ]]; then sudo tlmgr install framed titling latexmk;
+  fi
+- sudo apt-get update && sudo apt-get install --no-install-recommends texlive-fonts-recommended
+  texlive-latex-extra texlive-fonts-extra texlive-latex-recommended dvipng
+install: echo "Nothing occurs at installation, only script"
+script:
+- Rscript install_texlive.R
+branches:
+- master
+- travising
+deploy:
+  provider: releases
+  api_key:
+    secure: PQigSaIREellM2RAQBIJuXaHHBv+3pCXmGCmMveHQGWU9hUB13111c64irUfpyequqcV6jDHk0koJXloxyaxqXxYa/kCNWa2LAf/oYq4FHCrm63L8bPka6xXByHapeeHo5dC+zwsP/Jz+TOJl/mkMWyrRgZJRoFQ1hYaiPd1Cm1Vn5BauHcrGLEUb1cTSeWz0n+XT/635HXxberdzYvKWDpkuQQGI3/27Jz9vggpOxp+aiuKOjqquXyG8YIvHgUW2nZEgz6izLoFAiz1nVxCF7nQhLhiTVPE+0i6WUmQ352pASdGE6OjDFgyBun93OO298VGLZdjkJ04NzSYCJN0VUzmS4/DO56KUoywrZY7TY6Nje0Hx+eUOBlwwpL9PmUO1zA9KaHlzmDc5yBxWnFQX2CNyve28j9H4PBn7wBbYjht9F5bRcGWmP8O9L9iPt68RVYXrw9qiXcW/ge6TGuQQXXlgHa9SpW7be8jYKUF1IZBo6GQYMwZ6EHw1EZZKmS0CbBMHtaMZkXoSInNYkAf5KHTUcR482U6BdCaidae/e7Lycj+K3sVoO1x/Pr+4kKSStJePPx99zwp4Y+innNAKQpOmhHthXQhUW0Gxtd0NLnW9kvmw/ykL/NHnXjarZhffIKO00BbDkzReVIbyOucnOMRDeQLv37P1Zq3Y+TXPXQ=
+  file: ".travis.yml"
+  on:
+    repo: lindsayrutter/ggenealogy

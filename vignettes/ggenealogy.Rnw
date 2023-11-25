@@ -1,0 +1,746 @@
+\documentclass{article}
+
+\usepackage{Sweave}
+
+
+\usepackage[]{media9}
+\usepackage[T1]{fontenc}
+
+\setlength{\parindent}{0pt} % Remove indent at new paragraphs
+\setcounter{secnumdepth}{0}  % Remove section numbering at certain depth
+\usepackage[round,sort]{natbib}
+\usepackage{fixltx2e}
+\usepackage{graphicx}	% For external pictures
+\usepackage{float}
+\usepackage{subfig}	% Add subfigures within figures
+\usepackage{verbatim}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{amssymb,amsbsy,amsmath}
+\usepackage{epsfig}
+\usepackage[left=3cm,top=3cm,bottom=3.5cm,right=3cm]{geometry} % For easy document margins
+\usepackage{fancyhdr} % For customization of header/footer
+\usepackage{adjustbox}
+\numberwithin{equation}{section} % Equation numbers relative to sections
+
+% ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\pkg}[1]{{\texttt{#1}}}
+\newcommand{\class}[1]{{\textit{#1}}}
+\newcommand{\R}{{\normalfont\textsf{R }}{}}
+\SweaveOpts{pdf.encoding = ISOLatin2.enc}
+
+\begin{document}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
+
+<<label=Roptions,echo=FALSE>>=
+options(width = 60)
+options(SweaveHooks = list(fig = function() par(mar=c(3,3,1,0.5),mgp = c(2,1,0))))
+@
+
+
+% <<echo=false>>=
+%\VignetteIndexEntry{Vignette: Grammar of graphics of genealogy (ggenealogy)}
+%\SweaveOpts{prefix.string=fig,include=F,keep.source=T,eps=FALSE}
+%\SweaveOpts{grdevice=my.Swd,pdf=FALSE}
+% options(continue="  ")
+% @
+% %@% TO ELIMINATE THE "+" IN CONSECUTIVE SCRIPT LINES
+
+
+\title{Vignette: Grammar of graphics of genealogy (ggenealogy)}
+\author{Lindsay Rutter, Susan Vanderplas, Di Cook}
+\maketitle
+
+\tableofcontents
+\setcounter{footnote}{1} \footnotetext{This \LaTeX\ vignette document is created using the \R function \code{Sweave} on the \R package \pkg{ggenealogy}. It is automatically downloaded with the package and can be accessed with the \R command \code{vignette("ggenealogy")}.}  \newpage
+\setlength{\parskip}{10pt} % Inter-paragraph spacing
+
+<<echo=FALSE>>=
+rm(list=ls())
+@ 
+
+\section{Citation}
+
+Please cite \pkg{ggenealogy} as follows:
+
+Rutter L, VanderPlas S, Cook D, Graham MA (2019). ggenealogy: An R Package for Visualizing Genealogical Data. Journal of Statistical Software, 89(13), 1-31. doi: 10.18637/jss.v089.i13
+
+\section{Summary}
+
+\textbf{Description} 
+
+The \pkg{ggenealogy} package provides tools to examine genealogical data, generating basic statistics on their graphical structures using parent and child connections, and displaying the results. The genealogy can be drawn in relation to additional variables, such as development year, and the shortest path distances between genetic lines can be determined and displayed. Production of pairwise distance matrices and phylogenetic diagrams constrained by generation count are also available in the visualization toolkit. This vignette is intended to walk readers through the different methods available in the \pkg{ggenealogy} package.
+
+\bigskip
+
+\textbf{Caution}
+
+\texttt{igraph} must be used with version $>=$ 0.7.1
+
+\section{Introduction}
+
+\subsection{Installation}
+
+\R is an open source software project for statistical computing, and can be freely downloaded from the Comprehensive R Archive Network (CRAN) website. The link to contributed documentation on the CRAN website offers practical resources for an introduction to \R, in several languages. After downloading and installing \R, the installation of additional packages is straightforward. To install the \pkg{ggenealogy} package from \R, use the command:
+
+<<eval=FALSE>>=
+install.packages("ggenealogy")
+@
+
+\noindent
+The \pkg{ggenealogy} package should now be successfully installed. Next, to render it accessible to the current \R session, simply type:
+
+<<>>=
+library(ggenealogy)
+@
+
+To access help pages with example syntax and documentation for the available functions of the \pkg{ggenealogy} package, please type:
+
+<<eval=FALSE>>=
+help(package="ggenealogy")
+@ 
+
+To access more detailed information about a specific function in the \pkg{ggenealogy} package, use the following help command on that function, such as:
+
+<<eval=FALSE>>=
+help(getChild)
+@ 
+
+The above command will return the help file for the \texttt{getChild} function. The help file often includes freestanding example syntax to illustrate how function commands are executed. In the case of the \texttt{getChild} function, the example syntax is the following three lines, which can be pasted directly into an \R session.
+
+<<eval=FALSE>>=
+data(sbGeneal)
+getChild("Tokyo", sbGeneal)
+getChild("Essex", sbGeneal)
+@ 
+
+\subsection{Preprocessing pipeline}
+
+In the \pkg{ggenealogy} package, there is an example dataset containing genealogical information on soybean varieties called \texttt{sbGeneal.rda}. It may be helpful to load that example file so that you can follow along with the commands and options introduced in this vignette. To ensure that you have uploaded the correct, raw \texttt{sbGeneal.rda} file, you can observe the first six lines of the file, and determine its dimension and structure:
+
+<<>>=
+data(sbGeneal)
+head(sbGeneal)
+dim(sbGeneal)
+str(sbGeneal)
+@
+
+We see that the \texttt{sbGeneal} data file is a data frame structure with \Sexpr{nrow(sbGeneal)} rows (observations) and \Sexpr{ncol(sbGeneal)} columns (variables). Each row contains a \texttt{child} node character label and \texttt{parent} node character label. Each row also contains a numeric value corresponding to the \texttt{date} (year) the child node was introduced, an integer value of the protein \texttt{yield} of the child node, and a logical value \texttt{date.imputed}, which indicates whether or not the year of introduction of the child node was imputed.
+
+Now that the \texttt{sbGeneal} file has been loaded as a data frame, it must next be converted into a graph object using the \texttt{dfToIG()} function. The \texttt{dfToIG()} function requires a data frame as input, and that data frame should be structured such that each row represents an edge with a child and parent relationship. For more information, try using the help command on the function:
+
+<<eval=FALSE>>=
+help(dfToIG)
+@
+
+We see that the function takes optional parameter arguments, such as \texttt{vertexinfo} (a list of columns of the data frame which provide information for the starting ``child" vertex, or a separate data frame containing information for each vertex with the first column as the vertex name), \texttt{edgeweights} (a column that contains edge values, with a default value of unity), and \texttt{isDirected} (a boolean value that describes whether the graph is directed (true) or undirected (false); the default is false).
+
+In this example, we want to produce an undirected graph object that contains all edge weight values of one, because our goal is to set an edge value of unity for every pair of vertices (individuals) that are related as parent and child. The \texttt{dfToIG()} function uses the software \texttt{igraph} to convert the data frame into a graph object. For clarity, we will assign the outputted graph object the name \texttt{ig} (for \texttt{igraph} object), and then examine its class type:
+
+<<>>=
+ig <- dfToIG(sbGeneal)
+class(ig)
+@
+
+Above, we confirmed that the \texttt{ig} object is of class type \texttt{igraph}. The \texttt{ig} object is required as input in many \pkg{ggenealogy} functions, which will be demonstrated below. 
+
+\section{General (non-plotting) methods of genealogical data}
+
+The \pkg{ggenealogy} package offers several functions that result in useful information beside plots. Below is a brief introduction to some of the available non-plotting functions.
+
+\subsection{Functions for individual vertices}
+
+The \pkg{ggenealogy} package offers several functions that you can use to obtain information for individual vertices. First, the function \texttt{isParent()} can return a logical variable to indicate whether or not the second variety is a parent of the first variety.
+
+<<>>=
+isParent("Young","Essex",sbGeneal)
+isParent("Essex","Young",sbGeneal)
+@
+
+We see that ``Essex" is a parent of ``Young", and not vice-versa. Similarly, the function \texttt{isChild()} can return a logical variable to indicate whether or not the first variety is a child of the second variety.
+
+<<>>=
+isChild("Young","Essex",sbGeneal)
+isChild("Essex","Young",sbGeneal)
+@
+
+We see that, as expected, ``Young" is a child of ``Essex", and not vice-versa. It is also possible to derive the year of a given variety using the \texttt{getVariable()} function:
+
+<<>>=
+getVariable("Young", sbGeneal, "devYear")
+getVariable("Essex", sbGeneal, "devYear")
+@
+
+Fortunately, the returned year values are consistent, as the ``Young" variety (\Sexpr{getVariable("Young",sbGeneal,"devYear")}) is a child to the ``Essex" variety (\Sexpr{getVariable("Essex",sbGeneal,"devYear")}) by an age difference of \Sexpr{getVariable("Young",sbGeneal,"devYear") - getVariable("Essex",sbGeneal,"devYear")} years. In some cases, you may wish to obtain a complete list of all the parents of a given variety. This can be achieved using the \texttt{getParent()} function:
+
+<<>>=
+getParent("Young",sbGeneal)
+getParent("Tokyo",sbGeneal)
+getVariable("Tokyo", sbGeneal,"devYear")
+@
+
+We learn from this that ``Essex" is not the only parent of ``Young"; ``Young" also has a parent ``Davis". We also see that ``Tokyo" does not have any documented parents in this dataset, and has an older year of introduction (\Sexpr{getVariable("Tokyo", sbGeneal,"devYear")}) than other varieties we have examined thus far. Likewise, in other cases, you may wish to obtain a complete list of all the children of a given variety. This can be achieved using the \texttt{getChild()} function:
+
+<<>>=
+getChild("Tokyo",sbGeneal)
+getChild("Ogden",sbGeneal)
+@
+
+We find that even though the ``Tokyo" variety is a grandparent of the dataset, it only has two children, ``Ogden" and ``Volstate". However, one of its children, ``Ogden", produced \Sexpr{length(getChild("Ogden",sbGeneal))} children.
+
+If we want to obtain a list that contains more than just one generation past or previous to a given variety, then we can use the \texttt{getAncestors()} and \texttt{getDescendants()} functions, where we specify the number of generations we wish to view. This will return a data frame to us with the labels of each ancestor or descendant, along with the number of generations each one is from the given variety.
+
+If we only look at one generation of ancestors of the ``Young" variety, we should see the same information we did earlier when we used the \texttt{getParent()} function of the Young variety:
+
+<<>>=
+getAncestors("Young",sbGeneal,1)
+@
+
+Indeed, we consistently see that the ``Young" variety has only \Sexpr{nrow(getAncestors("Young",sbGeneal,1))} ancestors within one generation, ``Davis" and ``Essex". However, if we view the first five generations of ancestors of the ``Young" variety, we can view four more generations of ancestors past simply the parents:
+
+<<>>=
+getAncestors("Young",sbGeneal,5)
+nrow(getAncestors("Young",sbGeneal,5))
+@
+
+In the second line of code above, we determined the dimensions of the returned data frame, and see that there are \Sexpr{nrow(getAncestors("Young",sbGeneal,5))} ancestors within the first five ancestral generations of the ``Young" variety.
+
+Similarly, if we only look at the first generation of descendants of the ``Ogden" variety, we should see the same information as we did earlier when we used the \texttt{getChild()} function on the ``Ogden" variety:
+
+<<>>=
+getDescendants("Ogden",sbGeneal,1)
+@
+
+Indeed, we see again that ``Ogden" has \Sexpr{nrow(getDescendants("Ogden",sbGeneal,1))} children. Additionally, if we want to view not only the children, but also the grandchildren, of the ``Ogden" variety, then we can use this function, only now specifying two generations of descendants:
+
+<<>>=
+getDescendants("Ogden",sbGeneal,2)
+@
+
+We see that variety ``Ogden" has \Sexpr{nrow(getDescendants("Ogden",sbGeneal,2))-nrow(getDescendants("Ogden",sbGeneal,1))} grandchildren from its \Sexpr{nrow(getDescendants("Ogden",sbGeneal,1))} children.
+
+For users who wish to apply obtain the ancestors or descendants across generations for not just one, but for a list, of individuals, please note that \texttt{getAncestors()} and \texttt{getDescendants()} can be run with a list of individuals as input. For example, here we can obtain ancestors for the past five generations for the last four members in the \texttt{sbGeneal} object (``Williams 82", ``York", ``Young", and ``Zane"):
+
+<<>>=
+nr = nrow(sbGeneal)
+listInd = sbGeneal[(nr-3):nr,]$child
+listAnc = sapply(listInd, function(x) getAncestors(x, sbGeneal, 5))
+listAnc
+@
+
+Note that we verify our earlier finding that ``Young" has 27 ancestors across five generations. To view the entire structure of ancestors across five generations for these four members, we can include a \texttt{simplify = F} option:
+
+<<>>=
+listAnc = sapply(listInd, function(x) getAncestors(x, sbGeneal, 5), simplify=F)
+listAnc
+@
+
+\subsection{Functions for pairs of vertices}
+
+Say you have a pair of vertices, and you wish to determine the degree of the shortest path between them, where edges represent parent-child relationships. You can accomplish that with the \texttt{getDegree()} function.
+
+<<>>=
+getDegree("Tokyo", "Ogden", ig, sbGeneal)
+getDegree("Tokyo", "Holladay", ig, sbGeneal)
+@
+
+As expected, the shortest path between the ``Tokyo" and ``Ogden" varieties has a value of \Sexpr{getDegree("Tokyo", "Ogden", ig, sbGeneal)}, as we already determined that they have a direct parent-child relationship. However, the shortest path between ``Tokyo" and one of its descendants, ``Holladay", has a much higher degree of \Sexpr{getDegree("Tokyo", "Holladay", ig, sbGeneal)}.
+
+Note that degree calculations in this case are not limited to one linear string of parent-child relationships; cousins and siblings and products thereof will also have computable degrees via nonlinear strings of parent-child relationships.
+
+\subsection{Functions for the full genealogical structure}
+
+There are many parameters about the full genealogical structure that you may wish to know that cannot easily be obtained through images and tables. The function \texttt{getBasicStatistics()} will return graph theoretical measurements of the full genealogy. For instance, is the full genealogy connected? If not, how many separated components does it contain? In addition to these parameters, the \texttt{getBasicStatistics()} function will also return the number of nodes, the number of edges, the average path length, the graph diameter, among others:
+
+<<>>=
+getBasicStatistics(ig)
+@
+
+In this case, we learn that our full genealogical structure is not all connected by parent-child edges. Instead, it is composed of \Sexpr{getBasicStatistics(ig)$numComponents} separate components. The average path length of the full genealogy is \Sexpr{round(getBasicStatistics(ig)$avePathLength,6)}, that the graph diameter is \Sexpr{getBasicStatistics(ig)$graphDiameter}, and that the logN value is \Sexpr{round(getBasicStatistics(ig)$logN,6)}. We also see that the number of nodes in the full genealogy is \Sexpr{getBasicStatistics(ig)$numNodes}, and the number of edges in the full genealogy is \Sexpr{getBasicStatistics(ig)$numEdges}.
+
+But can we view a list of these nodes and edges? To do so, we can call the \texttt{getNodes()} and \texttt{getEdges()} commands to obtain lists of all the unique nodes and edges in the full genealogical structure. Here, we obtain a list of the \Sexpr{getBasicStatistics(ig)$numEdges} edges (with each row containing the names of the two connected vertices, and an edge weight, if existent). We will simply view the first six rows of the object, and determine the number of edges by counting the number of rows (\Sexpr{getBasicStatistics(ig)$numEdges}):
+
+<<>>=
+eList = getEdges(ig, sbGeneal)
+head(eList)
+nrow(eList)
+@
+
+We then obtain a list of the \Sexpr{getBasicStatistics(ig)$numNodes} nodes. Again, we only view the first six rows of the object, and determine the number of nodes by counting the number of indices (\Sexpr{getBasicStatistics(ig)$numNodes}).
+
+<<>>=
+nList = getNodes(sbGeneal)
+head(nList)
+length(nList)
+@
+
+\section{Plotting methods of genealogical data}
+
+Until this point, the vignette has introduced functions that return lists, data frames, and statistics about the genealogical dataset. However, the \pkg{ggenealogy} package also contains visualization tools for genealogical datasets. Access to various types of visual plots and diagrams of the lineage can allow genealogical researchers to more efficiently and accurately explore an otherwise complicated data structure. Below, we introduce functions in \pkg{ggenealogy} that produce visual outputs of the dataset.
+
+\subsection{Plotting the ancestors and descendants of a vertex}
+
+One visualization tool, \texttt{plotAncDes()}, allows the user to view the ancestors and descendants of a given variety. The inputted variety is highlighted in the center of the plot, ancestors are displayed to the left of the center, and descendants are displayed to the right of the center. The further left or right from the center, the larger the number of generations that particular ancestor/descendant is from the inputted and centered variety.
+
+As such, this plotting command does not provide visual information about specific years associated with each related variety (as is done in some of the visualization tools introduced later), but it does group all varieties from each generation group onto the same position of the horizontal axis. Here, we specify that we want to plot 5 ancestor generations and 4 descendant generations of the variety ``Lee":
+
+<<label=plotAncDes1,include=FALSE, fig=TRUE>>=
+plotAncDes("Lee", sbGeneal,5,4)
+@
+
+\setkeys{Gin}{width=6in, height=6in}
+\begin{figure} 
+  \begin{center} 
+<<label=plotAncDes1-1,echo=FALSE, fig=TRUE>>=
+<<plotAncDes1>>
+@ 
+  \end{center} 
+\caption{Ancestors and descendants of the ``Lee" variety, constrained on the horizontal axis by generational separation from ``Lee".}
+\label{fig:plotAncDes1-1}
+\end{figure}
+
+We immediately see in Figure~\ref{fig:plotAncDes1-1} that this visual representation of the ancestors and descendants of a given variety can often provide enhanced readability compared to the list output provided in the previous functions, \texttt{getAncestors()} and \texttt{getDescendants()}. We notice that even though we specified for 5 generations of ancestors, the extent of documented ancestors of ``Lee" includes only 3 generations.
+
+We also see now that some node labels are repeated. For instance, the ``5601T" variety appears twice, once as a great-grandchild (third generation descendant) of ``Lee", and once as a great-great-grandchild (fourth generation descendant) of ``Lee". This is because there are two separate parent-child pathways between ``Lee" and ``5601T", one pathway with only two nodes (``Essex" and ``Hutchson") between them, and one pathway with three nodes (``Essex", ``T80-69", and ``TN89-39") between them.
+
+Why does this happen? In this visual tool, we are constraining the horizontal axis to generation count. Without allowing nodes to repeat, this data information cannot be clearly and succinctly presented. Most graph visualization software that genealogists might use to view their datasets do not allow for repeated nodes, as per the definition of a graph. Hence, the \texttt{plotAncDes()} function is one of the more unique visual tools of the \pkg{ggenealogy} package.
+
+It should be noted that the \texttt{plotAncDes()} function, by default, highlights the centered variety label in pink. However, the user can alter this color, as we will show next. Furthermore, the user can specify additional grammar of graphics plotting tools (from the \texttt{ggplot2} package) to tailor the output of the \texttt{plotAncDes()} function, which we also show below.
+
+For example, we will now change the color of the center variety label \texttt{vColor} to be highlighted in blue. Also, we will add a horizontal axis label called ``Generation index", using the \texttt{ggplot2} syntax. Note that this time we do not specify the generational count for ancestors and descendants, and so the default value of three generations is applied to both cases. Remember, to determine such default values, as well as all function parameters, simply run the help command on the function of interest.
+
+<<label=plotAncDes2, include=FALSE, fig=TRUE>>=
+plotAncDes("Tokyo", sbGeneal, vColor = "blue") + ggplot2::labs(
+  x="Generation index",y="")
+@
+
+\setkeys{Gin}{width=6in, height=6in}
+\begin{figure} 
+  \begin{center} 
+<<label=plotAncDes2-1,echo=FALSE, fig=TRUE>>=
+<<plotAncDes2>>
+@ 
+  \end{center} 
+\caption{Ancestors and descendants of the ``Tokyo" variety, constrained on the horizontal axis by generational separation from ``Tokyo".}
+\label{fig:plotAncDes2-1}
+\end{figure}
+
+We verify immediately from Figure~\ref{fig:plotAncDes2-1} that the ``Tokyo" variety does not have any ancestors in this dataset, an observation consistent with what we discovered earlier. We also see the ``Tokyo" variety only has two children, but has many more grandchildren, and great-grand children.
+
+\subsection{Plotting the shortest path between two vertices}
+
+As this data set deals with soybean lineages, it may be useful for agronomists to track how two varieties are related to each other via parent-child relationships. Then, any dramatic changes in protein yield, SNP varieties, and other measures of interest between the two varieties can be tracked across their genetic timeline, and pinpointed to certain paths within their historical lineage.
+
+The \pkg{ggenealogy} software allows users to select two varieties of interest, and determine the shortest pathway of parent-child relationships between them, using the \texttt{getPath()} function. This will return a list path object that contains the variety names and their years in the path. The returned path object can then be plotted using the \texttt{plotPath()} function, which we now demonstrate.
+
+The \texttt{getPath()} function determines the shortest path between the two inputted vertices, and takes into account whether or not the graph is directed with the parameter \texttt{isDirected}, which defaults to false. The \texttt{getPath()} function will check both directions and return the path if it exists:
+
+<<>>=
+getPath("Brim", "Bedford", sbIG, sbGeneal, "devYear", isDirected = FALSE)
+@
+
+We see that there is a path between ``Brim" and ``Bedford" varieties, with \Sexpr{getDegree("Brim","Bedford",ig,sbGeneal)-1} varieties separating them. We are not considering direction, however, because the \texttt{ig} object is undirected. However, to demonstrate the importance of direction, we will recompute the path where the direction matters. We first produce a directed \texttt{igraph} object \texttt{dirIG}, and then try to determine the path between the same two vertices, ``Brim" and ``Bedford".
+
+<<eval=FALSE>>=
+dirIG = dfToIG(sbGeneal, isDirected = TRUE)
+getPath("Brim", "Bedford", dirIG, sbGeneal, "devYear", isDirected = TRUE)
+@
+
+Now that we are considering the direction, we are only considering paths where each edge represents a parent-child relationship in the same direction as the one before it. We now would receive an error warning that we cannot compute a directed path on an undirected graph. We next try to reverse the input order of the vertices, as shown below, but we will receive the same error message:
+
+<<eval=FALSE>>=
+getPath("Bedford", "Brim", dirIG, sbGeneal, "devYear", isDirected=TRUE)
+@
+
+We can derive from the errors returned in the last two commands that the varieties ``Brim" and ``Bedford" are not connected by a linear sequence of parent-child relationships. Rather, the path between them branches at some point, involving siblings and/or cousins.
+
+Hence, unless you are working with a dataset that must be analyzed as a directed graph, it is best to use the \texttt{getPath()} function with the default third parameter indicating lack of direction, and to use an \texttt{igraph} object without direction, such as our original \texttt{ig} object. We do just that, and save the path between these two varieties to a variable called \texttt{path}:
+
+<<>>=
+pathBB = getPath("Bedford","Brim", ig, sbGeneal, "devYear", isDirected=FALSE)
+@
+
+Now that we have a non-empty \texttt{pathBB} object that consists of two lists (for variety names and years), we can plot the relationship between the two using the \texttt{plotPath()} function.
+
+<<label=plotPath, include=FALSE, fig=TRUE>>=
+plotPath(pathBB, sbGeneal, "devYear")
+@
+
+\setkeys{Gin}{width=5in, height=5in}
+\begin{figure}[b!]
+  \begin{center}
+<<label=plotPath-1,echo=FALSE, fig=TRUE>>=
+<<plotPath>>
+@
+  \end{center}
+\caption{The shortest path between varieties ``Brim" and ``Bedford" is not strictly composed of unidirectional parent-child relationships, but instead, includes cousin-like relationships.}
+\label{fig:plotPath-1}
+\end{figure}
+
+Notice that the horizontal label by default uses the general label of the input column name (in this case ``devYear"). We can tailor this plot by appending basic \texttt{ggplot} syntax. For instance, if we wish to change the horizontal label to the more specific value of ``Year", then we can do as follows:
+
+<<label=plotPath1, include=FALSE, fig=TRUE>>=
+plotPath(pathBB, sbGeneal, "devYear") + ggplot2::xlab("Year")
+@
+
+\setkeys{Gin}{width=5in, height=5in}
+\begin{figure}[b!]
+  \begin{center}
+<<label=plotPath1-1,echo=FALSE, fig=TRUE>>=
+<<plotPath1>>
+@
+  \end{center}
+\caption{The shortest path between varieties ``Brim" and ``Bedford" is not strictly composed of unidirectional parent-child relationships, but instead, includes cousin-like relationships. We changed the horizontal axis label from Figure \ref{fig:plotPath1-1} to now be ``Year".}
+\label{fig:plotPath1-1}
+\end{figure}
+
+This produces a neat visual (see Figure~\ref{fig:plotPath1-1}) that informs us of all the varieties involved in the shortest path between ``Brim" and ``Bedford". In this plot, the years of all varieties involved in the path are indicated on the horizontal axis, while the vertical axis has no meaning other than to simply to display the labels evenly spaced vertically. 
+
+Although a call to the \pkg{ggenealogy} function \texttt{getVariable()} indicates that ``Bedford" was developed in \Sexpr{getVariable("Bedford",sbGeneal,"devYear")} and ``Brim" in \Sexpr{getVariable("Brim",sbGeneal,"devYear")}, we quickly determine from the plot that ``Brim" is not a parent, grandparent, nor any great-grandparent of ``Bedford". Instead, we see that these two varieties are not related through a unidirectional parent-child lineage, but have a cousin-like relationship. The oldest common ancestor between ``Bedford" and ``Brim" is the variety ``Essex", which was developed in \Sexpr{getVariable("Essex",sbGeneal,"devYear")}.
+
+However, there are other cases of pairs of varieties that are connected by a linear, unidirectional combination of parent-child relationships, as we see below:
+
+<<label=plotPath2, include=FALSE, fig=TRUE>>=
+pathNT = getPath("Narow", "Tokyo", ig, sbGeneal, "devYear", isDirected=FALSE)
+plotPath(pathNT, sbGeneal, "devYear")
+@
+
+\setkeys{Gin}{width=5in, height=5in}
+\begin{figure}[b!]
+  \begin{center}
+<<label=plotPath2-1,echo=FALSE, fig=TRUE>>=
+<<plotPath2>>
+@
+  \end{center}
+\caption{The shortest path between varieties ``Narow" and ``Tokyo" is strictly composed of a unidirectional sequence of parent-child relationships.}
+\label{fig:plotPath2-1}
+\end{figure}
+
+From the output, shown in Figure~\ref{fig:plotPath2-1}, we see that the variety ``Tokyo" is an ancestor of ``Narow" via four linear parent-child relationships.
+
+\subsection{Plotting shortest paths superimposed on full genealogical structure}
+
+Now that we can create and plot path objects, we may wish to know how those paths are positioned in comparison to the genealogical lineage of the entire data structure. For instance, of the documented soybean cultivar lineage varieties, where does the shortest path between two varieties of interest exist? Are these two varieties comparatively older compared to the overall data structure? Are they newer? Or, do they span the entire structure, and represent two extreme ends of documented time points?
+
+There is a function available in the \pkg{ggenealogy} package, \texttt{plotPathOnAll()}, that allows users to quickly visualize their path of interest superimposed over all varieties and edges present in the whole data structure. Here we will produce a plot of the previously-determined shortest path between varieties ``Tokyo" and ``Narow" across the entire dataset (in this particular dataset, some edges are not plotted, as they contain NA values):
+
+<<label=plotPathOnAll1,include=FALSE, fig=TRUE, warning=FALSE>>=
+plotPathOnAll(pathNT, sbGeneal, ig, "devYear", bin = 3)
+@
+
+\setkeys{Gin}{width=5in, height=5in}
+\begin{figure}[t!]
+  % \begin{center}
+<<label=plotPathOnAll1-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<plotPathOnAll1>>
+@
+  % \end{center}
+\caption{Plot of the shortest path, highlighted in green, between the varieties ``Tokyo" and ``Narow" superimposed on the full genealogical structure, using a \texttt{bin} size of 3.}
+\label{fig:plotPathOnAll1-1}
+\end{figure}
+
+The resulting plot is shown in Figure~\ref{fig:plotPathOnAll1-1}.
+
+While the first three explicit parameters to the function \texttt{plotPathOnAll()} have been introduced earlier, the fourth parameter (\texttt{bin}) requires some explanation. The motivation of the \texttt{plotPathOnAll()} function is to write variety text labels on a plot, with the center of each variety label constricted on the horizontal axis to its developmental year. As is the case for the plots before, the vertical axis has no specific meaning. Unfortunately, for large datasets, this motivation can be a difficult task because the text labels of the varieties can overlap if they are assigned a similar y coordinate, have a similar year (x coordinate), and have labels with large numbers of characters (width of x coordinate).
+
+For each variety, the x coordinate (year) and width of the x coordinate (text label width) cannot be altered, as they provide useful information. However, the vertical coordinate is arbitrary. Hence, in an attempt to mitigate text overlap, the \texttt{plotPathOnAll()} function does not randomly assign the vertical coordinate. Instead, it allows users to specify the number of bins (\texttt{bin}), which partially controls the vertical positions.
+
+If the user determines to produce a plot using three bins, as in the example code above, then the varieties are all grouped into three bins based on their years of development. In other words, there will be bin 1 (the ``oldest bin") which includes the one-third of all varieties with the oldest developmental years, bin 2 (the ``middle bin"), and bin 3 (the ``youngest bin").
+
+Then, in order to decrease text overlap, consecutively increasing vertical positions are alternatively assigned to the three bins (For example: bin 1, then bin 2, then bin 3, etc.) repeatedly until all varieties are accounted. This algorithm means that there are at least two vertical positions separating any pair of varieties from the same bin.
+
+In this plot, edges not on the path of interest are thin and gray, whereas edges on the path of interest are bolded and green, by default. Also, variety labels in the path of interest are boldfaced, by default.
+
+Using the plot, we immediately recognize that the path spans most of the years in the full data structure: ``Tokyo" appears to be the oldest variety  in the data, and ``Narow" appears to be among the youngest. We note that many varieties have development years between 1950 and 1970.
+
+However, this plot has significant empty spaces between the distinct bins, and almost all text labels are overlapping, causing decreased readability. To force variety text labels into these spaces, the user may consider choosing a larger number of bins. Hence, we next examine a \texttt{bin} size of six:
+
+<<label=plotPathOnAll2, include=FALSE, warning=FALSE, fig=TRUE>>=
+plotPathOnAll(pathNT, sbGeneal, ig, "devYear", bin = 6) + ggplot2::xlab("Year")
+@
+
+\setkeys{Gin}{width=6in, height=6in}
+\begin{figure}[b!]
+% \begin{center} 
+<<label=plotPathOnAll2-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<plotPathOnAll2>>
+@ 
+% \end{center} 
+\caption{Plot of the shortest path, highlighted in green, between the varieties ``Tokyo" and ``Narow" superimposed on the full genealogical structure, using a \texttt{bin} size of 6.}
+\label{fig:plotPathOnAll2-1}
+\end{figure}
+
+Figure~\ref{fig:plotPathOnAll2-1} shows that the \texttt{bin} size of six successfully mitigated text overlap compared to Figure~\ref{fig:plotPathOnAll1-1}, which had a \texttt{bin} size of three. Most of the remaining textual overlap is confined to the range of years (1950-1970) of which the most varieties had development years.
+
+Notice from Figure~\ref{fig:plotPathOnAll1-1}, that the default horizontal axis label for the \texttt{plotPath()} method has a value of ``Date". Given that the ``Date" variable in this example dataset is on the timescale of years, we wanted to change the default value of the horizontal axis label to ``Year". We did this in the code above for Figure~\ref{fig:plotPathOnAll2-1} by appending appended \texttt{ggplot2} syntax.
+
+\subsection{Plotting pairwise distance matrices between a set of vertices}
+
+It may also be of interest to generate matrices where the cell colors indicate the magnitude of a variable (such as the degree of the shortest path) between all pairwise combinations of inputted varieties. The package \pkg{ggenealogy} also provides a function \texttt{plotDegMatrix()} for that purpose.
+
+Here, we plot a distance matrix for a set of 8 varieties, defining both the x- and y- axes titles as ``Soybean label", and the legend label as ``Degree". Syntax from the \texttt{ggplot2} package can be appended to tailor the output of the \texttt{plotDegMatrix()} function. In this case, we denote pairs with small degrees to be colored white, and pairs with large degrees to be colored dark green, using \texttt{scale\_fill\_continuous}:
+
+<<label=plotDegMatrix1, include=FALSE, warning=FALSE, fig=TRUE>>=
+varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+p = plotDegMatrix(varieties, ig, sbGeneal)
+p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen") +
+  ggplot2::theme(legend.title = ggplot2::element_text(size = 15), legend.text =
+  ggplot2::element_text(size = 15)) + ggplot2::labs(x = "Variety", y = "Variety")
+@
+
+plotDegMatrix(varieties, sbIG, sbGeneal)
+
+\vspace{-20mm}
+
+\setkeys{Gin}{width=4.6in, height=4.6in}
+\begin{figure}[b!]
+  \begin{center} 
+<<label=plotDegMatrix1-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<plotDegMatrix1>>
+@ 
+\end{center}
+\captionsetup{skip=-15pt}
+\caption{Colored matrix plot showing the degrees of the shortest paths between all pair combinations from a set of eight varieties of interest.}
+\label{fig:plotDegMatrix1-1}
+\end{figure}
+
+\newpage
+
+Figure~\ref{fig:plotDegMatrix1-1} shows that the degree of the shortest path between varieties ``Bedford" and ``Zane" seems to be the largest in the dataset, which should be around \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)}. We can verify this simply with:
+
+<<warning=FALSE>>=
+getDegree("Bedford", "Zane", ig, sbGeneal)
+@
+
+Indeed, the degree of the shortest path between ``Bedford" and ``Zane" is \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)}. The distance matrix plot provides us additional information: The degree of \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)} may be a comparatively large degree within the given soybean dataset \texttt{sbGeneal}, seeing that the degrees of the shortest paths for the other 27 pairwise combinations of the eight varieties that we explored here are less than \Sexpr{getDegree("Bedford", "Zane", ig, sbGeneal)}.
+
+In a similar function \texttt{plotYearMatrix()}, the difference in years between all pairwise combinations of vertices can be constructed and viewed:
+
+<<label=plotYearMatrix1, include=FALSE, warning=FALSE, fig=TRUE>>=
+varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
+plotDegMatrix(varieties, ig, sbGeneal)
+@
+
+\begin{figure}[htb]
+\centering
+  %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=plotYearMatrix1-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<plotYearMatrix1>>
+@ 
+%\end{adjustbox}
+\caption{Colored matrix plot showing the year differences between all pair combinations from a set of eight varieties of interest.}
+\label{fig:plotYearMatrix1-1}
+\end{figure}
+
+Here, we did not change any defaults. As such, the resulting plot in Figure~\ref{fig:plotYearMatrix1-1} contains the default values of ``Variety" for the x-and y-axis labels, and ``Difference in dates" for the legend label. It also uses the default colors of dark blue for small year difference and light blue for large year difference.
+
+Running this function on this particular set of eight vertices suggests that most combinations of varieties are only one or two decades apart in year introduction, with the exception of the ``Tokyo" variety, which appears to be separated from each of the other seven varieties by about six decades. This is not surprising, because we have seen throughout the tutorial that the ``Tokyo" variety is the oldest variety in the dataset.
+
+\section{Interactive plotting methods of genealogical data}
+
+There is a second example dataset included in the \pkg{ggenealogy} package of the academic genealogy of statisticians. More information about this example dataset can be found in the \code{R/data-statGeneal.R} file. We can load the example dataset of academic genealogy of statisticians (\code{statGeneal}) and examine its structure. 
+
+<<>>=
+data("statGeneal")
+dim(statGeneal)
+colnames(statGeneal)
+@
+
+As this example academic genealogy dataset is much larger than the example soybean dataset, we can begin by creating a plot of ancestors and descendants. The ability to plot ancestors and descendants by generation was demonstrated using the plant breeding genealogy in Figure \ref{fig:plotAncDes1-1} and \ref{fig:plotAncDes2-1}. As we believe this is the most novel plotting tool in the \pkg{ggenealogy} package, we will test it again here using the academic genealogy.
+
+We need to choose a central individual of interest in order to create this plot. Perhaps we can use the academic statistician in the dataset that has the largest number of ``descendants". To determine the name of this individual, below we use the \pkg{ggenealogy} function \code{getNode()} to create a vector \code{indVec} that contains the names of all individuals in the dataset. We then use the \pkg{dplyr} package to apply the \pkg{ggenealogy} function \code{getDescendants()} on each individual in the \code{indVec} vector. We set the parameter \code{gen} to a conservatively large value of 100 as this dataset is unlikely to have any individuals with more than 100 generations of ``descendants".
+
+After that, we can generate a table to examine all values of ``descendant" counts in the dataset, along with the number of individuals who have each of those values of ``descendant" counts. Of the 8165 individuals in this dataset, 6252 of them have zero ``descendants", 322 of them have one ``descendant", and 145 of them have two ``descendants". There are only 17 individuals who have more than 30 ``descendants", and there is one individual who has the largest value of 159 ``descendants". We determine that this individual is the prominent British statistician Sir David Cox, who is known for the Box-Cox transformation and Cox processes, as well as for mentoring many younger researchers who later became notable statisticians themselves.
+
+<<eval=TRUE>>=
+indVec <- getNodes(statGeneal)
+indVec <- indVec[which(indVec != "", )]
+dFunc <- function(var) nrow(getDescendants(var, statGeneal, gen = 100))
+numDesc <- sapply(indVec, dFunc)
+table(numDesc)
+@
+
+<<eval=TRUE>>=
+which(numDesc == 159)
+@
+
+We can now visualize how these 159 ``descendants" are related to Sir David Cox by calling the \code{plotAncDes()} function of \pkg{ggenealogy}. As such, we create Figure \ref{fig:dCox-1} using the code below.
+
+<<eval=FALSE, fig=TRUE>>=
+plotAncDes("David Cox", statGeneal, mAnc = 6, mDes = 6, vCol = "blue")
+@
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 159mm, height = 220mm]{./dCox.png}
+    \caption{The 159 academic statistician ``descendants" of Sir David Cox.}
+    \label{fig:dCox-1}
+\end{figure}
+
+We see from Figure \ref{fig:dCox-1} that Sir David Cox had 42 ``children", many of them becoming notable statisticians themselves, such as Basilio Pereira, Valerie Isham, Gauss Cordeiro, Peter McCullagh, and Henry Wynn. Of his ``children", the one who produced the most ``children" of their own was Peter Bloomfield, who has 26 ``children" and 49 ``descendants". In total, Sir David Cox had five generations of academic statistics mentees in this dataset.
+
+<<>>=
+length(getChild("Peter Bloomfield", statGeneal))
+nrow(getDescendants("Peter Bloomfield", statGeneal, gen = 100))
+@
+
+At this point, it would be insightful to examine a more detailed view of one of the longest strings of ``parent-child" relationships between Sir David Cox and one of the two individuals who are his fifth generation ``descendants". We do so with the code below, choosing his fifth generation ``descendant" to be Petra Buzkova. We set the \code{fontFace} variable of the \code{plotPath()} to a value of 4, indicating we wish to boldface and italicize the two varieties of interest.
+
+<<label=pathCB, include=FALSE, fig=TRUE>>=
+statIG <- dfToIG(statGeneal)
+pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal, "gradYear", isDirected = FALSE)
+plotPath(pathCB, statGeneal, "gradYear", fontFace = 4) + ggplot2::theme(axis.text = 
+  ggplot2::element_text(size = 10), axis.title = ggplot2::element_text(size = 10)) +   ggplot2::scale_x_continuous(expand = c(.1, .2))
+@
+
+\begin{figure}
+%\centering
+  %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=pathCB-1,echo=FALSE, fig=TRUE>>=
+<<pathCB>>
+@ 
+  %\end{adjustbox}
+\caption{The shortest path between Sir David Cox and one of his fifth generation ``descendants", Petra Buzkova.}
+\label{fig:pathCB-1}
+\end{figure}
+
+This code results in Figure \ref{fig:pathCB-1}. We see that the shortest path between Sir David Cox and Petra Buzkova is strictly composed of five unidirectional ``parent-child" relationships that span about 55 years. We see that the time difference between when an advisor and student earned their degrees is not consistent across this path: The three statisticians who earned their degrees earliest in this path span more than 30 years in degree acquisition, whereas the three statisticians who earned their degrees later in this path only span less than ten years in degree acquisition.
+
+We also notice in Figure \ref{fig:pathCB-1} that Sir David Cox received his statistics degree in about 1950, and Petra Buzkova received her statistics degree in about 2005. This genealogy only contains historical information about obtained degrees, and does not project into the future. Hence, we can be assured that Petra Buzkova is one of the younger individuals in the dataset, at least in the sense that the youngest individual could only have received his or her degree ten years after Petra Buzkova. However, we cannot be assured that Sir David Cox is one of the oldest individuals in the dataset. As such, it would be informative to superimpose this path of interest onto the entire dataset, using the \code{plotPathOnAll()} function of the \pkg{ggenealogy} package, as we did for the soybean genealogy in Figures \ref{fig:plotPathOnAll1-1} and \ref{fig:plotPathOnAll2-1}.
+
+We can achieve this using the below code. After trial and error, we use a \code{bin} of size 200, and append \pkg{ggplot2} syntax to define suitable x-axis limits. The output of this process is illustrated in Figure \ref{fig:plotCBText-1}.
+
+<<label=plotCBText, include=FALSE, warning=FALSE, fig=TRUE>>=
+plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200) +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+@
+
+\begin{figure}
+%\centering
+  %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=plotCBText-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<plotCBText>>
+@ 
+  %\end{adjustbox}
+\caption{The shortest path between Sir David Cox and Petra Buzkova, superimposed over the data structure, using a bin size of 200.}
+\label{fig:plotCBText-1}
+\end{figure}
+
+We see from the resulting Figure \ref{fig:plotCBText-1} that almost all text labels for individuals who received their graduate-level statistics degrees between 1950 and 2015 are undecipherable. We also see that the year Sir David Cox acquired his statistics degree is somewhere in the later half of the variable date for this dataset, as the oldest dates for acquisition of statistics degrees in this dataset occur around 1860. However, the number of individuals who are documented as receiving their statistics degrees between 1860 and 1950 are few enough so that their text labels are somewhat readable.
+
+The text labels are so numerous in Figure \ref{fig:plotCBText-1} that simply trying different values for the input parameter \code{bin} will not solve the text overlapping problem. Instead, one approach we can try is to reconstruct the plot using the same \pkg{ggenealogy} function \code{plotPathOnAll()}, only now specifying variables to render the size (2.5) and color (default of black) of the text for nodes that are on the path of interest to be more noticeable than the size (0.5) and color (dark gray) of the text for nodes that are not on the path of interest. Moreover, we can make the edges that are not on the path of interest to be represented in a less noticeable color (light gray) than the edges that are on the path of interest (default of dark green). The variable names and options for these aesthetics is further detailed in the help manual of the function. We provide one example code that alters the defaults of the text color and sizes of nodes and edges below, which results in Figure \ref{fig:plotCBNoText-1}.
+
+<<label=plotCBNoText, include=FALSE, warning=FALSE, fig=TRUE>>=
+plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
+   pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray") +
+   ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
+   ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
+@
+
+\begin{figure}
+\centering
+  %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
+<<label=plotCBNoText-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<plotCBNoText>>
+@ 
+  %\end{adjustbox}
+\caption{The shortest path between Sir David Cox and Petra Buzkova, superimposed over the data structure, using a bin size of 200. Individuals on the shortest path are labeled in large and black text and connected by dark green edges; all other individuals are labeled in small and gray text and connected by light gray edges.}
+\label{fig:plotCBNoText-1}
+\end{figure}
+
+In Figure \ref{fig:plotCBNoText-1}, we can now see each individual on the path of interest, and how their values for the variable date are overlaid on the entire genealogy structure. We can also more clearly see that, even though only ten years span between the youngest individual in the genealogy and Petra Buzkova, there are many individuals in that last decade. Indeed, the decade from 2005 to 2015 appears to be the densest in this dataset in terms of acquisition of statistics degrees.
+
+We could still improve upon Figure \ref{fig:plotCBNoText-1}. Even though we may be primarily interested in understanding how the path of interest is overlaid across the entire genealogical structure, we could, upon viewing the entire structure, also develop an interest in nodes that are not on the path of interest but are revealed to stand out among the rest of the genealogical structure. For instance, in Figure \ref{fig:plotCBNoText-1}, it may be of interest for us to determine the names of the few individuals who obtained their statistics degrees before 1900. Fortunately, within the \code{plotPathOnAll()} function, there is a variable \code{animate} that we can set to a value of TRUE to create an interactive version of the figure that allows us to hover over individual illegible labels and immediately receive their labels in a readable format. This interactive functionality comes from methods in the \pkg{plotly} package. The code below would create an animated version of Figure \ref{fig:plotCBNoText-1}.
+
+<<label=plotAnimate, include=FALSE, eval=FALSE, warning=FALSE, fig=TRUE>>=
+plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
+   pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray", animate =
+   TRUE)
+@
+
+\section{Branch parsing and calculations}
+
+It may be helpful for users to search through descendant branches of a certain individual to compare and contrast how a variable of interest changes along those branches. For instance, which descending branches of a particular soybean variety are producing the highest yields? Which branches are developing new varieties in recent years? Which descending branches of a particular academic statistician have large proportions of students graduating from certain universities or countries? Which branches are graduating new students in recent years? Which branches have the highest proportion of thesis titles containing a word of interest?
+
+Answering these questions in a straightforward manner requires more than basic data frame manipulation: It also requires methods that can easily traverse parent-child relationships. The \pkg{ggenealogy} package has two methods that can answer these questions using branch traversal. The \code{getBranchQuant()} function can be used to track a quantitative variable across branches and the \code{getBranchQual()} method can be used to track a qualitative variable across branches.
+
+\subsection{Quantitative variable parsing and calculations}
+
+We can demonstrate the \code{getBranchQuant()} function by examining the quantitative variable ``yield" across the descendant branches of the soybean variety \code{A.K.} To understand more about the output of this function, please consult the \pkg{ggenealogy} package documentation. In the code below, we remove the output column ``DesNames" because it verbosely lists all descendant names, which is not necessary for this demonstration.
+
+<<>>=
+AKBranchYield <- getBranchQuant("A.K.", sbGeneal, "yield", 15)
+dplyr::select(AKBranchYield, -DesNames)
+@
+
+We see from the output that \code{A.K.} has two children named \code{A.K. (Harrow)} and \code{Illini}. Descendants from the \code{A.K. (Harrow)} branch have a higher mean yield than the \code{Illini} branch (2932.154 versus 2856.667). However, we should recognize that even though the branches contain a large number of descendants (54 and 131), most of these descendants did not come with a yield value (41 and 125). As a result, the mean values were calculated from a small proportion of the descendants.
+
+As another example, we can examine the mean graduation year for the ``descendant" branches of the academic statistician \code{David Cox}. We know from earlier that \code{David Cox} had 42 ``children", so as expected, the \code{CoxBranchYear} object below contains 42 rows. However, only 8 of these rows have any ``descendants" of their own. As a result, only the first 8 rows of the \code{CoxBranchYear} object contain branch information.
+
+<<>>=
+CoxBranchYear <- getBranchQuant("David Cox", statGeneal, "gradYear", 15)
+head(dplyr::select(CoxBranchYear, -DesNames), 10)
+@
+
+In this case, we see that of the 8 ``children" of \code{David Cox} who had ``children" of their own, \code{Mark Berman} had the ``descendants" (n=5) who have on average graduated the most recently (2007.200), whereas \code{Peter Bloomfield} has the ``descendants" (n=49) who on average have graduated the least recently (1999.918). We see that, for all branches, there are no ``descendants" who contain a NA value for graduation year.
+
+\subsection{Qualitative variable parsing and calculations}
+
+The \code{getBranchQual()} function requires similar inputs as the \code{getBranchQuant()} function above, except that it also requires an input parameter called \code{rExpr}. The user must initialize this input parameter to a regular expression that can be applied to the column containing the qualitative variable of interest. The regular expression syntax must work on a data frame column of type character. It must be saved as a double quotation string, and any quotation marks within it must be single quotations. The term \code{geneal\$colName} must be used in the regular expression.
+
+We can demonstrate the \code{getBranchQual()} function by examining the qualitative variable ``thesis" across the ``descendant" branches of the academic statistician \code{David Cox}. Since one of the primary research areas for \code{David Cox} was stochastic processes, we can determine if any descendant branches of his ``children" contained thesis titles that included the word ``stochastic".
+
+<<>>=
+v1 = "David Cox"; geneal = statGeneal; colName = "thesis"; gen = 15
+rExpr = "grepl('(?i)Stochastic', geneal$colName)"
+CoxBranchStochastic <- getBranchQual(v1, geneal, colName, rExpr, gen)
+head(dplyr::select(CoxBranchStochastic, -DesNames))
+@
+
+We see that only two ``children" of \code{David Cox} had any ``descendants" with thesis titles containing the word ``Stochastic" (4 out of 49 ``descendants" of \code{Peter Bloomfield} and 1 out of 17 ``descendants" of \code{Basilio Periera}). We see again that none of the ``descendants" from either branches contained values that were NA for the variable ``thesis".
+
+In many string parsing applications, the choice of the regular expression can be tricky. This is true when the string variable we are parsing is thesis titles. For instance, notice that in our regular expression, we accounted for all instances of the substring ``Stochastic". Hence, words that contain "Stochastic" (such as ``Stochastics" and ``Stochastically") will also be returned. In addition, we defined our regular expression to return matches whether the first letter was upper or lower case. When initializing the \code{rExpr} parameter, users would need to consider what nuances of their search criteria they would like to define as matches.
+
+We will demonstrate one more example of the \code{getBranchQual()} function by searching the qualitative variable ``school" across the ``descendant" branches of the academic statistician \code{David Cox}. The Mathematics Genealogy Project coding system for the ``school" variable was non-ambiguous, and so we do not have to worry about all the various ways the same school could be coded in the dataset. As a result, we no longer have to search for various substrings; we can simply use a regular expression that equates to one value.
+
+It may be interesting to examine the school that is represented the most among all descendants of \code{David Cox}. To determine what school this is, we use the \code{getDescendants()} function to create a data frame called \code{desDC} that contains the names of all 159 ``descendants" of \code{David Cox}. Then, we use the base R function \code{match()} to match the school names from the original genealogy dataset to each of the 159 ``descendants" in the \code{desDC} data frame. After that, we use the base R functions \code{sort()} and \code{table()} to examine the five schools that were represented the most throughout the 159 ``descendants".
+
+<<>>=
+desDC <- getDescendants("David Cox", statGeneal, 15)
+tableDC <- table(statGeneal[match(desDC$label, statGeneal$child), ]$school)
+tail(sort(tableDC), 5)
+@
+
+We see from this table that the most common school of the 159 ``descendants" of \code{David Cox} was the University of London with a count of 35. We can now determine which of the branches from the 42 ``children" of \code{David Cox} have the largest proportion of ``descendants" graduating from the University of London.
+
+<<>>=
+colName = "school"
+rExpr = "geneal$colName=='University of London'"
+DCBranchUL <- getBranchQual(v1, geneal, colName, rExpr, gen)
+head(dplyr::select(DCBranchUL, -DesNames))
+@
+
+We see that \code{Peter McCullagh} is the only ``child" of \code{David Cox} that has a ``descendant" branch with one student graduating from the University of London; the rest of the 41 children of \code{David Cox} have ``descendant" branches with zero students graduating from the University of London. This must mean the other 34 ``descendants" of \code{David Cox} that graduated from the University of London were direct ``children" of \code{David Cox}. We can verify this below:
+
+<<>>=
+DCChild <- statGeneal[match(getChild("David Cox", statGeneal), statGeneal$child), ]
+sum(DCChild$school == "University of London")
+@
+
+The examples above demonstrate that users can quickly and flexibly parse descendant branches. The swiftness comes from \pkg{ggenealogy} functions that allow for fast parent-child traversals, such as \code{getChild()}, \code{getDescendants()}, \code{getBranchQuant()}, and \code{getBranchQual()}. The flexibility comes from data frame manipulation functions in base R that can be used in conjunction with the parent-child traversal methods.
+
+\section{Bug reports and feature requests}
+
+Please post questions, feature requests, and bug reports under the Issues tab on GitHub at \url{https://github.com/lindsayrutter/ggenealogy}.
+
+\end{document}

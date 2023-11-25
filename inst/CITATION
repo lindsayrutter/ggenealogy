@@ -1,0 +1,23 @@
+bibentry(bibtype = "Article",
+  title        = "{ggenealogy}: An {R} Package for Visualizing Genealogical Data",
+  author       = c(person(given = "Lindsay",
+                          family = "Rutter",
+                          email = "lindsayannerutter@gmail.com"),
+                   person(given = "Susan",
+                          family = "VanderPlas",
+                          email = "srvanderplas@gmail.com"),
+                   person(given = "Dianne",
+                          family = "Cook",
+                          email = "dicook@monash.edu"),
+                   person(given = c("Michelle", "A."),
+                          family = "Graham")),
+  journal      = "Journal of Statistical Software",
+  year         = "2019",
+  volume       = "89",
+  number       = "13",
+  pages        = "1--31",
+  doi          = "10.18637/jss.v089.i13",
+
+  header       = "To cite ggenealogy in publications use:"
+)
+
