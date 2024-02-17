@@ -22,16 +22,17 @@
 \usepackage{adjustbox}
 \numberwithin{equation}{section} % Equation numbers relative to sections
 
-% ---------------------------------------------------------------------------------------------------------------------------------------
-
 
 \newcommand{\code}[1]{{\texttt{#1}}}
 \newcommand{\pkg}[1]{{\texttt{#1}}}
 \newcommand{\class}[1]{{\textit{#1}}}
 \newcommand{\R}{{\normalfont\textsf{R }}{}}
-\SweaveOpts{pdf.encoding = ISOLatin2.enc}
+\SweaveOpts{concordance=TRUE}
+\SweaveOpts{grdevice=my.Swd,pdf=FALSE}
+
 
 \begin{document}
+
 
 <<include=FALSE>>=
 library(knitr)
@@ -47,14 +48,13 @@ options(SweaveHooks = list(fig = function() par(mar=c(3,3,1,0.5),mgp = c(2,1,0))
 @
 
 
-% <<echo=false>>=
-%\VignetteIndexEntry{Vignette: Grammar of graphics of genealogy (ggenealogy)}
-%\SweaveOpts{prefix.string=fig,include=F,keep.source=T,eps=FALSE}
-%\SweaveOpts{grdevice=my.Swd,pdf=FALSE}
-% options(continue="  ")
-% @
-% %@% TO ELIMINATE THE "+" IN CONSECUTIVE SCRIPT LINES
-
+<<results=hide,echo=FALSE>>=
+my.Swd <- function(name, width, height, ...)
+ grDevices::cairo_pdf(
+  filename = paste(name, "pdf", sep = "."),
+  width = width, height = height
+ )
+@
 
 \title{Vignette: Grammar of graphics of genealogy (ggenealogy)}
 \author{Lindsay Rutter, Susan Vanderplas, Di Cook}
