@@ -28,8 +28,6 @@
 \newcommand{\class}[1]{{\textit{#1}}}
 \newcommand{\R}{{\normalfont\textsf{R }}{}}
 \SweaveOpts{concordance=TRUE}
-\SweaveOpts{grdevice=my.Swd,pdf=FALSE}
-
 
 \begin{document}
 
@@ -55,6 +53,7 @@ my.Swd <- function(name, width, height, ...)
   width = width, height = height
  )
 @
+\SweaveOpts{grdevice=my.Swd,pdf=FALSE}
 
 \title{Vignette: Grammar of graphics of genealogy (ggenealogy)}
 \author{Lindsay Rutter, Susan Vanderplas, Di Cook}
