@@ -1,8 +1,5 @@
 \documentclass{article}
 
-\usepackage{Sweave}
-
-
 \usepackage[]{media9}
 \usepackage[T1]{fontenc}
 
@@ -27,17 +24,10 @@
 \newcommand{\pkg}[1]{{\texttt{#1}}}
 \newcommand{\class}[1]{{\textit{#1}}}
 \newcommand{\R}{{\normalfont\textsf{R }}{}}
-\SweaveOpts{concordance=TRUE}
+
+
 
 \begin{document}
-
-
-<<include=FALSE>>=
-library(knitr)
-opts_chunk$set(
-concordance=TRUE
-)
-@
 
 
 <<label=Roptions,echo=FALSE>>=
@@ -46,14 +36,21 @@ options(SweaveHooks = list(fig = function() par(mar=c(3,3,1,0.5),mgp = c(2,1,0))
 @
 
 
-<<results=hide,echo=FALSE>>=
+<<results='hide',echo=FALSE>>=
 my.Swd <- function(name, width, height, ...)
  grDevices::cairo_pdf(
   filename = paste(name, "pdf", sep = "."),
   width = width, height = height
  )
 @
-\SweaveOpts{grdevice=my.Swd,pdf=FALSE}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE,
+grdevice=my.Swd
+)
+@
 
 \title{Vignette: Grammar of graphics of genealogy (ggenealogy)}
 \author{Lindsay Rutter, Susan Vanderplas, Di Cook}
@@ -62,10 +59,6 @@ my.Swd <- function(name, width, height, ...)
 \tableofcontents
 \setcounter{footnote}{1} \footnotetext{This \LaTeX\ vignette document is created using the \R function \code{Sweave} on the \R package \pkg{ggenealogy}. It is automatically downloaded with the package and can be accessed with the \R command \code{vignette("ggenealogy")}.}  \newpage
 \setlength{\parskip}{10pt} % Inter-paragraph spacing
-
-<<echo=FALSE>>=
-rm(list=ls())
-@ 
 
 \section{Citation}
 
@@ -292,14 +285,14 @@ One visualization tool, \texttt{plotAncDes()}, allows the user to view the ances
 
 As such, this plotting command does not provide visual information about specific years associated with each related variety (as is done in some of the visualization tools introduced later), but it does group all varieties from each generation group onto the same position of the horizontal axis. Here, we specify that we want to plot 5 ancestor generations and 4 descendant generations of the variety ``Lee":
 
-<<label=plotAncDes1,include=FALSE, fig=TRUE>>=
+<<label=plotAncDes1,include=FALSE>>=
 plotAncDes("Lee", sbGeneal,5,4)
 @
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotAncDes1-1,echo=FALSE, fig=TRUE>>=
+<<label=plotAncDes1-1,echo=FALSE>>=
 <<plotAncDes1>>
 @ 
   \end{center} 
@@ -317,7 +310,7 @@ It should be noted that the \texttt{plotAncDes()} function, by default, highligh
 
 For example, we will now change the color of the center variety label \texttt{vColor} to be highlighted in blue. Also, we will add a horizontal axis label called ``Generation index", using the \texttt{ggplot2} syntax. Note that this time we do not specify the generational count for ancestors and descendants, and so the default value of three generations is applied to both cases. Remember, to determine such default values, as well as all function parameters, simply run the help command on the function of interest.
 
-<<label=plotAncDes2, include=FALSE, fig=TRUE>>=
+<<label=plotAncDes2, include=FALSE>>=
 plotAncDes("Tokyo", sbGeneal, vColor = "blue") + ggplot2::labs(
   x="Generation index",y="")
 @
@@ -325,7 +318,7 @@ plotAncDes("Tokyo", sbGeneal, vColor = "blue") + ggplot2::labs(
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure} 
   \begin{center} 
-<<label=plotAncDes2-1,echo=FALSE, fig=TRUE>>=
+<<label=plotAncDes2-1,echo=FALSE>>=
 <<plotAncDes2>>
 @ 
   \end{center} 
@@ -370,14 +363,14 @@ pathBB = getPath("Bedford","Brim", ig, sbGeneal, "devYear", isDirected=FALSE)
 
 Now that we have a non-empty \texttt{pathBB} object that consists of two lists (for variety names and years), we can plot the relationship between the two using the \texttt{plotPath()} function.
 
-<<label=plotPath, include=FALSE, fig=TRUE>>=
+<<label=plotPath, include=FALSE>>=
 plotPath(pathBB, sbGeneal, "devYear")
 @
 
 \setkeys{Gin}{width=5in, height=5in}
 \begin{figure}[b!]
   \begin{center}
-<<label=plotPath-1,echo=FALSE, fig=TRUE>>=
+<<label=plotPath-1,echo=FALSE>>=
 <<plotPath>>
 @
   \end{center}
@@ -387,14 +380,14 @@ plotPath(pathBB, sbGeneal, "devYear")
 
 Notice that the horizontal label by default uses the general label of the input column name (in this case ``devYear"). We can tailor this plot by appending basic \texttt{ggplot} syntax. For instance, if we wish to change the horizontal label to the more specific value of ``Year", then we can do as follows:
 
-<<label=plotPath1, include=FALSE, fig=TRUE>>=
+<<label=plotPath1, include=FALSE>>=
 plotPath(pathBB, sbGeneal, "devYear") + ggplot2::xlab("Year")
 @
 
 \setkeys{Gin}{width=5in, height=5in}
 \begin{figure}[b!]
   \begin{center}
-<<label=plotPath1-1,echo=FALSE, fig=TRUE>>=
+<<label=plotPath1-1,echo=FALSE>>=
 <<plotPath1>>
 @
   \end{center}
@@ -408,7 +401,7 @@ Although a call to the \pkg{ggenealogy} function \texttt{getVariable()} indicate
 
 However, there are other cases of pairs of varieties that are connected by a linear, unidirectional combination of parent-child relationships, as we see below:
 
-<<label=plotPath2, include=FALSE, fig=TRUE>>=
+<<label=plotPath2, include=FALSE>>=
 pathNT = getPath("Narow", "Tokyo", ig, sbGeneal, "devYear", isDirected=FALSE)
 plotPath(pathNT, sbGeneal, "devYear")
 @
@@ -416,7 +409,7 @@ plotPath(pathNT, sbGeneal, "devYear")
 \setkeys{Gin}{width=5in, height=5in}
 \begin{figure}[b!]
   \begin{center}
-<<label=plotPath2-1,echo=FALSE, fig=TRUE>>=
+<<label=plotPath2-1,echo=FALSE>>=
 <<plotPath2>>
 @
   \end{center}
@@ -432,14 +425,14 @@ Now that we can create and plot path objects, we may wish to know how those path
 
 There is a function available in the \pkg{ggenealogy} package, \texttt{plotPathOnAll()}, that allows users to quickly visualize their path of interest superimposed over all varieties and edges present in the whole data structure. Here we will produce a plot of the previously-determined shortest path between varieties ``Tokyo" and ``Narow" across the entire dataset (in this particular dataset, some edges are not plotted, as they contain NA values):
 
-<<label=plotPathOnAll1,include=FALSE, fig=TRUE, warning=FALSE>>=
+<<label=plotPathOnAll1,include=FALSE, warning=FALSE>>=
 plotPathOnAll(pathNT, sbGeneal, ig, "devYear", bin = 3)
 @
 
 \setkeys{Gin}{width=5in, height=5in}
 \begin{figure}[t!]
   % \begin{center}
-<<label=plotPathOnAll1-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotPathOnAll1-1,echo=FALSE, warning=FALSE>>=
 <<plotPathOnAll1>>
 @
   % \end{center}
@@ -463,14 +456,14 @@ Using the plot, we immediately recognize that the path spans most of the years i
 
 However, this plot has significant empty spaces between the distinct bins, and almost all text labels are overlapping, causing decreased readability. To force variety text labels into these spaces, the user may consider choosing a larger number of bins. Hence, we next examine a \texttt{bin} size of six:
 
-<<label=plotPathOnAll2, include=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotPathOnAll2, include=FALSE, warning=FALSE>>=
 plotPathOnAll(pathNT, sbGeneal, ig, "devYear", bin = 6) + ggplot2::xlab("Year")
 @
 
 \setkeys{Gin}{width=6in, height=6in}
 \begin{figure}[b!]
 % \begin{center} 
-<<label=plotPathOnAll2-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotPathOnAll2-1,echo=FALSE, warning=FALSE>>=
 <<plotPathOnAll2>>
 @ 
 % \end{center} 
@@ -488,7 +481,7 @@ It may also be of interest to generate matrices where the cell colors indicate t
 
 Here, we plot a distance matrix for a set of 8 varieties, defining both the x- and y- axes titles as ``Soybean label", and the legend label as ``Degree". Syntax from the \texttt{ggplot2} package can be appended to tailor the output of the \texttt{plotDegMatrix()} function. In this case, we denote pairs with small degrees to be colored white, and pairs with large degrees to be colored dark green, using \texttt{scale\_fill\_continuous}:
 
-<<label=plotDegMatrix1, include=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotDegMatrix1, include=FALSE, warning=FALSE>>=
 varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
 p = plotDegMatrix(varieties, ig, sbGeneal)
 p + ggplot2::scale_fill_continuous(low = "white", high = "darkgreen") +
@@ -503,7 +496,7 @@ plotDegMatrix(varieties, sbIG, sbGeneal)
 \setkeys{Gin}{width=4.6in, height=4.6in}
 \begin{figure}[b!]
   \begin{center} 
-<<label=plotDegMatrix1-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotDegMatrix1-1,echo=FALSE, warning=FALSE>>=
 <<plotDegMatrix1>>
 @ 
 \end{center}
@@ -524,7 +517,7 @@ Indeed, the degree of the shortest path between ``Bedford" and ``Zane" is \Sexpr
 
 In a similar function \texttt{plotYearMatrix()}, the difference in years between all pairwise combinations of vertices can be constructed and viewed:
 
-<<label=plotYearMatrix1, include=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotYearMatrix1, include=FALSE, warning=FALSE>>=
 varieties=c("Brim", "Bedford", "Calland", "Narow", "Pella", "Tokyo", "Young", "Zane")
 plotDegMatrix(varieties, ig, sbGeneal)
 @
@@ -532,7 +525,7 @@ plotDegMatrix(varieties, ig, sbGeneal)
 \begin{figure}[htb]
 \centering
   %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
-<<label=plotYearMatrix1-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotYearMatrix1-1,echo=FALSE, warning=FALSE>>=
 <<plotYearMatrix1>>
 @ 
 %\end{adjustbox}
@@ -574,7 +567,7 @@ which(numDesc == 159)
 
 We can now visualize how these 159 ``descendants" are related to Sir David Cox by calling the \code{plotAncDes()} function of \pkg{ggenealogy}. As such, we create Figure \ref{fig:dCox-1} using the code below.
 
-<<eval=FALSE, fig=TRUE>>=
+<<eval=FALSE>>=
 plotAncDes("David Cox", statGeneal, mAnc = 6, mDes = 6, vCol = "blue")
 @
 
@@ -594,7 +587,7 @@ nrow(getDescendants("Peter Bloomfield", statGeneal, gen = 100))
 
 At this point, it would be insightful to examine a more detailed view of one of the longest strings of ``parent-child" relationships between Sir David Cox and one of the two individuals who are his fifth generation ``descendants". We do so with the code below, choosing his fifth generation ``descendant" to be Petra Buzkova. We set the \code{fontFace} variable of the \code{plotPath()} to a value of 4, indicating we wish to boldface and italicize the two varieties of interest.
 
-<<label=pathCB, include=FALSE, fig=TRUE>>=
+<<label=pathCB, include=FALSE>>=
 statIG <- dfToIG(statGeneal)
 pathCB <- getPath("David Cox", "Petra Buzkova", statIG, statGeneal, "gradYear", isDirected = FALSE)
 plotPath(pathCB, statGeneal, "gradYear", fontFace = 4) + ggplot2::theme(axis.text = 
@@ -604,7 +597,7 @@ plotPath(pathCB, statGeneal, "gradYear", fontFace = 4) + ggplot2::theme(axis.tex
 \begin{figure}
 %\centering
   %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
-<<label=pathCB-1,echo=FALSE, fig=TRUE>>=
+<<label=pathCB-1,echo=FALSE>>=
 <<pathCB>>
 @ 
   %\end{adjustbox}
@@ -618,7 +611,7 @@ We also notice in Figure \ref{fig:pathCB-1} that Sir David Cox received his stat
 
 We can achieve this using the below code. After trial and error, we use a \code{bin} of size 200, and append \pkg{ggplot2} syntax to define suitable x-axis limits. The output of this process is illustrated in Figure \ref{fig:plotCBText-1}.
 
-<<label=plotCBText, include=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotCBText, include=FALSE, warning=FALSE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200) +
    ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
    ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
@@ -627,7 +620,7 @@ plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200) +
 \begin{figure}
 %\centering
   %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
-<<label=plotCBText-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotCBText-1,echo=FALSE, warning=FALSE>>=
 <<plotCBText>>
 @ 
   %\end{adjustbox}
@@ -639,7 +632,7 @@ We see from the resulting Figure \ref{fig:plotCBText-1} that almost all text lab
 
 The text labels are so numerous in Figure \ref{fig:plotCBText-1} that simply trying different values for the input parameter \code{bin} will not solve the text overlapping problem. Instead, one approach we can try is to reconstruct the plot using the same \pkg{ggenealogy} function \code{plotPathOnAll()}, only now specifying variables to render the size (2.5) and color (default of black) of the text for nodes that are on the path of interest to be more noticeable than the size (0.5) and color (dark gray) of the text for nodes that are not on the path of interest. Moreover, we can make the edges that are not on the path of interest to be represented in a less noticeable color (light gray) than the edges that are on the path of interest (default of dark green). The variable names and options for these aesthetics is further detailed in the help manual of the function. We provide one example code that alters the defaults of the text color and sizes of nodes and edges below, which results in Figure \ref{fig:plotCBNoText-1}.
 
-<<label=plotCBNoText, include=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotCBNoText, include=FALSE, warning=FALSE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
    pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray") +
    ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
@@ -649,7 +642,7 @@ plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
 \begin{figure}
 \centering
   %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
-<<label=plotCBNoText-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotCBNoText-1,echo=FALSE, warning=FALSE>>=
 <<plotCBNoText>>
 @ 
   %\end{adjustbox}
@@ -661,7 +654,7 @@ In Figure \ref{fig:plotCBNoText-1}, we can now see each individual on the path o
 
 We could still improve upon Figure \ref{fig:plotCBNoText-1}. Even though we may be primarily interested in understanding how the path of interest is overlaid across the entire genealogical structure, we could, upon viewing the entire structure, also develop an interest in nodes that are not on the path of interest but are revealed to stand out among the rest of the genealogical structure. For instance, in Figure \ref{fig:plotCBNoText-1}, it may be of interest for us to determine the names of the few individuals who obtained their statistics degrees before 1900. Fortunately, within the \code{plotPathOnAll()} function, there is a variable \code{animate} that we can set to a value of TRUE to create an interactive version of the figure that allows us to hover over individual illegible labels and immediately receive their labels in a readable format. This interactive functionality comes from methods in the \pkg{plotly} package. The code below would create an animated version of Figure \ref{fig:plotCBNoText-1}.
 
-<<label=plotAnimate, include=FALSE, eval=FALSE, warning=FALSE, fig=TRUE>>=
+<<label=plotAnimate, include=FALSE, eval=FALSE, warning=FALSE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
    pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray", animate =
    TRUE)
