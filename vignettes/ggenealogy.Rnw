@@ -63,10 +63,6 @@ my.Swd <- function(name, width, height, ...)
 \setcounter{footnote}{1} \footnotetext{This \LaTeX\ vignette document is created using the \R function \code{Sweave} on the \R package \pkg{ggenealogy}. It is automatically downloaded with the package and can be accessed with the \R command \code{vignette("ggenealogy")}.}  \newpage
 \setlength{\parskip}{10pt} % Inter-paragraph spacing
 
-<<echo=FALSE>>=
-rm(list=ls())
-@ 
-
 \section{Citation}
 
 Please cite \pkg{ggenealogy} as follows:
@@ -618,7 +614,7 @@ We also notice in Figure \ref{fig:pathCB-1} that Sir David Cox received his stat
 
 We can achieve this using the below code. After trial and error, we use a \code{bin} of size 200, and append \pkg{ggplot2} syntax to define suitable x-axis limits. The output of this process is illustrated in Figure \ref{fig:plotCBText-1}.
 
-<<label=plotCBText, include=FALSE, warning=FALSE>>=
+<<label=plotCBText, include=FALSE, warning=FALSE, fig=TRUE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200) +
    ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
    ggplot2::element_text(size = 8)) + ggplot2::scale_x_continuous(expand = c(.1, .2))
@@ -639,7 +635,7 @@ We see from the resulting Figure \ref{fig:plotCBText-1} that almost all text lab
 
 The text labels are so numerous in Figure \ref{fig:plotCBText-1} that simply trying different values for the input parameter \code{bin} will not solve the text overlapping problem. Instead, one approach we can try is to reconstruct the plot using the same \pkg{ggenealogy} function \code{plotPathOnAll()}, only now specifying variables to render the size (2.5) and color (default of black) of the text for nodes that are on the path of interest to be more noticeable than the size (0.5) and color (dark gray) of the text for nodes that are not on the path of interest. Moreover, we can make the edges that are not on the path of interest to be represented in a less noticeable color (light gray) than the edges that are on the path of interest (default of dark green). The variable names and options for these aesthetics is further detailed in the help manual of the function. We provide one example code that alters the defaults of the text color and sizes of nodes and edges below, which results in Figure \ref{fig:plotCBNoText-1}.
 
-<<label=plotCBNoText, include=FALSE, warning=FALSE>>=
+<<label=plotCBNoText, include=FALSE, warning=FALSE, fig=TRUE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
    pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray") +
    ggplot2::theme(axis.text = ggplot2::element_text(size = 8), axis.title =
@@ -661,7 +657,7 @@ In Figure \ref{fig:plotCBNoText-1}, we can now see each individual on the path o
 
 We could still improve upon Figure \ref{fig:plotCBNoText-1}. Even though we may be primarily interested in understanding how the path of interest is overlaid across the entire genealogical structure, we could, upon viewing the entire structure, also develop an interest in nodes that are not on the path of interest but are revealed to stand out among the rest of the genealogical structure. For instance, in Figure \ref{fig:plotCBNoText-1}, it may be of interest for us to determine the names of the few individuals who obtained their statistics degrees before 1900. Fortunately, within the \code{plotPathOnAll()} function, there is a variable \code{animate} that we can set to a value of TRUE to create an interactive version of the figure that allows us to hover over individual illegible labels and immediately receive their labels in a readable format. This interactive functionality comes from methods in the \pkg{plotly} package. The code below would create an animated version of Figure \ref{fig:plotCBNoText-1}.
 
-<<label=plotAnimate, include=FALSE, eval=FALSE, warning=FALSE>>=
+<<label=plotAnimate, include=FALSE, eval=FALSE, warning=FALSE, fig=TRUE>>=
 plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
    pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray", animate =
    TRUE)
