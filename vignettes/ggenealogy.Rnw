@@ -623,7 +623,7 @@ plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200) +
 \begin{figure}
 %\centering
   %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
-<<label=plotCBText-1,echo=FALSE, warning=FALSE>>=
+<<label=plotCBText-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
 <<plotCBText>>
 @ 
   %\end{adjustbox}
@@ -645,7 +645,7 @@ plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
 \begin{figure}
 \centering
   %\begin{adjustbox}{width=5.4in,height=4.1in,clip,trim=0cm 1.5cm 0cm 1.5cm}
-<<label=plotCBNoText-1,echo=FALSE, warning=FALSE>>=
+<<label=plotCBNoText-1,echo=FALSE, warning=FALSE, fig=TRUE>>=
 <<plotCBNoText>>
 @ 
   %\end{adjustbox}
