@@ -20,45 +20,52 @@
 \numberwithin{equation}{section} % Equation numbers relative to sections
 
 
+% ---------------------------------------------------------------------------------------------------------------------------------------
+
+% \VignetteIndexEntry{ggenealogy: Visualization tools for genealogical data}
+%\VignettePackage{ggenealogy}
+%\documentclass{amsart}
 \newcommand{\code}[1]{{\texttt{#1}}}
 \newcommand{\pkg}[1]{{\texttt{#1}}}
 \newcommand{\class}[1]{{\textit{#1}}}
 \newcommand{\R}{{\normalfont\textsf{R }}{}}
 
-
-
 \begin{document}
 
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
 
 <<label=Roptions,echo=FALSE>>=
 options(width = 60)
 options(SweaveHooks = list(fig = function() par(mar=c(3,3,1,0.5),mgp = c(2,1,0))))
 @
 
-
-<<results='hide',echo=FALSE>>=
+<<results=hide,echo=FALSE>>=
 my.Swd <- function(name, width, height, ...)
  grDevices::cairo_pdf(
   filename = paste(name, "pdf", sep = "."),
   width = width, height = height
  )
 @
+\SweaveOpts{grdevice=my.Swd,pdf=FALSE}
 
-<<include=FALSE>>=
-library(knitr)
-opts_chunk$set(
-concordance=TRUE,
-grdevice=my.Swd
-)
-@
 
 \title{Vignette: Grammar of graphics of genealogy (ggenealogy)}
 \author{Lindsay Rutter, Susan Vanderplas, Di Cook}
 \maketitle
 
+
 \tableofcontents
 \setcounter{footnote}{1} \footnotetext{This \LaTeX\ vignette document is created using the \R function \code{Sweave} on the \R package \pkg{ggenealogy}. It is automatically downloaded with the package and can be accessed with the \R command \code{vignette("ggenealogy")}.}  \newpage
 \setlength{\parskip}{10pt} % Inter-paragraph spacing
+
+<<echo=FALSE>>=
+rm(list=ls())
+@ 
 
 \section{Citation}
 
@@ -425,7 +432,7 @@ Now that we can create and plot path objects, we may wish to know how those path
 
 There is a function available in the \pkg{ggenealogy} package, \texttt{plotPathOnAll()}, that allows users to quickly visualize their path of interest superimposed over all varieties and edges present in the whole data structure. Here we will produce a plot of the previously-determined shortest path between varieties ``Tokyo" and ``Narow" across the entire dataset (in this particular dataset, some edges are not plotted, as they contain NA values):
 
-<<label=plotPathOnAll1,include=FALSE, warning=FALSE>>=
+<<label=plotPathOnAll1,include=FALSE>>=
 plotPathOnAll(pathNT, sbGeneal, ig, "devYear", bin = 3)
 @
 
@@ -659,6 +666,20 @@ plotPathOnAll(pathCB, statGeneal, statIG, "gradYear", bin = 200, nodeSize = .5,
    pathNodeSize = 2.5, nodeCol = "darkgray", edgeCol = "lightgray", animate =
    TRUE)
 @
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Branch parsing and calculations}
 
